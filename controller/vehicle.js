@@ -3,6 +3,7 @@ const Category = require("../Models/Category")
 const Model = require("../Models/Model")
 const Body = require("../Models/Body")
 const Make = require("../Models/Make")
+const mongoose = require("mongoose")
 
 const vehicleAdd = async (req, res, next) => {
     try {
@@ -33,16 +34,25 @@ const getAllvehicle = async (req, res, next) => {
             return res.status(200).json(arrayUniqueByKey)
         }
     } catch (error) {
-        console.log(error);
+        console.log(error, "d");
         return res.status(500).json(error)
     }
 }
 
-
 const getAllMake = async (req, res, next) => {
     try {
-        const vehicle = await Vehicle.find({ year: req.body.year }).populate("make_id", "name", { _id: 0 })
-        return res.send(vehicle)
+        let category = await Category.findOne({ name: req.body.name });
+        let vehicle = await Vehicle.find({ year: req.body.year, category_id: category._id }).populate("make_id", "name")
+        const result = [];
+        const unique = vehicle.filter(element => {
+            const isDuplicate = result.includes(element.make_id.name)
+            if (!isDuplicate) {
+                result.push(element.make_id.name)
+                return true;
+            }
+            return false;
+        })
+        return res.status(200).json(unique)
     } catch (error) {
         return res.status(500).json(error)
     }
@@ -52,14 +62,18 @@ const getAllModel = async (req, res, next) => {
     try {
         let make = await Make.findOne({ name: req.body.name })
         const vehicle = await Vehicle.find({ make_id: make._id }).populate("model_id", "name")
-        let result = []
-        vehicle.map(item => {
-            if (!result[item]) {
-                result.push({ name: item.model_id.name })
+        let result = [];
+        const unique = vehicle.filter(element => {
+            const isDuplicate = result.includes(element.model_id.name);
+            if (!isDuplicate) {
+                result.push(element.model_id.name);
+                return true;
             }
-        })
-        return res.status(200).json(result)
+            return false;
+        });
+        return res.status(200).json(unique)
     } catch (error) {
+        console.log(error, "error");
         return res.status(500).json(error)
     }
 }
@@ -68,12 +82,7 @@ const getAllBody = async (req, res, next) => {
     try {
         const model = await Model.findOne({ name: req.body.name })
         const vehicle = await Vehicle.find({ model_id: model._id }).populate("body_id", "name")
-        let result = []
-        vehicle.map((item) => {
-            result.push({ name: item.body_id.name })
-        })
-
-        return res.status(200).json(result)
+        return res.status(200).json(vehicle)
     } catch (error) {
         return res.status(500).json(error)
     }
@@ -112,6 +121,8 @@ const vehicleDelete = async (req, res, next) => {
         return res.status(500).json(error)
     }
 }
+
+
 
 module.exports = { vehicleAdd, getAllvehicle, getAllMake, getAllModel, getAllBody, vehicleUpdate, vehicleDelete }
 

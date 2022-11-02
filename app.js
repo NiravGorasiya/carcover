@@ -13,6 +13,7 @@ const body = require("./router/Body")
 const model = require("./router/Model")
 const vehicle = require("./router/Vehicle")
 const Attribute = require("./router/Attribute")
+const Banner = require("./router/Banner")
 
 //database connection
 require("./db/connection")
@@ -26,6 +27,7 @@ app.use(morgan('tiny'))
 app.use(cors())
 
 app.use("/api/category", catgory)
+app.use("/api/banner", Banner)
 app.use("/api/make", make)
 app.use("/api/body", body)
 app.use("/api/model", model)
