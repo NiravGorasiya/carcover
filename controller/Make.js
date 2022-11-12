@@ -3,7 +3,8 @@ const Make = require("../Models/Make")
 const makeAdd = async (req, res, next) => {
     try {
         const make = new Make({
-            name: req.body.name
+            name: req.body.name,
+            slug: req.body.slug
         })
         const result = await make.save();
         return res.status(201).json(result)

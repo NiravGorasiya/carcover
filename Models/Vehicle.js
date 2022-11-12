@@ -17,14 +17,7 @@ const vehicleSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "Category"
     },
-    attribute: [{
-        attribute_id: {
-            type: mongoose.Types.ObjectId
-        },
-        value: {
-            type: String
-        }
-    }],
+    
     year: {
         type: Number
     }

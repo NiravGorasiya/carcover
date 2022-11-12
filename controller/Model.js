@@ -3,7 +3,8 @@ const Model = require("../Models/Model")
 const modelAdd = async (req, res, next) => {
     try {
         const model = new Model({
-            name: req.body.name
+            name: req.body.name,
+            slug: req.body.slug
         })
         const result = await model.save();
         return res.status(201).json(result)

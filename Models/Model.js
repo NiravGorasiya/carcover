@@ -5,7 +5,7 @@ const modelSchema = new mongoose.Schema({
         type: String,
         require: [true, "model name is required"]
     },
-    url: {
+    slug: {
         type: String,
         required: false
     }

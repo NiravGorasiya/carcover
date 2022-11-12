@@ -5,7 +5,7 @@ const cors = require("cors")
 const path = require("path")
 const app = express()
 const port = process.env.PORT
-
+require("./javascript")
 //Router
 const catgory = require("./router/Category")
 const make = require("./router/Make")
@@ -14,6 +14,17 @@ const model = require("./router/Model")
 const vehicle = require("./router/Vehicle")
 const Attribute = require("./router/Attribute")
 const Banner = require("./router/Banner")
+const User = require("./router/User")
+const Product = require("./router/Product")
+
+const EventEmitter = require("events")
+var eventEmitter = new EventEmitter();
+
+
+
+
+
+
 
 //database connection
 require("./db/connection")
@@ -33,6 +44,8 @@ app.use("/api/body", body)
 app.use("/api/model", model)
 app.use("/api/vehicle", vehicle)
 app.use("/api/attribute", Attribute)
+app.use("/api/user", User)
+app.use("/api/product", Product)
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)

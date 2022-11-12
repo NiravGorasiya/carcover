@@ -7,14 +7,13 @@ const mongoose = require("mongoose")
 
 const vehicleAdd = async (req, res, next) => {
     try {
-        const { model_id, body_id, make_id, category_id, year, attribute } = req.body
+        const { model_id, body_id, make_id, category_id, year } = req.body
         const model = new Vehicle({
             model_id,
             body_id,
             make_id,
             category_id,
-            year,
-            attribute
+            year
         })
         const result = await model.save();
         return res.status(201).json(result)
@@ -90,7 +89,7 @@ const getAllBody = async (req, res, next) => {
 
 const vehicleUpdate = async (req, res, next) => {
     try {
-        const { model_id, body_id, make_id, category_id, year, attribute } = req.body
+        const { model_id, body_id, make_id, category_id, year } = req.body
         const vehicle = await Vehicle.findByIdAndUpdate({ _id: req.params.id },
             {
                 $set: {
@@ -98,8 +97,7 @@ const vehicleUpdate = async (req, res, next) => {
                     body_id,
                     make_id,
                     category_id,
-                    year,
-                    attribute
+                    year
                 }
             },
             { new: true }
