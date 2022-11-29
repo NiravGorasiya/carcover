@@ -7,6 +7,9 @@ const categorySchema = new mongoose.Schema({
     },
     image: {
         type: String
+    },
+    banner: {
+        type: String
     }
 }, {
     timeseries: true

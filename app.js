@@ -5,7 +5,7 @@ const cors = require("cors")
 const path = require("path")
 const app = express()
 const port = process.env.PORT
-require("./javascript")
+
 //Router
 const catgory = require("./router/Category")
 const make = require("./router/Make")
@@ -17,15 +17,6 @@ const Banner = require("./router/Banner")
 const User = require("./router/User")
 const Product = require("./router/Product")
 
-const EventEmitter = require("events")
-var eventEmitter = new EventEmitter();
-
-
-
-
-
-
-
 //database connection
 require("./db/connection")
 
@@ -36,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public/uploads')))
 app.use(express.json())
 app.use(morgan('tiny'))
 app.use(cors())
+
 
 app.use("/api/category", catgory)
 app.use("/api/banner", Banner)

@@ -2,11 +2,15 @@ const Product = require("../Models/Product")
 
 const addProduct = async (req, res, next) => {
     try {
-        const { title, attribute, catgory_id } = req.body
+        const { title, attribute, catgory_id, description, regularprice, currentPrice, qty } = req.body
         const product = new Product({
             title,
             attribute,
-            catgory_id
+            catgory_id,
+            description,
+            regularprice,
+            currentPrice,
+            qty
         })
         const result = await product.save();
         return res.status(201).json(result)

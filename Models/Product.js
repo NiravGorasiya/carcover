@@ -6,7 +6,7 @@ const productSchema = new mongoose.Schema({
     },
     catgory_id: {
         type: mongoose.Types.ObjectId,
-        ref:'Category'
+        ref: 'Category'
     },
     attribute: [{
         attribute_id: {
@@ -16,6 +16,22 @@ const productSchema = new mongoose.Schema({
             type: String
         }
     }],
+    description: {
+        type: String,
+        required: true
+    },
+    regularprice: {
+        type: Number,
+        required: true
+    },
+    currentPrice: {
+        type: Number,
+        required: true
+    },
+    qty: {
+        type: Number,
+        required: true
+    }
 }, {
     timestamps: true
 })

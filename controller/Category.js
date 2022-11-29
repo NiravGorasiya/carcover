@@ -2,9 +2,19 @@ const Category = require("../Models/Category")
 
 const addCategory = async (req, res, next) => {
     try {
+        let bannerimage;
+        req.files.banner.map((item) => {
+            bannerimage = item.originalname
+        })
+        let categoryimage;
+        req.files.image.map((item) => {
+            categoryimage = item.originalname
+        })
+
         const category = new Category({
             name: req.body.name,
-            image: req.file.filename
+            image: categoryimage,
+            banner: bannerimage
         })
         const result = await category.save();
         return res.status(201).json(result)

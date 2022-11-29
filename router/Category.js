@@ -30,11 +30,12 @@ const fileFilter = (req, file, cb) => {
     }
 }
 
-const upload = multer({ fileFilter: fileFilter, storage: storage });
+const upload = multer({ fileFilter: fileFilter, storage: storage })
 
+const cupload = upload.fields([{ name: "image", maxCount: 1 }, { name: "banner", maxCount: 1 }])
 const { addCategory, getAllCatgory } = require("../controller/Category")
 
-router.post("/add", upload.single("image"), addCategory)
+router.post("/add", cupload, addCategory)
 
 router.get("/all", getAllCatgory)
 
