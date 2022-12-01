@@ -4,11 +4,11 @@ const addCategory = async (req, res, next) => {
     try {
         let bannerimage;
         req.files.banner.map((item) => {
-            bannerimage = item.originalname
+            bannerimage = item.filename
         })
         let categoryimage;
         req.files.image.map((item) => {
-            categoryimage = item.originalname
+            categoryimage = item.filename
         })
 
         const category = new Category({

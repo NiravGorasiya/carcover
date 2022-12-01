@@ -17,7 +17,7 @@ const vehicleSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "Category"
     },
-    
+
     year: {
         type: Number
     }
