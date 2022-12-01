@@ -107,16 +107,14 @@ const all_cart = async (req, res) => {
             {
                 $project: {
 
-                    "image":
-                        "$categories.image"
-                    ,
-                    "product_name": "$product.title",
-                    "Year": "$vehicles.year",
-                    "Make": "$makes.name",
-                    "Model": "$models.name",
-                    "Body": "$bodies.name",
+                    "image": { $first: "$categories.image" },
+                    "product_name": { $first: "$product.title" },
+                    "Year": { $first: "$vehicles.year" },
+                    "Make": { $first: "$makes.name" },
+                    "Model": { $first: "$models.name" },
+                    "Body": { $first: "$bodies.name" },
                     "QUANTITY": "$quantity",
-                    "UNIT_PRICE": "$product.currentPrice",
+                    "UNIT_PRICE": { $first: "$product.currentPrice" },
                     "TOTAL": "$total"
                 }
             },
