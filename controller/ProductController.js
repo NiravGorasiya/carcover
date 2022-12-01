@@ -2,11 +2,11 @@ const Product = require("../Models/Product")
 
 const addProduct = async (req, res, next) => {
     try {
-        const { title, attribute, catgory_id, description, regularprice, currentPrice, qty } = req.body
+        const { title, attribute, vehicle_id, description, regularprice, currentPrice, qty } = req.body
         const product = new Product({
             title,
             attribute,
-            catgory_id,
+            vehicle_id,
             description,
             regularprice,
             currentPrice,
@@ -19,6 +19,35 @@ const addProduct = async (req, res, next) => {
     }
 }
 
+const delete_product = async (req, res) => {
+    try {
+        await Product.findByIdAndDelete(req.params.id);
+        return res.status(200).json({ result: " paroduct delete sucssfully" })
+    } catch (error) {
+        return res.status(500).json(error)
+    }
+}
+
+const update_product = async (req, res) => {
+    try {
+        const { title, attribute, vehicle_id, description, regularprice, currentPrice, qty } = req.body
+
+        var data = await Product.findByIdAndUpdate(req.params.id, {
+            title,
+            attribute,
+            vehicle_id,
+            description,
+            regularprice,
+            currentPrice,
+            qty
+        }, { new: true });
+        return res.status(201).json({ result: data })
+
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+}
+
 const getallProduct = async (req, res, next) => {
     try {
         const result = await Product.find();
@@ -28,6 +57,7 @@ const getallProduct = async (req, res, next) => {
     }
 }
 
+<<<<<<< HEAD
 const getAll = (req, res, next) => {
     try {
 
@@ -37,4 +67,7 @@ const getAll = (req, res, next) => {
 }
 
 module.exports = { addProduct, getallProduct, getAll }
+=======
+module.exports = { addProduct, getallProduct, delete_product, update_product }
+>>>>>>> 38f0aefe9c80466ab8bc2b80e3bb2b693ee37256
 

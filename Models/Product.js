@@ -4,9 +4,9 @@ const productSchema = new mongoose.Schema({
     title: {
         type: String,
     },
-    catgory_id: {
+    vehicle_id: {
         type: mongoose.Types.ObjectId,
-        ref: 'Category'
+        ref: 'vehicle'
     },
     attribute: [{
         attribute_id: {

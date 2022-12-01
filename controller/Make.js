@@ -12,6 +12,29 @@ const makeAdd = async (req, res, next) => {
         return res.status(500).json(error)
     }
 }
+const make_delete = async (req, res) => {
+    try {
+        await Make.findByIdAndDelete(req.params.id);
+        return res.status(200).json({ result: "make dlete successfully" })
+    } catch (error) {
+        return res.status(500).json(error)
+
+    }
+}
+
+const make_update = async (req, res) => {
+    try {
+        const data = await Make.findByIdAndUpdate(req.params.id, {
+            name: req.body.name,
+            slug: req.body.slug
+        }, { new: true }
+        );
+        return res.status(200).json({ message: "make update successfully", result: data })
+    } catch (error) {
+        return res.status(500).json(error)
+
+    }
+}
 
 const getAllMake = async (req, res, next) => {
     try {
@@ -22,4 +45,4 @@ const getAllMake = async (req, res, next) => {
     }
 }
 
-module.exports = { makeAdd, getAllMake }
+module.exports = { makeAdd, getAllMake, make_delete, make_update }
