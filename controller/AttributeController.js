@@ -25,8 +25,7 @@ const update_attribute = async (req, res, next) => {
         const attribute = await Attribute.findByIdAndUpdate(req.params.id, {
             name: req.body.name
         }, { new: true })
-        attribute.delete();
-        return res.status(200).json("successfull upadte")
+        return res.status(200).json({ message: "successfull upadte", result: attribute })
     } catch (error) {
         return res.status(500).json(error)
     }
@@ -36,10 +35,10 @@ const deleteAttribute = async (req, res, next) => {
     try {
         const attribute = await Attribute.findById(req.params.id)
         attribute.delete();
-        return res.status(200).json("successfull delete")
+        return res.status(200).json({ message: "successfull delete" })
     } catch (error) {
         return res.status(500).json(error)
     }
 }
 
-module.exports = { addAttribute, getAllAttribute, deleteAttribute ,update_attribute}
+module.exports = { addAttribute, getAllAttribute, deleteAttribute, update_attribute }

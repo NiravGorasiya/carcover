@@ -23,7 +23,7 @@ const Body_delete = async (req, res) => {
 }
 
 const Body_update = async (req, res) => {
-    try {
+    try { 
         const data = await Body.findByIdAndUpdate(req.params.id, {
             name: req.body.name,
             slug: req.body.slug

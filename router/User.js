@@ -1,4 +1,4 @@
-const { adduser, loginuser, changePassword, all_user,  } = require("../controller/user");
+const { adduser, loginuser, changePassword, all_user, } = require("../controller/user");
 const { auth } = require("../middleware/auth");
 
 

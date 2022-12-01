@@ -88,7 +88,7 @@ const changePassword = async (req, res) => {
             const valid_password = bcrypt.compare(old_password, get.password);
             if (!valid_password) { return res.status(400).json({ status: false, error: "not match old password" }); }
             let passwordcheck = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/;
-            if (!password.match(passwordcheck)||!confirm_password.match(passwordcheck)) { return res.status(400).json({ status: false, message: "7 to 15 characters which contain at least one numeric digit and a special character" }) }
+            if (!password.match(passwordcheck) || !confirm_password.match(passwordcheck)) { return res.status(400).json({ status: false, message: "7 to 15 characters which contain at least one numeric digit and a special character" }) }
             if (!(password === confirm_password)) { return res.status(400).json({ status: false, error: "not match Password and confirm_password" }); }
             const hash = bcrypt.hashSync(password, 10);
             get.password = hash;
@@ -102,10 +102,7 @@ const changePassword = async (req, res) => {
     }
 }
 
-
-
-
-module.exports = { adduser, loginuser, all_user, changePassword}
+module.exports = { adduser, loginuser, all_user, changePassword }
 
 
 

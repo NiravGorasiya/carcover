@@ -4,9 +4,19 @@ const fs = require('fs')
 const path = require('path')
 const addCategory = async (req, res, next) => {
     try {
+        let bannerimage;
+        req.files.banner.map((item) => {
+            bannerimage = item.filename
+        })
+        let categoryimage;
+        req.files.image.map((item) => {
+            categoryimage = item.filename
+        })
+
         const category = new Category({
             name: req.body.name,
-            image: req.file.filename
+            image: categoryimage,
+            banner: bannerimage
         })
         const result = await category.save();
         return res.status(201).json(result)
@@ -32,9 +42,9 @@ const delet_category = async (req, res) => {
         if (!catgory) {
             return res.json("catgory not find");
         }
-        const pathe = path.join(__dirname, '../public/uploads/' + catgory.image)
-        console.log(pathe);
-        fs.unlinkSync(pathe);
+        const image = path.join(__dirname, '../public/uploads/' + catgory.image)
+        const banner = path.join(__dirname, '../public/uploads/' + catgory.banner)
+        fs.unlinkSync(image, banner);
         catgory.delete()
         return res.status(200).json({ result: "category delete sucssfully" })
     } catch (error) {
@@ -45,18 +55,27 @@ const delet_category = async (req, res) => {
 const update_category = async (req, res) => {
     try {
         const catgory = await Category.findById(req.params.id)
-        var image
-        if (req.file) {
-            const pathe = path.join(__dirname, '../public/uploads/' + catgory.image)
-            fs.unlinkSync(pathe);
-            image = req.file.filename
-
+        let bannerimage;
+        let categoryimage;
+        if (req.files) {
+            req.files.banner.map((item) => {
+                bannerimage = item.filename
+            })
+            req.files.image.map((item) => {
+                categoryimage = item.filename
+            })
+            const image = path.join(__dirname, '../public/uploads/' + catgory.image)
+            const banner = path.join(__dirname, '../public/uploads/' + catgory.banner)
+            fs.unlinkSync(image);
+            fs.unlinkSync(banner)
         } else {
-            image = catgory.image
+            bannerimage = catgory.banner
+            categoryimage = catgory.image
         }
         const a = await Category.findByIdAndUpdate(catgory.id, {
             name: req.body.name,
-            image: image
+            image: categoryimage,
+            banner: bannerimage
         }, { new: true })
         return res.status(200).json({ result: a })
 
