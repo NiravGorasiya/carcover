@@ -50,7 +50,6 @@ app.get('/login', async (req, res) => {
         console.log("yes");
         res.send(req.cookies.node_session)
     } else {
-        console.log("no");
         res.cookie('node_session', sess.sessionId)
     }
 });
