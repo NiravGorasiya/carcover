@@ -21,6 +21,8 @@ const vehicleAdd = async (req, res, next) => {
     }
 }
 
+
+
 const getAllvehicle = async (req, res, next) => {
     try {
         if (req.params.category) {
@@ -108,6 +110,7 @@ const vehicleUpdate = async (req, res, next) => {
         return res.status(500).json(error)
     }
 }
+
 
 const vehicleDelete = async (req, res, next) => {
     try {
