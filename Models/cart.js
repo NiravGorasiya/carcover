@@ -12,6 +12,7 @@ const cartSchema = new mongoose.Schema({
     },
     total: {
         type: Number,
+
     },
     slug: {
         type: String
@@ -20,7 +21,7 @@ const cartSchema = new mongoose.Schema({
         taype: String
     }
 }, {
-    timestamps: true
+    timeseries: true,
 })
 
 
