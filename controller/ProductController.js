@@ -57,5 +57,17 @@ const getallProduct = async (req, res, next) => {
     }
 }
 
+<<<<<<< HEAD
+const getAll = (req, res, next) => {
+    try {
+
+    } catch (error) {
+
+    }
+}
+
+module.exports = { addProduct, getallProduct, getAll }
+=======
 module.exports = { addProduct, getallProduct, delete_product, update_product }
+>>>>>>> 38f0aefe9c80466ab8bc2b80e3bb2b693ee37256
 
