@@ -1,52 +1,30 @@
 require('dotenv').config()
+require("./db/connection")
 const express = require('express')
-const morgan = require("morgan")
+const logger = require("morgan")
 const cors = require("cors")
 const path = require("path")
 const app = express()
 const port = process.env.PORT
-require("./javascript")
-//Router
-const catgory = require("./router/Category")
-const make = require("./router/Make")
-const body = require("./router/Body")
-const model = require("./router/Model")
-const vehicle = require("./router/Vehicle")
-const Attribute = require("./router/Attribute")
-const Banner = require("./router/Banner")
-const User = require("./router/User")
-const Product = require("./router/Product")
-
-const EventEmitter = require("events")
-var eventEmitter = new EventEmitter();
-
-
-
-
-
-
-
-//database connection
-require("./db/connection")
-
-//test router
-app.use(express.static(path.join(__dirname, 'public/uploads')))
 
 //middleware
-app.use(express.json())
-app.use(morgan('tiny'))
-app.use(cors())
+app.use(logger('dev'));
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public/uploads')));
+//Router
+require('./seeder/admin')
+const router = require('./router/index');
+app.use(router);
 
-app.use("/api/category", catgory)
-app.use("/api/banner", Banner)
-app.use("/api/make", make)
-app.use("/api/body", body)
-app.use("/api/model", model)
-app.use("/api/vehicle", vehicle)
-app.use("/api/attribute", Attribute)
-app.use("/api/user", User)
-app.use("/api/product", Product)
+app.get("/", (req, res) => {
+    return res.send("sfhgj")
+})
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
+
+
+

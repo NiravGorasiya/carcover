@@ -1,5 +1,4 @@
 const mongoose = require("mongoose")
-
 const categorySchema = new mongoose.Schema({
     name: {
         type: String,
@@ -7,9 +6,11 @@ const categorySchema = new mongoose.Schema({
     },
     image: {
         type: String
+    },
+    banner: {
+        type: String
     }
 }, {
     timeseries: true
 })
-
 module.exports = mongoose.model("Category", categorySchema)

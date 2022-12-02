@@ -1,5 +1,3 @@
-const router = require("express").Router();
-const { addBanner, getSingleBanner } = require("../controller/BannerController")
 const multer = require('multer');
 const path = require("path")
 
@@ -8,7 +6,7 @@ const storage = multer.diskStorage({
         cb(null, './public/uploads');
     },
     filename: (req, file, cb) => {
-        cb(null, new Date().getTime() + path.extname(file.originalname));
+        cb(null, file.fieldname + "_" + Date.now() + "_" + file.originalname);
     }
 });
 
@@ -32,8 +30,4 @@ const fileFilter = (req, file, cb) => {
 }
 
 const upload = multer({ fileFilter: fileFilter, storage: storage });
-
-router.post("/add", upload.single("image"), addBanner)
-router.get("/:category", getSingleBanner)
-
-module.exports = router;
+module.exports = upload
