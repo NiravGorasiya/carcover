@@ -4,8 +4,6 @@ const Model = require("../Models/Model")
 const Body = require("../Models/Body")
 const Make = require("../Models/Make")
 const Product = require("../Models/Product")
-const router = require("../router")
-
 const vehicleAdd = async (req, res, next) => {
     try {
         const { model_id, body_id, make_id, category_id, year } = req.body
@@ -89,6 +87,7 @@ const getAllBody = async (req, res, next) => {
     }
 }
 
+
 const vehicleUpdate = async (req, res, next) => {
     try {
         const { model_id, body_id, make_id, category_id, year } = req.body
@@ -137,6 +136,88 @@ const products = async (req, res) => {
     }
 }
 
+// const products = async (req, res) => {
+//     try {
+//         const { model, body, make, year, category } = req.params
+
+
+//         const data = await Product.aggregate([
+//             {
+//                 $lookup: {
+//                     from: "bodies",
+//                     pipeline: [
+//                         { $match: { "name": body } }
+//                     ],
+//                     as: "bodies"
+//                 },
+//                 $project: [
+//                     {
+//                         "boday": {}
+//                     }
+//                 ]
+//             },
+//             {
+//                 $lookup: {
+//                     from: "models",
+//                     pipeline: [
+//                         { $match: { "name": model } }
+//                     ],
+//                     as: "models"
+//                 }
+//             },
+//             {
+//                 $lookup: {
+//                     from: "makes",
+//                     pipeline: [
+//                         { $match: { "name": make } }
+//                     ],
+//                     as: "makes"
+//                 }
+//             },
+//             {
+//                 $lookup: {
+//                     from: "categories",
+//                     pipeline: [
+//                         { $match: { "name": category } }
+//                     ],
+//                     as: "categories"
+//                 }
+//             },
+//             // {
+//             //     pipeline: {
+
+//             //     }
+//             // },
+//             {
+//                 $lookup: {
+//                     from: "vehicles",
+//                     pipeline: [
+//                         {
+//                             $match:
+//                             {
+//                                 // $and: [{
+//                                 //     $eq: ["$body_id", "$$body"],
+//                                 // },
+//                                 //     // {
+//                                 //     //     $eq: ["year", parseInt(year)]
+//                                 //     // },
+//                                 // ]
+//                                 $and: [
+//                                     { "year": parseInt(year) },
+//                                     // { tags: { $in: [ "home", "school" ] } }
+//                                     //{ "body_id": mongoose.Types.ObjectId("$bodies.id") },
+//                                 ]
+//                             }
+//                         },
+//                     ],
+//                     as: "vehicles",
+//                 }
+//             },
+//         ])
+//         return res.status(200).json(data)
+//     } catch (error) {
+//         return res.status(500).json({ status: false, error: error.message })
+//     }
+// }
 
 module.exports = { vehicleAdd, getAllvehicle, getAllMake, getAllModel, getAllBody, vehicleUpdate, vehicleDelete, products }
-

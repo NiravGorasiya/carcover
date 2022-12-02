@@ -11,7 +11,8 @@ const cartSchema = new mongoose.Schema({
         type: Number
     },
     total: {
-        type: String
+        type: Number,
+
     },
     slug: {
         type: String
@@ -20,7 +21,10 @@ const cartSchema = new mongoose.Schema({
         taype: String
     }
 }, {
-    timeseries: true
+    timeseries: true,
+    toJSON: { getters: true }
 })
+
+
 
 module.exports = mongoose.model("cart", cartSchema)
