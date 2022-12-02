@@ -4,6 +4,9 @@ const Model = require("../Models/Model")
 const Body = require("../Models/Body")
 const Make = require("../Models/Make")
 const Product = require("../Models/Product")
+const router = require("../router")
+const { default: mongoose } = require("mongoose")
+
 const vehicleAdd = async (req, res, next) => {
     try {
         const { model_id, body_id, make_id, category_id, year } = req.body
@@ -20,8 +23,6 @@ const vehicleAdd = async (req, res, next) => {
         return res.status(500).json(error)
     }
 }
-
-
 
 const getAllvehicle = async (req, res, next) => {
     try {
@@ -89,7 +90,6 @@ const getAllBody = async (req, res, next) => {
     }
 }
 
-
 const vehicleUpdate = async (req, res, next) => {
     try {
         const { model_id, body_id, make_id, category_id, year } = req.body
@@ -110,7 +110,6 @@ const vehicleUpdate = async (req, res, next) => {
         return res.status(500).json(error)
     }
 }
-
 
 const vehicleDelete = async (req, res, next) => {
     try {
@@ -209,6 +208,7 @@ const products = async (req, res) => {
 //                                     { "year": parseInt(year) },
 //                                     // { tags: { $in: [ "home", "school" ] } }
 //                                     //{ "body_id": mongoose.Types.ObjectId("$bodies.id") },
+
 //                                 ]
 //                             }
 //                         },

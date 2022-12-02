@@ -4,6 +4,7 @@ const { default: mongoose } = require("mongoose");
 
 const add_cart = async (req, res) => {
     try {
+
         var id = req.user.id
         const quantity = 1
         const data = await Product.findById(req.params.id)

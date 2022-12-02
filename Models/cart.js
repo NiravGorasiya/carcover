@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 
 const cartSchema = new mongoose.Schema({
     user_id: {
-        type: mongoose.Types.ObjectId
+        type: String
     },
     product_id: {
         type: mongoose.Types.ObjectId
@@ -22,7 +22,6 @@ const cartSchema = new mongoose.Schema({
     }
 }, {
     timeseries: true,
-    toJSON: { getters: true }
 })
 
 
