@@ -6,6 +6,7 @@ const cors = require("cors")
 const path = require("path")
 const sessions = require("express-session")
 const cookieParser = require("cookie-parser")
+const bcrypt = require("bcrypt")
 const app = express()
 const port = process.env.PORT
 
@@ -30,9 +31,6 @@ app.use(sessions({
 
 app.use(router);
 
-
-
-
 var sess;
 
 app.get('/', (req, res) => {
@@ -44,7 +42,7 @@ app.get('/', (req, res) => {
 });
 
 
-app.post('/login', async (req, res) => {
+app.get('/login', async (req, res) => {
     sess = req.session;
     const hash = await bcrypt.hash(uuidv4(), 10)
     sess.sessionId = hash;
