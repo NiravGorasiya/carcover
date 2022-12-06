@@ -1,11 +1,17 @@
 const mongoose = require("mongoose")
 
 const arrtribureSchema = new mongoose.Schema({
-    name: {
+    Name: {
         type: String
-    }
+    },
+    Slug: String,
+    value: [
+        {
+            name: String
+        }
+    ]
 }, {
     timestamps: true
 })
 
-module.exports = mongoose.model("Attribute", arrtribureSchema)
+module.exports = mongoose.model("Attribute", arrtribureSchema)  

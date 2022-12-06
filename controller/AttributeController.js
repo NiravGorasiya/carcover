@@ -1,44 +1,75 @@
-const Attribute = require("../Models/Attribute")
+'use strict'
+const attribute = require('../Models/Attribute');
 
-const addAttribute = async (req, res, next) => {
+
+const attribute_add = async (req, res) => {
     try {
-        const attribute = new Attribute({
-            name: req.body.name
+        const { Name, value } = req.body
+        const add = await attribute.create({
+            Name,
+            value
         })
-        const result = await attribute.save();
-        return res.status(201).json(result)
+        return res.status(201).json({ status: true, result: add })
     } catch (error) {
-        return res.status(500).json(error)
+        return res.status(500).json({ status: false, error: error.message })
     }
 }
 
-const getAllAttribute = async (req, res, next) => {
+const attribute_all = async (req, res) => {
     try {
-        const attribute = await Attribute.find();
-        return res.status(200).json(attribute)
+        const all = await attribute.find();
+        return res.status(201).json({ status: true, result: all })
     } catch (error) {
-        return res.status(500).json(error)
+        return res.status(500).json({ status: false, error: error.message })
     }
 }
-const update_attribute = async (req, res, next) => {
+const attribute_delete = async (req, res) => {
     try {
-        const attribute = await Attribute.findByIdAndUpdate(req.params.id, {
-            name: req.body.name
-        }, { new: true })
-        return res.status(200).json({ message: "successfull upadte", result: attribute })
+        var a = await attribute.findByIdAndDelete({ id: req.params.id });
+        if (!a) {
+            return res.status(200).json({ status: true, message: "attribut not exist" })
+        }
+        return res.status(200).json({ status: true, message: "attribut delet success full" });
     } catch (error) {
-        return res.status(500).json(error)
-    }
-}
-
-const deleteAttribute = async (req, res, next) => {
-    try {
-        const attribute = await Attribute.findById(req.params.id)
-        attribute.delete();
-        return res.status(200).json({ message: "successfull delete" })
-    } catch (error) {
-        return res.status(500).json(error)
+        return res.status(500).json({ status: false, error: error.message })
     }
 }
 
-module.exports = { addAttribute, getAllAttribute, deleteAttribute, update_attribute }
+const attribut_one = async (req, res) => {
+    try {
+        var a = await attribute.findById({ id: req.params.id })
+        if (!a) {
+            return res.status(200).json({ status: true, message: "attribut not exist" })
+        }
+        return res.status(200).json({ status: true, result: a });
+    } catch (error) {
+        return res.status(500).json({ status: false, error: error.message })
+    }
+}
+
+const attribut_update = async (req, res) => {
+    const result = await attribute.findByIdAndUpdate(req.params.id, {
+        Name: req.body.Name,
+        value: req.body.value
+    }, { new: true })
+    if (!result) {
+        return res.status(200).json({ status: true, message: "attribut not exist" })
+    }
+    return res.status(200).json({ status: true, result: result })
+}
+
+const attribut_addonevalue = async (req, res) => {
+    const result = await attribute.findByIdAndUpdate(req.params.id, {
+        Name: req.body.Name,
+        value: req.body.value
+    }, { new: true })
+    if (!result) {
+        return res.status(200).json({ status: true, message: "attribut not exist" })
+    }
+    return res.status(200).json({ status: true, result: result })
+}
+
+
+module.exports = { attribute_add, attribute_all, attribute_delete, attribut_one, attribut_update }
+
+

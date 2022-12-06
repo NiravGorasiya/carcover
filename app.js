@@ -66,6 +66,10 @@ app.get("/deleteCooike", (req, res, next) => {
     res.send("all clear cookie")
 })
 
+app.get("/DeliveryDate", (req, res) => {
+
+})
+
 app.get("/getCookie", (req, res, next) => {
     console.log(req.cookies);
     res.send(req.cookies)
@@ -74,6 +78,7 @@ app.get("/getCookie", (req, res, next) => {
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
+
 
 
 
