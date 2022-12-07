@@ -4,14 +4,14 @@ const Product = require("../Models/Product")
 const addProduct = async (req, res, next) => {
     try {
         const { title, attribute, Category_id, description, regularprice, currentPrice, qty } = req.body
-        // const images = []
-        // req.files.map((item) => {
-        //     images.push(item.filename)
-        // })
+        const images = []
+        req.files.map((item) => {
+            images.push(item.filename)
+        })
         const product = new Product({
             title,
             attribute,
-            // images: images,
+            images: images,
             Category_id,
             description,
             regularprice,
@@ -79,7 +79,6 @@ const getallProduct = async (req, res, next) => {
                             _id: 0,
                             Name: 1,
                             value: {
-
                                 $filter:
                                 {
                                     input: "$value",
@@ -122,7 +121,6 @@ const getallProduct = async (req, res, next) => {
 const product_find = async (req, res) => {
     try {
         var c = await Category.findOne({ name: req.params.category })
-
         const result = await Product.find({ Category_id: c.id })
         if (!result) {
             return res.status(404).json("product not find")

@@ -1,8 +1,10 @@
 const Vehicle = require("../Models/Vehicle")
 const Category = require("../Models/Category")
 const Model = require("../Models/Model")
-const Body = require("../Models/Body")
 const Make = require("../Models/Make")
+
+
+
 const vehicleAdd = async (req, res) => {
     try {
         const { model_id, body_id, make_id, category_id, year } = req.body

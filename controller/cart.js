@@ -41,11 +41,13 @@ const add_cart = async (req, res) => {
         let add = await Cart({
             user_id: id,
             product_id: data._id,
+            product_name: data.title,
             model: Model,
             body: Body,
             make: Make,
             year: year,
             quantity: quantity,
+            price: data.currentPrice,
             total: data.currentPrice
         });
         await add.save();
@@ -96,6 +98,13 @@ const all_cart = async (req, res) => {
                     from: "products",
                     localField: "product_id",
                     foreignField: "_id",
+                    pipeline: [{
+                        $project: {
+                            image: { $arrayElemAt: ["$images", 0] },
+                            title: 1,
+                            currentPrice: 1
+                        }
+                    }],
                     as: "product"
                 }
             },
@@ -110,7 +119,7 @@ const all_cart = async (req, res) => {
             {
                 $project: {
 
-                    "image": { $first: "$categories.image" },
+                    "image": { $first: "$product.image" },
                     "produt": {
                         "product_name": { $first: "$product.title" },
                         "Year": "$year",
@@ -127,10 +136,8 @@ const all_cart = async (req, res) => {
         ])
         return res.status(201).json({ status: true, result: data })
 
-
     } catch (error) {
         return res.status(500).json({ error: error.message });
-
     }
 }
 
@@ -139,16 +146,14 @@ const Delivery_Date = async (req, res) => {
         let ids = req.cookies.node_session
         let carts = await Cart.find({ user_id: ids });
         let QUANTITY = []
-        carts.map(i => {
-            QUANTITY.push(i.quantity)
-        })
+        carts.map(i => { QUANTITY.push(i.quantity) })
         let sum = 0
-        QUANTITY.map(i => {
-            sum = sum + i
-        })
-        const data = []
-        var m = 3;
+        QUANTITY.map(i => { sum = sum + i })
+        var m = 3
+        var i = 1
+        var data = []
         for (let index = 1; index <= m; index++) {
+            let _weekdays = [1, 2, 3, 4, 5];
             const x = new Date(new Date().setDate(new Date().getDate() + index))
             const date = x.toISOString().slice(0, 10)
             const dat = new Date(x).getDate()
@@ -161,34 +166,40 @@ const Delivery_Date = async (req, res) => {
             var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
             var d = new Date(date);
             var dayName = days[d.getDay()]
-            var a = 12.5 * sum + 37.49
-            var b = 10 * sum + 29.99
-            if (index == 1) {
-                data.push({
-                    day: dat,
-                    monthName: monthName,
-                    year: year,
-                    dayName: dayName,
-                    Delivery_fee: a
-                })
-            }
-            else if (index == 2) {
-                data.push({
-                    day: dat,
-                    monthName: monthName,
-                    year: year,
-                    dayName: dayName,
-                    Delivery_fee: b
-                })
+            var a = (12.5 * parseFloat(sum) + 37.49).toFixed(2)
+            var b = (10 * parseInt(sum) + 29.99).toFixed(2)
+            if (_weekdays.includes(x.getDay())) {
+                if (i == 1) {
+                    data.push({
+                        day: dat,
+                        monthName: monthName,
+                        year: year,
+                        dayName: dayName,
+                        Delivery_fee: parseFloat(a)
+                    })
+                }
+                else if (i == 2) {
+                    data.push({
+                        day: dat,
+                        monthName: monthName,
+                        year: year,
+                        dayName: dayName,
+                        Delivery_fee: parseFloat(b)
+                    })
+                }
+                else {
+                    data.push({
+                        day: dat,
+                        monthName: monthName,
+                        year: year,
+                        dayName: dayName,
+                        Delivery_fee: "free"
+                    })
+                }
+                i = i + 1
             }
             else {
-                data.push({
-                    day: dat,
-                    monthName: monthName,
-                    year: year,
-                    dayName: dayName,
-                    Delivery_fee: "free"
-                })
+                m = m + 1
             }
         }
         return res.status(201).json({ status: true, result: data })
@@ -197,6 +208,6 @@ const Delivery_Date = async (req, res) => {
     }
 }
 
-
-
 module.exports = { add_cart, update_cart, delet_cart, all_cart, Delivery_Date }
+
+

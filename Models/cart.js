@@ -7,6 +7,9 @@ const cartSchema = new mongoose.Schema({
     product_id: {
         type: mongoose.Types.ObjectId
     },
+    product_name: {
+        type: String
+    },
     model: {
         type: String
     },
@@ -18,6 +21,9 @@ const cartSchema = new mongoose.Schema({
     },
     year: {
         type: String
+    },
+    price: {
+        type: Number
     },
     quantity: {
         type: Number
