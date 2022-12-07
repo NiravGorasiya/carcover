@@ -4,12 +4,9 @@ const express = require('express')
 const logger = require("morgan")
 const cors = require("cors")
 const path = require("path")
-<<<<<<< HEAD
 const sessions = require("express-session")
 const cookieParser = require("cookie-parser")
 const bcrypt = require("bcrypt")
-=======
->>>>>>> 38f227b7ad81e300a303ee06fdfcee913c58f13e
 const app = express()
 const port = process.env.PORT
 

@@ -1,16 +1,13 @@
 const Cart = require("../Models/cart");
 const Product = require("../Models/Product");
-
 const { v4: uuidv4 } = require('uuid');
 const Category = require("../Models/Category");
 const Vehicle = require("../Models/Vehicle");
 
 
-
-
+var sess;
 const add_cart = async (req, res) => {
     try {
-
         const { Model, Body, Make, year, category } = req.params
         var c = await Category.findOne({ name: category })
         var a = await Vehicle.findOne({ $and: [{ year: parseInt(year) }, { category_id: c.id }] })
@@ -18,8 +15,15 @@ const add_cart = async (req, res) => {
             return res.status(404).json("year and category  not valit")
         }
         let id
-        var id = req.user.id
         const quantity = 1
+        sess = req.session;
+        sess.sessionId = uuidv4();
+        if (req.cookies.node_session) {
+            id = req.cookies.node_session
+        } else {
+            id = sess.sessionId
+            res.cookie('node_session', id)
+        }
         const data = await Product.findById(req.params.id)
         if (!data) {
             return res.status(404).json("product not found")
@@ -42,10 +46,6 @@ const add_cart = async (req, res) => {
             body: Body,
             make: Make,
             year: year,
-
-        let add = await Cart({
-            user_id: id,
-            product_id: data.id,
             quantity: quantity,
             price: data.currentPrice,
             total: data.currentPrice
@@ -53,6 +53,7 @@ const add_cart = async (req, res) => {
         await add.save();
         return res.status(201).json({ status: true, result: add })
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ error: error.message })
     }
 }
@@ -85,11 +86,11 @@ const delet_cart = async (req, res) => {
 
 const all_cart = async (req, res) => {
     try {
-        var id = req.user.id
+        var id = req.cookies.node_session
         const data = await Cart.aggregate([
             {
                 $match: {
-                    user_id: mongoose.Types.ObjectId(id)
+                    user_id: id
                 }
             },
             {
@@ -142,17 +143,24 @@ const all_cart = async (req, res) => {
 
 const Delivery_Date = async (req, res) => {
     try {
+
         let ids = req.cookies.node_session
         let carts = await Cart.find({ user_id: ids });
         let QUANTITY = []
-        carts.map(i => { QUANTITY.push(i.quantity) })
+        carts.map(i => {
+            QUANTITY.push(i.quantity)
+        })
         let sum = 0
-        QUANTITY.map(i => { sum = sum + i })
+        QUANTITY.map(i => {
+            sum = sum + i
+        })
         var m = 3
         var i = 1
         var data = []
         for (let index = 1; index <= m; index++) {
+
             let _weekdays = [1, 2, 3, 4, 5];
+            //var currentDate = new Date(new Date().setDate(new Date().getDate() + index))
             const x = new Date(new Date().setDate(new Date().getDate() + index))
             const date = x.toISOString().slice(0, 10)
             const dat = new Date(x).getDate()
@@ -165,8 +173,8 @@ const Delivery_Date = async (req, res) => {
             var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
             var d = new Date(date);
             var dayName = days[d.getDay()]
-            var a = (12.5 * parseFloat(sum) + 37.49).toFixed(2)
-            var b = (10 * parseInt(sum) + 29.99).toFixed(2)
+            var a = 12.5 * sum + 37.49
+            var b = 10 * sum + 29.99
             if (_weekdays.includes(x.getDay())) {
                 if (i == 1) {
                     data.push({
@@ -174,7 +182,7 @@ const Delivery_Date = async (req, res) => {
                         monthName: monthName,
                         year: year,
                         dayName: dayName,
-                        Delivery_fee: parseFloat(a)
+                        Delivery_fee: a
                     })
                 }
                 else if (i == 2) {
@@ -183,7 +191,7 @@ const Delivery_Date = async (req, res) => {
                         monthName: monthName,
                         year: year,
                         dayName: dayName,
-                        Delivery_fee: parseFloat(b)
+                        Delivery_fee: b
                     })
                 }
                 else {
@@ -195,17 +203,21 @@ const Delivery_Date = async (req, res) => {
                         Delivery_fee: "free"
                     })
                 }
+
                 i = i + 1
             }
             else {
                 m = m + 1
             }
         }
+
+
         return res.status(201).json({ status: true, result: data })
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
 }
+
 
 module.exports = { add_cart, update_cart, delet_cart, all_cart, Delivery_Date }
 
