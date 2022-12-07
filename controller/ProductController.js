@@ -130,6 +130,7 @@ const product_find = async (req, res) => {
         return res.status(500).json(error)
     }
 }
+
 module.exports = { addProduct, getallProduct, delete_product, update_product, product_find }
 
 

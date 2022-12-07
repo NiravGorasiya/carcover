@@ -4,9 +4,12 @@ const express = require('express')
 const logger = require("morgan")
 const cors = require("cors")
 const path = require("path")
+<<<<<<< HEAD
 const sessions = require("express-session")
 const cookieParser = require("cookie-parser")
 const bcrypt = require("bcrypt")
+=======
+>>>>>>> 38f227b7ad81e300a303ee06fdfcee913c58f13e
 const app = express()
 const port = process.env.PORT
 
@@ -16,19 +19,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public/uploads')));
-app.use(cookieParser())
 //Router
 require('./seeder/admin')
 const router = require('./router/index');
-
-const oneDay = 1000 * 60 * 60 * 48;
-app.use(sessions({
-    secret: 'jay',
-    saveUninitialized: true,
-    cookie: { maxAge: oneDay },
-    resave: true
-}));
-
 app.use(router);
 
 var sess;
@@ -50,7 +43,6 @@ app.get('/login', async (req, res) => {
         console.log("yes");
         res.send(req.cookies.node_session)
     } else {
-        console.log("no");
         res.cookie('node_session', sess.sessionId)
     }
 });

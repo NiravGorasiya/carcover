@@ -12,11 +12,15 @@ const addCategory = async (req, res, next) => {
         req.files.image.map((item) => {
             categoryimage = item.filename
         })
-
+        let imageCover
+        req.files.cover_image.map((item) => {
+            imageCover = item.filename
+        })
         const category = new Category({
             name: req.body.name,
             image: categoryimage,
-            banner: bannerimage
+            banner: bannerimage,
+            cover_image: imageCover
         })
         const result = await category.save();
         return res.status(201).json(result)
