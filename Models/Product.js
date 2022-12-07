@@ -6,16 +6,21 @@ const productSchema = new mongoose.Schema({
         get: gettotal,
 
     },
-    vehicle_id: {
+    images: {
+        type: Array
+    },
+    Category_id: {
         type: mongoose.Types.ObjectId,
-        ref: 'vehicle'
+        ref: 'Category'
     },
     attribute: [{
         attribute_id: {
-            type: mongoose.Types.ObjectId
+            type: mongoose.Types.ObjectId,
+            ref: "attributes"
         },
         value: {
-            type: String
+            type: mongoose.Types.ObjectId,
+            ref: "attributes"
         }
     }],
     description: {

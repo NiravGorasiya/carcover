@@ -19,7 +19,7 @@ const vehicleSchema = new mongoose.Schema({
     },
 
     year: {
-        type: Number
+        type: Array
     }
 }, {
     timeseries: true

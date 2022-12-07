@@ -3,36 +3,44 @@ const Category = require("../Models/Category")
 const Model = require("../Models/Model")
 const Body = require("../Models/Body")
 const Make = require("../Models/Make")
+
 const Product = require("../Models/Product")
 const router = require("../router")
 const { default: mongoose } = require("mongoose")
 
 const vehicleAdd = async (req, res, next) => {
+
     try {
         const { model_id, body_id, make_id, category_id, year } = req.body
-        const model = new Vehicle({
-            model_id,
-            body_id,
-            make_id,
-            category_id,
-            year
-        })
-        const result = await model.save();
-        return res.status(201).json(result)
+        const d = new Date();
+        if (!(d.getFullYear() >= year)) {
+            return res.status(500).json({ status: false, message: "valid year enter" });
+        }
+        const datas = await Vehicle.findOne({ model_id: model_id, body_id: body_id, make_id: make_id, category_id: category_id })
+        if (datas) {
+            const update_data = await Vehicle.findByIdAndUpdate(datas.id, { $addToSet: { year: year } }, { new: true })
+            return res.status(200).json({ status: true, result: update_data })
+        }
+        const data = new Vehicle({ model_id, body_id, make_id, category_id, year })
+        const result = await data.save();
+        return res.status(201).json({ status: true, result: result })
     } catch (error) {
-        return res.status(500).json(error)
+        console.log(error);
+        return res.status(500).json({ status: false, error: error.message })
     }
 }
 
 const getAllvehicle = async (req, res, next) => {
     try {
         if (req.params.category) {
+            let years = []
             let category = await Category.findOne({ name: req.params.category })
-            let vehicle = await Vehicle.find({ category_id: category._id }, { year: 1, _id: 0 }).sort({ year: -1 })
-            let key = "year"
-            const arrayUniqueByKey = [...new Map(vehicle.map(item =>
-                [item[key], item])).values()];
-            return res.status(200).json(arrayUniqueByKey)
+            let vehicle = await Vehicle.find({ category_id: category._id }, { year: 1, _id: 0 })
+            await vehicle.map(item => { item.year.map(a => { years.push({ year: a }) }) })
+            var dataArr = years.map(item => { return [item.year, item] });
+            var maparr = new Map(dataArr);
+            var result = [...maparr.values()].sort((a, b) => { return b.year - a.year })
+            return res.status(200).json(result)
         }
     } catch (error) {
         console.log(error, "d");
@@ -42,7 +50,6 @@ const getAllvehicle = async (req, res, next) => {
 
 const getAllMake = async (req, res, next) => {
     try {
-
         let category = await Category.findOne({ name: req.body.name });
         let vehicle = await Vehicle.find({ year: req.body.year, category_id: category._id }).populate("make_id", "name")
         const result = [];
@@ -123,20 +130,24 @@ const vehicleDelete = async (req, res, next) => {
     }
 }
 
-const products = async (req, res) => {
-    try {
-        const { model, body, make, year, category } = req.params
-        var c = await Category.findOne({ name: category })
-        var mo = await Model.findOne({ name: model })
-        var m = await Make.findOne({ name: make })
-        var b = await Body.findOne({ name: body })
-        var a = await Vehicle.findOne({ model_id: mo.id, body_id: b.id, make_id: m.id, category_id: c.id, year: year })
-        var data = await Product.find({ vehicle_id: a.id })
-        return res.status(200).json({ result: data })
-    } catch (error) {
-        return res.status(500).json({ status: false, error: error.message })
-    }
-}
+// const products = async (req, res) => {
+//     try {
+//         const { model, body, make, year, category } = req.params
+//         var c = await Category.findOne({ name: category })
+//         var mo = await Model.findOne({ name: model })
+//         var m = await Make.findOne({ name: make })
+//         var b = await Body.findOne({ name: body })
+//         var a = await Vehicle.find(
+//             { year: parseInt(year) }
+//         );
+//         console.log(a);
+//         var data = await Product.find({ vehicle_id: a.id })
+//         return res.status(200).json({ result: data })
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(500).json({ status: false, error: error.message })
+//     }
+// }
 
 // const products = async (req, res) => {
 //     try {
@@ -223,4 +234,4 @@ const products = async (req, res) => {
 //     }
 // }
 
-module.exports = { vehicleAdd, getAllvehicle, getAllMake, getAllModel, getAllBody, vehicleUpdate, vehicleDelete, products }
+module.exports = { vehicleAdd, getAllvehicle, getAllMake, getAllModel, getAllBody, vehicleUpdate, vehicleDelete, }
