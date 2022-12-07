@@ -1,13 +1,16 @@
 const Cart = require("../Models/cart");
 const Product = require("../Models/Product");
+
 const { v4: uuidv4 } = require('uuid');
 const Category = require("../Models/Category");
 const Vehicle = require("../Models/Vehicle");
 
 
-var sess;
+
+
 const add_cart = async (req, res) => {
     try {
+
         const { Model, Body, Make, year, category } = req.params
         var c = await Category.findOne({ name: category })
         var a = await Vehicle.findOne({ $and: [{ year: parseInt(year) }, { category_id: c.id }] })
@@ -15,15 +18,8 @@ const add_cart = async (req, res) => {
             return res.status(404).json("year and category  not valit")
         }
         let id
+        var id = req.user.id
         const quantity = 1
-        sess = req.session;
-        sess.sessionId = uuidv4();
-        if (req.cookies.node_session) {
-            id = req.cookies.node_session
-        } else {
-            id = sess.sessionId
-            res.cookie('node_session', id)
-        }
         const data = await Product.findById(req.params.id)
         if (!data) {
             return res.status(404).json("product not found")
@@ -45,13 +41,16 @@ const add_cart = async (req, res) => {
             body: Body,
             make: Make,
             year: year,
+
+        let add = await Cart({
+            user_id: id,
+            product_id: data.id,
             quantity: quantity,
             total: data.currentPrice
         });
         await add.save();
         return res.status(201).json({ status: true, result: add })
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ error: error.message })
     }
 }
@@ -84,11 +83,11 @@ const delet_cart = async (req, res) => {
 
 const all_cart = async (req, res) => {
     try {
-        var id = req.cookies.node_session
+        var id = req.user.id
         const data = await Cart.aggregate([
             {
                 $match: {
-                    user_id: id
+                    user_id: mongoose.Types.ObjectId(id)
                 }
             },
             {
