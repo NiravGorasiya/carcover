@@ -12,6 +12,7 @@ const makeAdd = async (req, res, next) => {
         return res.status(500).json({ error: error.messge })
     }
 }
+
 const make_delete = async (req, res) => {
     try {
         await Make.findByIdAndDelete(req.params.id);

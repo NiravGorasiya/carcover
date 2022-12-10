@@ -35,6 +35,7 @@ const Model_update = async (req, res) => {
         return res.status(500).json({ error: error.messge })
     }
 }
+
 const getAllmodel = async (req, res, next) => {
     try {
         const model = await Model.find();

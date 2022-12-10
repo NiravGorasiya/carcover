@@ -82,7 +82,6 @@ const coupon_getone = async (req, res) => {
     }
 }
 
-
 const coupon_all = async (req, res) => {
     try {
         const data = await Coupon.find()
