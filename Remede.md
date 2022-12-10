@@ -78,4 +78,3 @@ summarized data
 group values
  const p = path.join(__dirname, '../public/uploads/' + req.file.filename)
         const v = await sharp(p).resize(700, 700).toFile(req.file.originalname)
-        console.log(v);

@@ -4,8 +4,6 @@ const express = require('express')
 const logger = require("morgan")
 const cors = require("cors")
 const path = require("path")
-const sessions = require("express-session")
-const cookieParser = require("cookie-parser")
 const bcrypt = require("bcrypt")
 const app = express()
 const port = process.env.PORT
@@ -29,10 +27,13 @@ app.use(sessions({
     resave: true
 }));
 //Router
+<<<<<<< HEAD
+=======
 require('./seeder/admin')
 const router = require('./router/index');
 
 app.use(router);
+>>>>>>> 00bf364916f118d356ba3477fb5662c169defdbb
 
 var sess;
 
@@ -77,6 +78,9 @@ app.get("/getCookie", (req, res, next) => {
     console.log(req.cookies);
     res.send(req.cookies)
 })
+require('./seeder/admin')
+const router = require('./router/index');
+app.use(router);
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
