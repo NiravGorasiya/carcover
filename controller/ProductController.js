@@ -22,13 +22,8 @@ const addProduct = async (req, res, next) => {
         const result = await product.save();
         return res.status(201).json(result)
     } catch (error) {
-<<<<<<< HEAD
         console.log(error);
         return res.status(500).json(error)
-=======
-        return res.status(500).json({ error: error.messge })
-
->>>>>>> 00bf364916f118d356ba3477fb5662c169defdbb
     }
 }
 
