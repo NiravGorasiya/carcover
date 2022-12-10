@@ -7,20 +7,11 @@ const cartSchema = new mongoose.Schema({
     product_id: {
         type: mongoose.Types.ObjectId
     },
-    product_name: {
+    image: {
         type: String
     },
-    model: {
-        type: String
-    },
-    body: {
-        type: String
-    },
-    make: {
-        type: String
-    },
-    year: {
-        type: String
+    Produt: {
+        type: Array
     },
     price: {
         type: Number

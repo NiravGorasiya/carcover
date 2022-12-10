@@ -3,7 +3,8 @@ const Product = require("../Models/Product");
 const { v4: uuidv4 } = require('uuid');
 const Category = require("../Models/Category");
 const Vehicle = require("../Models/Vehicle");
-
+const Coupon = require("../Models/Coupon");
+const { getMonthName, days } = require("./helper");
 
 var sess;
 const add_cart = async (req, res) => {
@@ -14,8 +15,12 @@ const add_cart = async (req, res) => {
         if (!a || !c) {
             return res.status(404).json("year and category  not valit")
         }
+        const data = await Product.findById(req.params.id)
+        const categ = await Category.findById(data.Category_id)
+        if (!data) {
+            return res.status(404).json("product not found")
+        }
         let id
-        const quantity = 1
         sess = req.session;
         sess.sessionId = uuidv4();
         if (req.cookies.node_session) {
@@ -23,10 +28,6 @@ const add_cart = async (req, res) => {
         } else {
             id = sess.sessionId
             res.cookie('node_session', id)
-        }
-        const data = await Product.findById(req.params.id)
-        if (!data) {
-            return res.status(404).json("product not found")
         }
         const cartdata = await Cart.findOne({ user_id: id, product_id: data._id })
         if (cartdata) {
@@ -38,14 +39,20 @@ const add_cart = async (req, res) => {
             }, { new: true })
             return res.status(200).json({ result: cart })
         }
+        const quantity = 1
         let add = await Cart({
             user_id: id,
+            image: categ.image,
             product_id: data._id,
-            product_name: data.title,
-            model: Model,
-            body: Body,
-            make: Make,
-            year: year,
+            Produt: [
+                {
+                    product_name: data.title,
+                    model: Model,
+                    body: Body,
+                    make: Make,
+                    year: year,
+                }
+            ],
             quantity: quantity,
             price: data.currentPrice,
             total: data.currentPrice
@@ -60,14 +67,26 @@ const add_cart = async (req, res) => {
 
 const update_cart = async (req, res) => {
     try {
-        const { quantity, currentPrice } = req.body
-        var total = parseInt(quantity) * parseInt(currentPrice)
-        let update = await Cart.findByIdAndUpdate(req.params.id, {
+        var id = req.cookies.node_session
+        const cart = await Cart.findById(req.params.id)
+        if (!cart) {
+            return res.status(404).json({ status: false, message: "cart not  find" });
+        }
+
+        const { quantity } = req.body
+        if (!quantity || quantity === 0) {
+            return res.status(404).json({ status: false, message: "enter the  quantity 0 <" });
+        }
+        var total = parseInt(quantity) * parseInt(cart.price)
+        let update = await Cart.findByIdAndUpdate(cart.id, {
             quantity,
             total
         }, { new: true });
-        return res.status(201).json({ status: true, result: update })
-
+        if (!update) {
+            return res.status(400).json({ status: false, message: "cart not upate" })
+        }
+        const data = await Cart.find({ user_id: id })
+        return res.status(200).json({ status: true, result: { data } })
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
@@ -83,69 +102,91 @@ const delet_cart = async (req, res) => {
 }
 
 
-
 const all_cart = async (req, res) => {
     try {
         var id = req.cookies.node_session
-        const data = await Cart.aggregate([
-            {
-                $match: {
-                    user_id: id
-                }
-            },
-            {
-                $lookup: {
-                    from: "products",
-                    localField: "product_id",
-                    foreignField: "_id",
-                    pipeline: [{
-                        $project: {
-                            image: { $arrayElemAt: ["$images", 0] },
-                            title: 1,
-                            currentPrice: 1
-                        }
-                    }],
-                    as: "product"
-                }
-            },
-            {
-                $lookup: {
-                    from: "categories",
-                    localField: "product.Category_id",
-                    foreignField: "_id",
-                    as: "categories"
-                }
-            },
-            {
-                $project: {
-
-                    "image": { $first: "$product.image" },
-                    "produt": {
-                        "product_name": { $first: "$product.title" },
-                        "Year": "$year",
-                        "Make": "$make",
-                        "Model": "$model",
-                        "Body": "$body",
-                    },
-                    "QUANTITY": "$quantity",
-                    "UNIT_PRICE": { $first: "$product.currentPrice" },
-                    "TOTAL": "$total"
-                }
-            },
-
-        ])
-        return res.status(201).json({ status: true, result: data })
+        const data = await Cart.find({ user_id: id })
+        return res.status(200).json({ status: true, result: { data } })
 
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
 }
 
-const Delivery_Date = async (req, res) => {
-    try {
+// const total_dis = async (req, res) => {
+//     try {
+//         const coupon = await Coupon.findById({ id: req.cookie.coupon })
+//         return res.status(200).json({ status: true, result: data })
+//     } catch (error) {
+//         return res.status(500).json({ status: false, error: error.message })
+//     }
+// }
 
+const carts_total = async (req, res) => {
+    try {
+        var CART_TOTALS = []
         let ids = req.cookies.node_session
         let carts = await Cart.find({ user_id: ids });
+        var total = 0
+        await carts.map((i) => {
+            total = parseInt(i.total) + total
+        })
+        var dis
+        if (req.cookies.coupon) {
+            var coupon = await Coupon.findOne({ _id: req.cookies.coupon })
+            console.log(coupon);
+            var bbbb = coupon.coupon_code
+            if (!coupon) {
+                var c = 0
+            } else {
+                c = coupon.discount
+            }
+            if (coupon.type === "p") {
+                var a = parseInt(total) * parseInt(c) / 100
+                if (coupon.max_price <= a) {
+                    dis = coupon.max_price
+                }
+                else {
+                    dis = a
+                }
+            } else {
+                dis = parseInt(c)
+            }
+        }
+        if (!dis) {
+            var dd = 0
+        } else {
+            dd = dis
+        }
+        var delivery_fee
+        if (!req.body.delivery_fee) {
+            delivery_fee = 0
+        } else {
+            delivery_fee = req.body.delivery_fee
+        }
+        var a = parseInt(total) + parseFloat(delivery_fee) - parseFloat(dd);
+        console.log(a);
+        await CART_TOTALS.push({
+            sub_total: [{ "text": "Sub_Total:", "value": total }],
+            shipping: [{ "text": req.body.Delivery_date, "value": req.body.delivery_fee }],
+            coupon: [{ "text": bbbb, "value": dis }],
+            Total: [{ "text": "Total:", "value": a }]
+        })
+        return res.status(200).json({ status: true, result: { CART_TOTALS } })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ status: false, error: error.message })
+    }
+}
+
+
+const Delivery_Date = async (req, res) => {
+    try {
+        let ids = req.cookies.node_session
+        let carts = await Cart.find({ user_id: ids });
+        if (carts.length <= 0) {
+            return res.status(404).json({ status: false, message: "carts product not foud" })
+        }
         let QUANTITY = []
         carts.map(i => {
             QUANTITY.push(i.quantity)
@@ -158,19 +199,12 @@ const Delivery_Date = async (req, res) => {
         var i = 1
         var data = []
         for (let index = 1; index <= m; index++) {
-
             let _weekdays = [1, 2, 3, 4, 5];
-            //var currentDate = new Date(new Date().setDate(new Date().getDate() + index))
             const x = new Date(new Date().setDate(new Date().getDate() + index))
             const date = x.toISOString().slice(0, 10)
             const dat = new Date(x).getDate()
             let year = new Date().getFullYear(date)
-            const getMonthName = (monthIndex) => {
-                let monthsArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-                return monthsArray[monthIndex];
-            }
             const monthName = getMonthName(new Date().getMonth(date));
-            var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
             var d = new Date(date);
             var dayName = days[d.getDay()]
             var a = 12.5 * sum + 37.49
@@ -203,22 +237,18 @@ const Delivery_Date = async (req, res) => {
                         Delivery_fee: "free"
                     })
                 }
-
                 i = i + 1
             }
             else {
                 m = m + 1
             }
         }
-
-
-        return res.status(201).json({ status: true, result: data })
+        return res.status(200).json({ status: true, result: data })
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
 }
 
 
-module.exports = { add_cart, update_cart, delet_cart, all_cart, Delivery_Date }
-
+module.exports = { add_cart, update_cart, delet_cart, all_cart, Delivery_Date, carts_total }
 

@@ -1,6 +1,7 @@
 const orders = require('../model/orders');
 const cart = require('../Models/cart');
 
+
 var x = new Date(new Date().setDate(new Date().getDate()))
 var date = x.toISOString().slice(0, 10)
 var changeDateFormatTo = date => {
@@ -35,6 +36,7 @@ const order = async (req, res) => {
         return res.status(500).json({ error: error.messge })
     }
 }
+
 //month wise sales 
 const total_sales = async (req, res) => {
     try {
@@ -58,6 +60,11 @@ const total_sales = async (req, res) => {
     }
 }
 module.exports = { order, total_sales }
+
+
+
+
+
 // date wise sales
 // const total_sales = async (req, res) => {
 //     try {
@@ -80,3 +87,7 @@ module.exports = { order, total_sales }
 
 //     }
 // }
+
+
+
+

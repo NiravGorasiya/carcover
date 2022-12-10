@@ -9,7 +9,8 @@ const modelAdd = async (req, res, next) => {
         const result = await model.save();
         return res.status(201).json(result)
     } catch (error) {
-        return res.status(500).json(error)
+        return res.status(500).json({ error: error.messge })
+
     }
 }
 
@@ -18,8 +19,7 @@ const Model_delete = async (req, res) => {
         await Model.findByIdAndDelete(req.params.id);
         return res.status(200).json({ result: "Model dlete successfully" })
     } catch (error) {
-        return res.status(500).json(error)
-
+        return res.status(500).json({ error: error.messge })
     }
 }
 
@@ -32,8 +32,7 @@ const Model_update = async (req, res) => {
         );
         return res.status(200).json({ message: "Model update successfully", result: data })
     } catch (error) {
-        return res.status(500).json(error)
-
+        return res.status(500).json({ error: error.messge })
     }
 }
 const getAllmodel = async (req, res, next) => {
@@ -41,8 +40,8 @@ const getAllmodel = async (req, res, next) => {
         const model = await Model.find();
         return res.status(200).json(model)
     } catch (error) {
-        return res.status(500).json(error)
+        return res.status(500).json({ error: error.messge })
     }
 }
 
-module.exports = { modelAdd, getAllmodel,Model_delete ,Model_update}
+module.exports = { modelAdd, getAllmodel, Model_delete, Model_update }
