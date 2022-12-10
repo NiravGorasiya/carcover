@@ -21,6 +21,7 @@ const addProduct = async (req, res, next) => {
         const result = await product.save();
         return res.status(201).json(result)
     } catch (error) {
+        console.log(error);
         return res.status(500).json(error)
     }
 }
@@ -66,7 +67,6 @@ const getallProduct = async (req, res, next) => {
                 }
             },
             {
-
                 $lookup: {
                     from: "attributes",
                     localField: "attribute.attribute_id",
@@ -111,7 +111,7 @@ const getallProduct = async (req, res, next) => {
 
                 }
             }
-        ])
+        ]).limit(5)
         return res.status(200).json(result)
     } catch (error) {
         return res.status(500).json(error)
