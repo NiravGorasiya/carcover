@@ -9,7 +9,7 @@ const makeAdd = async (req, res, next) => {
         const result = await make.save();
         return res.status(201).json(result)
     } catch (error) {
-        return res.status(500).json(error)
+        return res.status(500).json({ error: error.messge })
     }
 }
 const make_delete = async (req, res) => {
@@ -17,8 +17,7 @@ const make_delete = async (req, res) => {
         await Make.findByIdAndDelete(req.params.id);
         return res.status(200).json({ result: "make dlete successfully" })
     } catch (error) {
-        return res.status(500).json(error)
-
+        return res.status(500).json({ error: error.messge })
     }
 }
 
@@ -31,8 +30,7 @@ const make_update = async (req, res) => {
         );
         return res.status(200).json({ message: "make update successfully", result: data })
     } catch (error) {
-        return res.status(500).json(error)
-
+        return res.status(500).json({ error: error.messge })
     }
 }
 
@@ -41,7 +39,8 @@ const getAllMake = async (req, res, next) => {
         const make = await Make.find();
         return res.status(200).json(make)
     } catch (error) {
-        return res.status(500).json(error)
+        return res.status(500).json({ error: error.messge })
+
     }
 }
 

@@ -26,7 +26,7 @@ const addCategory = async (req, res, next) => {
         return res.status(201).json(result)
     } catch (error) {
         console.log(error);
-        return res.status(500).json(error)
+        return res.status(500).json({ error: error.messge })
     }
 }
 
@@ -36,7 +36,7 @@ const getAllCatgory = async (req, res, next) => {
         const category = await Category.find();
         return res.status(200).json(category)
     } catch (error) {
-        return res.status(500).json(error)
+        return res.status(500).json({ error: error.messge })
     }
 }
 

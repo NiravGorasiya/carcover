@@ -14,7 +14,24 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public/uploads')));
+app.use(cookieParser())
+
+
+const oneDay = 1000 * 60 * 60 * 48;
+app.use(sessions({
+    secret: 'jay',
+    saveUninitialized: true,
+    cookie: { maxAge: oneDay },
+    resave: true
+}));
 //Router
+<<<<<<< HEAD
+=======
+require('./seeder/admin')
+const router = require('./router/index');
+
+app.use(router);
+>>>>>>> 00bf364916f118d356ba3477fb5662c169defdbb
 
 var sess;
 
@@ -35,6 +52,7 @@ app.get('/login', async (req, res) => {
         console.log("yes");
         res.send(req.cookies.node_session)
     } else {
+        console.log("no");
         res.cookie('node_session', sess.sessionId)
     }
 });
@@ -46,7 +64,7 @@ app.get("/setCookie", (req, res) => {
 })
 
 app.get("/deleteCooike", (req, res, next) => {
-    res.clearCookie("node_session")
+    res.clearCookie("coupon")
     res.send("all clear cookie")
 })
 
@@ -65,4 +83,3 @@ app.use(router);
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
-

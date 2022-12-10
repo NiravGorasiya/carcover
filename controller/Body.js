@@ -9,7 +9,7 @@ const bodyAdd = async (req, res, next) => {
         const result = await body.save();
         return res.status(201).json(result)
     } catch (error) {
-        return res.status(500).json(error)
+        return res.status(500).json({ error: error.messge })
     }
 }
 const Body_delete = async (req, res) => {
@@ -17,8 +17,7 @@ const Body_delete = async (req, res) => {
         await Body.findByIdAndDelete(req.params.id);
         return res.status(200).json({ result: "Body dlete successfully" })
     } catch (error) {
-        return res.status(500).json(error)
-
+        return res.status(500).json({ error: error.messge })
     }
 }
 const Body_update = async (req, res) => {
@@ -30,8 +29,7 @@ const Body_update = async (req, res) => {
         );
         return res.status(200).json({ message: "Body update successfully", result: data })
     } catch (error) {
-        return res.status(500).json(error)
-
+        return res.status(500).json({ error: error.messge })
     }
 }
 const getAllBody = async (req, res, next) => {
@@ -39,7 +37,7 @@ const getAllBody = async (req, res, next) => {
         const body = await Body.find();
         return res.status(200).json(body)
     } catch (error) {
-        return res.status(500).json(error)
+        return res.status(500).json({ error: error.messge })
     }
 }
 

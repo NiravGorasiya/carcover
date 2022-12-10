@@ -10,8 +10,9 @@ const Attribute = require("./Attribute")
 const User = require("./User")
 const Product = require("./Product");
 const cart = require('./cart')
+const coupon = require('./coupon');
 
-
+router.use("/api/coupon", coupon)
 router.use("/api/category", catgory);
 router.use("/api/make", make);
 router.use("/api/body", body);

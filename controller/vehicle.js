@@ -3,9 +3,6 @@ const Category = require("../Models/Category")
 const Model = require("../Models/Model")
 const Make = require("../Models/Make")
 
-const Product = require("../Models/Product")
-const router = require("../router")
-const { default: mongoose } = require("mongoose")
 
 const vehicleAdd = async (req, res, next) => {
 
@@ -43,7 +40,7 @@ const getAllvehicle = async (req, res, next) => {
         }
     } catch (error) {
         console.log(error, "d");
-        return res.status(500).json(error)
+        return res.status(500).json({ error: error.messge })
     }
 }
 
@@ -62,7 +59,7 @@ const getAllMake = async (req, res, next) => {
         });
         return res.status(200).json(unique)
     } catch (error) {
-        return res.status(500).json(error)
+        return res.status(500).json({ error: error.messge })
     }
 }
 
@@ -82,7 +79,7 @@ const getAllModel = async (req, res, next) => {
         return res.status(200).json(unique)
     } catch (error) {
         console.log(error, "error");
-        return res.status(500).json(error)
+        return res.status(500).json({ error: error.messge })
     }
 }
 
@@ -92,7 +89,7 @@ const getAllBody = async (req, res, next) => {
         const vehicle = await Vehicle.find({ model_id: model._id }).populate("body_id", "name")
         return res.status(200).json(vehicle)
     } catch (error) {
-        return res.status(500).json(error)
+        return res.status(500).json({ error: error.messge })
     }
 }
 
@@ -113,7 +110,7 @@ const vehicleUpdate = async (req, res, next) => {
         )
         return res.status(200).json(vehicle)
     } catch (error) {
-        return res.status(500).json(error)
+        return res.status(500).json({ error: error.messge })
     }
 }
 
@@ -125,7 +122,7 @@ const vehicleDelete = async (req, res, next) => {
         vehicle.delete();
         return res.status(200).json("successfull delete vehicle")
     } catch (error) {
-        return res.status(500).json(error)
+        return res.status(500).json({ error: error.messge })
     }
 }
 
