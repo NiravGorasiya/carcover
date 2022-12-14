@@ -1,0 +1,15 @@
+.grid-wrapper {
+    margin-top: 30px;
+    display: block;
+}
+
+.grid-wrapper .entry-single {
+    background: #fff;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.grid-wrapper .entry-single img {
+    display: block;
+    margin: 0 auto;
+}

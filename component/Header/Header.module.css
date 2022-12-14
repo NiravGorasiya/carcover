@@ -1,0 +1,90 @@
+.header-wrapper {
+    display: block;
+}
+
+.header-wrapper .head-top {
+    text-align: center;
+    background: linear-gradient(to right, #004dd7 35%, #0c41a2 65%);
+    color: #fff;
+    padding: 5px 0 5px;
+    font-size: 22px;
+    letter-spacing: .3px;
+    text-transform: capitalize;
+    font-family: "Sofia", sans-serif;
+    font-style: italic;
+    display: block;
+
+}
+
+.header-wrapper .secondary-wrap .logo-wrap .list-item {
+    display: list-item;
+}
+
+.tntbn {
+    text-transform: uppercase;
+    background: #f45d01;
+    padding: 3px 10px;
+    color: #fff;
+    border-radius: 4px 4px 4px 4px;
+    border: 1px dashed #fff;
+}
+
+.header-wrapper .secondary-wrap .content-area .entry-list {
+    text-align: right;
+    padding: 5px 0;
+    float: right;
+    margin: 0;
+}
+
+.header-wrapper .secondary-wrap .content-area .entry-list .card-warp {
+    color: #0083ff;
+    text-align: center;
+    font-size: 24px;
+    line-height: 24px;
+    margin-top: 10px;
+}
+
+.header-wrapper .secondary-wrap .content-area .entry-list li {
+    display: inline;
+    list-style-type: none;
+    float: left;
+    margin-left: 50px;
+}
+
+/* gridwrapper */
+
+.grid-wrapper {
+    margin-top: 30px;
+    display: block;
+}
+
+.grid-wrapper .entry-single {
+    background: #fff;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.grid-wrapper .entry-single img {
+    display: block;
+    margin: 0 auto;
+}
+
+.header-wrapper .secondary-wrap .content-area .entry-list li .contact-wrap .oder-first {
+    display: block;
+    font-size: 21px;
+    text-transform: uppercase;
+    line-height: 21px;
+}
+
+.header-wrapper .secondary-wrap .content-area .entry-list li .contact-wrap .entry-phone {
+    color: #a1b56a;
+    font-size: 28px;
+    display: block;
+    line-height: 32px;
+}
+
+.header-wrapper .secondary-wrap .content-area .entry-list li .contact-wrap .entry-small {
+    display: block;
+    font-size: 18px;
+    line-height: 18px;
+}

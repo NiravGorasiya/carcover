@@ -1,0 +1,127 @@
+.footer-wrapper {
+    background: #a1b56a;
+
+}
+
+.footer-wrapper .footer-top {
+    padding: 25px 0;
+    display: flex;
+    flex-direction: row;
+}
+
+.footer-wrapper .footer-top .payment-card img {
+    margin-left: -5px;
+}
+
+/* img {
+    vertical-align: middle;
+    border-style: none;
+} */
+
+.footer-wrapper .footer-top .subscribe-wrap form .form-control {
+    border-radius: 10px;
+}
+
+.footer-wrapper .footer-top h4 {
+    color: #fff;
+    text-transform: uppercase;
+    font-family: webfontbold;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    font-size: 16px;
+    height: calc(1.5em +0.75rem+2px);
+    padding: 0.375rem 0.75rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    border-radius: 0.25rem;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+}
+
+.footer-wrapper .footer-top .subscribe-wrap {
+    text-align: center;
+}
+
+.footer-wrapper .footer-top .subscribe-wrap form input[type=submit] {
+    color: #fff;
+    background: 0 0;
+    line-height: 28px;
+    letter-spacing: 1px;
+    margin-top: 5px;
+    padding: 0 40px;
+    float: right;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 20px;
+    font-size: 24px;
+    float: right;
+    border: 2px solid #fff;
+}
+
+.footer-wrapper .widget-wrapper {
+    border: 1px solid #7b933b;
+}
+
+.footer-wrapper .widget-wrapper .entry-widget .widget-title .contact-number {
+    margin-left: -50px;
+}
+
+.footer-wrapper .widget-wrapper .entry-widget .widget-title {
+    font-size: 18px;
+    color: #fff;
+    text-align: left;
+    margin-left: 100px;
+}
+
+.footer-wrapper .widget-wrapper .entry-widget .widget-title .linkStyle {
+    color: #fff;
+}
+
+.footer-wrapper .widget-wrapper .border-1r .entry-widget .entry-lists {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-left: 60px;
+
+}
+
+.footer-wrapper .widget-wrapper .border-1r .entry-widget .entry-lists .entry-list .linkStyle {
+    color: #fff;
+    padding: 30px 0;
+    text-decoration: none;
+}
+
+.footer-wrapper .widget-wrapper .entry-widget {
+    font-size: 18px;
+    padding: 30px 0;
+    color: #fff;
+}
+
+.footer-wrapper .widget-wrapper .border-1r .entry-widget .entry-list {
+    padding-left: 0;
+}
+
+.footer-wrapper .widget-wrapper .border-1r {
+    border-left: 1px solid #7b933b;
+    border-right: 1px solid #7b933b;
+}
+
+/* 
+.footer-wrapper .widget-wrapper .entry-widget {
+    border-right: 1px solid #7b933b;
+} */
+
+/* ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-end: 0px;
+    margin-inline-start: 0px;
+    padding-inline-start: 40px;
+} */

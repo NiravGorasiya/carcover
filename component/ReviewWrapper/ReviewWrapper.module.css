@@ -1,0 +1,58 @@
+.review-wrapper {
+    background: url("https://www.carcoversfactory.com/catalog/view/image/blue-bg.png");
+    background-size: cover;
+    padding: 25px 0;
+    display: block;
+}
+
+.review-wrapper .section-title {
+    margin-top: 0;
+    color: #fff;
+    font-family: sans-serif;
+    text-align: center;
+}
+
+.review-wrapper .inner-wrap {
+    max-width: 820px;
+    margin: 25px auto 0;
+}
+
+.review-wrapper .inner-wrap .entry-single {
+    float: left;
+    width: 50%;
+}
+
+.review-wrapper .inner-wrap .entry-single .entry-img {
+    margin-right: 5px;
+    float: left;
+    width: 25%;
+}
+
+.review-wrapper .inner-wrap .entry-single .entry-img img {
+    height: 100px;
+    width: 100px;
+    max-width: 100%;
+    border-radius: 50%;
+}
+
+
+.review-wrapper .inner-wrap .entry-single .entry-content {
+    float: left;
+    width: 70%;
+}
+
+.review-wrapper .inner-wrap .entry-single .entry-content {
+    float: left;
+    width: 70%;
+}
+
+
+
+.review-wrapper .inner-wrap .entry-single .entry-content .content {
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 18px;
+    margin-bottom: 5px;
+    box-shadow: 0 1px 4px #313131;
+}

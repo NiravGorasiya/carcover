@@ -1,0 +1,22 @@
+.banner-wrap {
+    position: relative;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.navbar-style {
+    margin: auto;
+    background-color: #fff;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.navbar-collapse-style {
+    display: flex;
+    margin: 10px;
+}
+
+.navbar-style .navbar-collapse-style li {
+    text-align: center;
+    border-right: 1px solid #cecece;
+}
