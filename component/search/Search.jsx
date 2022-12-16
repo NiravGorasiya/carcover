@@ -2,32 +2,39 @@ import React, { useEffect, useState } from 'react'
 import styles from './Search.module.css'
 import url from '../../api/Apiservices'
 import axios from "axios"
+import Products from '../products/Products'
+import { useRouter } from 'next/router'
 
-const Search = () => {
+const Search = ({ props }) => {
+    const router = useRouter();
     const [yearData, setYearData] = useState([])
     const [makeData, setMakeData] = useState([])
     const [modelData, setModelData] = useState([])
     const [bodyData, setBodyData] = useState([])
+    const [component, setComponent] = useState(false)
+    const [year, setYear] = useState('')
+    const [make, setMake] = useState('')
+    const [model, setModal] = useState('')
+    const [body, setBody] = useState('')
 
     const yearList = () => {
-        axios.get(`${url}/vehicle/car`)
+        axios.get(`${url}/vehicle/${router.query.category}`)
             .then((response) => {
                 setYearData(response.data)
             })
     }
 
     const handleMake = (year) => {
-        console.log(year);
-
-        const data = { year: parseInt(year), name: "car" }
+        setYear(year)
+        const data = { year: parseInt(year), name: router.query.category }
         axios.post(`http://localhost:5500/api/vehicle/all/make`, data)
             .then((response) => {
-                console.log(response, "response");
                 setMakeData(response.data)
             })
     }
 
     const handleModel = (value) => {
+        setMake(value)
         const data = { name: value }
         axios.post(`${url}/vehicle/all/model`, data)
             .then((response) => {
@@ -36,6 +43,7 @@ const Search = () => {
     }
 
     const handleBody = (value) => {
+        setModal(value)
         const data = { name: value }
         axios.post(`${url}/vehicle/all/body`, data)
             .then((response) => {
@@ -43,33 +51,31 @@ const Search = () => {
             })
     }
 
-    // const searchProduct = (e) => {
-    //     e.preventDefault();
-    //     axios.get(`${url}/cart/add/car/2022/bmw/118d/3-door-hatchback`)
-    //         .then((response) => {
-    //             console.log(response, "response");
-    //         })
-    //         .catch((err) => {
-    //             console.log(err)
-    //         })
-    // }
+    const searchProduct = (e) => {
+        e.preventDefault();
+        if (year && make && model && body) {
+            router?.push(`${props}/${year}/${make}/${model}/${body}`);
+            setComponent(true)
+        }
+    }
 
     useEffect(() => {
         yearList()
-    }, [])
+    }, [props])
+
     return (
         <>
             <section className={styles['form-wrapper']}>
                 <div className='container'>
-                    <div className={`form - inline ${styles['cover-search']}`} id="moveTop">
+                    <div className={`form-inline ${styles['cover-search']}`} id="moveTop">
                         <h3 className={styles['search-title']}>
-                            vehicle
+                            {props}
                             <br></br>
                             search
                         </h3>
                         <div className='form-group text-center'>
-                            <label>vehicle year</label>
-                            <select className={`form - control  required - border ${styles['select-create']}`} name="drop1" onChange={(e) => handleMake(e.target.value)}>
+                            <label>{props} year</label>
+                            <select value={year} className={`form-control  required-border ${styles['select-create']}`} name="drop1" onChange={(e) => handleMake(e.target.value)}>
                                 <option value="">Select Year</option>
                                 {
                                     yearData.map((item) => (
@@ -79,8 +85,8 @@ const Search = () => {
                             </select>
                         </div>
                         <div className='form-group text-center'>
-                            <label className='select-label'>Vehicle Make</label>
-                            <select className={`form - control  required - border ${styles['select-create']}`} name="drop1" onChange={(e) => handleModel(e.target.value)}>
+                            <label className='select-label'>{props} Make</label>
+                            <select className={`form-control  required-border ${styles['select-create']}`} value={make} name="drop1" onChange={(e) => handleModel(e.target.value)}>
                                 <option value="">Select Make</option>
                                 {
                                     makeData.map((item) => (
@@ -90,8 +96,8 @@ const Search = () => {
                             </select>
                         </div>
                         <div className='form-group text-center'>
-                            <label className='select-label'>Vehicle model</label>
-                            <select className={`form - control  required - border ${styles['select-create']}`} name="drop1" onChange={(e) => handleBody(e.target.value)}>
+                            <label className='select-label'>{props} model</label>
+                            <select className={`form-control  required-border ${styles['select-create']}`} value={model} name="drop1" onChange={(e) => handleBody(e.target.value)}>
                                 <option value="">Select Model</option>
                                 {
                                     modelData.map((item) => {
@@ -103,9 +109,9 @@ const Search = () => {
                             </select>
                         </div>
                         <div className='form-group text-center' style={{ position: "relative" }}>
-                            <label className='select-label'>Vehicle body</label>
-                            <select className={`form - control  required - border ${styles['select-create']}`} name="drop1">
-                                <option>select car Body</option>
+                            <label className='select-label'>{props} body</label>
+                            <select className={`form-control  required-border ${styles['select-create']}`} name="drop1" value={body} onChange={(e) => setBody(e.target.value)}>
+                                <option>Select Body</option>
                                 {
                                     bodyData.map((item) => (
                                         <React.Fragment key={item.name}>
@@ -119,14 +125,16 @@ const Search = () => {
                         <input type="hidden" value="2" />
                         <input type="hidden" value="2" />
                         <input type="hidden" value="2" />
-                        <button className={`btn btn - primary ${styles['btn-style']}`} onClick={searchProduct}>Search</button>
-
+                        <button className={`btn btn-primary ${styles['btn-style']}`} onClick={searchProduct}>Search</button>
                     </div>
                 </div>
             </section>
+
         </>
     )
 }
 
 
 export default Search
+
+

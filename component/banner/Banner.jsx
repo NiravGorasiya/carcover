@@ -4,8 +4,10 @@ import Link from "next/link"
 import axios from "axios"
 import url from '../../api/Apiservices'
 
-const Banner = () => {
+const Banner = ({ props }) => {
+    const [banner, setBanner] = useState({})
     const [categoryData, setCategoryData] = useState([])
+
     const categoryList = () => {
         axios.get(`${url}/category/all`)
             .then((response) => {
@@ -16,9 +18,26 @@ const Banner = () => {
             })
     }
 
+    const bannner = () => {
+        let cat;
+        if (props) {
+            cat = props
+        } else {
+            cat = "Car"
+        }
+        axios.get(`http://localhost:5500/api/category/banner/${cat}`)
+            .then((response) => {
+                setBanner(response.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+
+    }
     useEffect(() => {
         categoryList()
-    }, [])
+        bannner()
+    }, [props])
 
     return (
         <>
@@ -43,7 +62,7 @@ const Banner = () => {
                 </nav>
                 <section className={styles['banner-wrap']}>
                     <img
-                        src='https://d68my205fyswa.cloudfront.net/fit-in/1270x287/carcoversfactory-cyber-monday-car-covers.jpg?v=134'
+                        src={`http://localhost:5500/${banner.banner}`}
                         className='img-fluid w-100 d-none d-md-block'
                     />
                 </section>

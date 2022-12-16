@@ -2,8 +2,61 @@ import React from 'react'
 import Header from "../Header/Header"
 import Footer from "../Footer/Footer"
 import styles from "./Checkout.module.css"
+let Country = require('country-state-city').Country;
+let States = require('country-state-city').State;
+let City = require('country-state-city').City;
+import { useState, useEffect } from 'react';
 
 const Checkout = () => {
+    let countries = Country.getAllCountries()
+    let states = States.getAllStates()
+    let citys = City.getAllCities()
+    const [country, setContry] = useState([])
+    const [countrycode, setCountryCode] = useState('')
+    const [state, setState] = useState([])
+    const [statecode, setStateCode] = useState('')
+    const [city, setCity] = useState([])
+    const [citycode, setCityCode] = useState([]);
+    const [cname, setCname] = useState("")
+    const [fname, setFname] = useState("")
+    const [lname, setLname] = useState("")
+    const [postCode, setPostalCode] = useState("")
+    const [phone, setPhone] = useState("")
+    const [email, setEmail] = useState("")
+
+    const handleContry = (code) => {
+        setCountryCode(code)
+        const dt = states.filter((item) => item.countryCode == code)
+        setState(dt);
+        setCity(null)
+    }
+    const handleState = (code) => {
+        setStateCode(code);
+        const citydata = citys.filter((item) => item.stateCode == code)
+        setCity(citydata)
+    }
+    const handleCity = (code) => {
+        setCityCode(code)
+    }
+    useEffect(() => {
+        setContry(countries)
+    }, [])
+
+    const handleSubmit = () => {
+        const data = { state: statecode, country: countrycode, city: citycode }
+        axios.post('http://localhost:3200/travelplan/add', data)
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
+    const orderData = (e) => {
+        e.preventDefault()
+        console.log();
+    }
     return (
         <>
             <Header />
@@ -61,11 +114,37 @@ const Checkout = () => {
                                                 <div className={styles['from-row']}>
                                                     <div className='col-md-6'>
                                                         <label>City</label>
-                                                        <input type="text" name="scompany" className='form-control' placeholder='company name' />
+                                                        <select type="text" name="scompany" className='form-control' placeholder='company name' >
+                                                            <option value="0">Select city</option>
+                                                            {
+                                                                city &&
+                                                                    city !== undefined ?
+                                                                    city.map((ctr, index) => {
+                                                                        return (
+                                                                            <>
+                                                                                <option key={index}>{ctr.name}</option>
+                                                                            </>
+                                                                        )
+                                                                    }) : "Nocountry"
+                                                            }
+                                                        </select>
                                                     </div>
                                                     <div className='col-md-6'>
                                                         <label>State</label>
-                                                        <input type="text" name="scompany" className='form-control' placeholder='company name' />
+                                                        <select name="scompany" className='form-control' onChange={(e) => handleState(e.target.value)}>
+                                                            <option value="0">Select state</option>
+                                                            {
+                                                                state &&
+                                                                    state !== undefined ?
+                                                                    state.map((ctr, index) => {
+                                                                        return (
+                                                                            <>
+                                                                                <option key={index} value={ctr.isoCode}>{ctr.name}</option>
+                                                                            </>
+                                                                        )
+                                                                    }) : "Nocountry"
+                                                            }
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div className={styles['from-row']}>
@@ -75,7 +154,20 @@ const Checkout = () => {
                                                     </div>
                                                     <div className='col-md-6'>
                                                         <label>Country code</label>
-                                                        <input type="text" name="scompany" className='form-control' placeholder='company name' />
+                                                        <select name="scompany" className='form-control' onChange={(e) => handleContry(e.target.value)}>
+                                                            <option value="0">Select Country</option>
+                                                            {
+                                                                country &&
+                                                                    country !== undefined ?
+                                                                    country.map((ctr, index) => {
+                                                                        return (
+                                                                            <>
+                                                                                <option value={ctr.isoCode}>{ctr.name}</option>
+                                                                            </>
+                                                                        )
+                                                                    }) : "Nocountry"
+                                                            }
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div className={styles['from-row']}>
@@ -195,6 +287,7 @@ const Checkout = () => {
                                         </div>
                                     </div>
                                 </div>
+                                <button onClick={orderData}>Submit order</button>
                             </form>
                         </div>
                     </div>
