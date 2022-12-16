@@ -3,7 +3,9 @@ const mongoose = require("mongoose")
 const makeSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, "make name is required"]
+        required: true,
+        index: true,
+        unique: [true, "enter the unique name"],
     },
     slug: {
         type: String,

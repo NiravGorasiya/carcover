@@ -3,7 +3,9 @@ const mongoose = require("mongoose")
 const bodySchema = new mongoose.Schema({
     name: {
         type: String,
-        require: [true, "body name is required"]
+        required: true,
+        index: true,
+        unique: [true, "enter the unique name"],
     },
     slug: {
         type: String

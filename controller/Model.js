@@ -9,8 +9,8 @@ const modelAdd = async (req, res, next) => {
         const result = await model.save();
         return res.status(201).json(result)
     } catch (error) {
-        return res.status(500).json({ error: error.messge })
-
+        var message = error.code === 11000 ? "enter the unique name" : error.message
+        return res.status(500).json({ error: message })
     }
 }
 
@@ -32,7 +32,8 @@ const Model_update = async (req, res) => {
         );
         return res.status(200).json({ message: "Model update successfully", result: data })
     } catch (error) {
-        return res.status(500).json({ error: error.messge })
+        var message = error.code === 11000 ? "enter the unique name" : error.message
+        return res.status(500).json({ error: message })
     }
 }
 

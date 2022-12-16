@@ -25,8 +25,8 @@ const addCategory = async (req, res, next) => {
         const result = await category.save();
         return res.status(201).json(result)
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({ error: error.messge })
+        var message = error.code === 11000 ? "enter the unique name" : error.message
+        return res.status(500).json({ error: message })
     }
 }
 
@@ -84,7 +84,8 @@ const update_category = async (req, res) => {
         return res.status(200).json({ result: a })
 
     } catch (error) {
-        return res.status(500).json({ status: false, error: error.message })
+        var message = error.code === 11000 ? "enter the unique name" : error.message
+        return res.status(500).json({ error: message })
     }
 }
 

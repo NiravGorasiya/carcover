@@ -3,7 +3,9 @@ const mongoose = require("mongoose")
 const modelSchema = new mongoose.Schema({
     name: {
         type: String,
-        require: [true, "model name is required"]
+        required: true,
+        index: true,
+        unique: [true, "enter the unique name"],
     },
     slug: {
         type: String,

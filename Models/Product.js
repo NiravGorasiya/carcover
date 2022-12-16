@@ -2,9 +2,7 @@ const mongoose = require("mongoose")
 
 const productSchema = new mongoose.Schema({
     title: {
-        type: String,
-        get: gettotal,
-
+        type: String
     },
     images: {
         type: Array
@@ -45,7 +43,4 @@ const productSchema = new mongoose.Schema({
     id: false
 })
 
-function gettotal(title) {
-    return title + "$"
-}
 module.exports = mongoose.model("Product", productSchema)

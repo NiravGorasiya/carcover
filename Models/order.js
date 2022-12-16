@@ -14,9 +14,6 @@ const orders = mongoose.Schema({
     discount: {
         type: Number
     },
-    delivery_fee: {
-        type: Number
-    },
     payment_method_id: {
         type: mongoose.Types.ObjectId
     },
@@ -25,11 +22,95 @@ const orders = mongoose.Schema({
         enum: ['pending', 'review', 'failed', 'cancelled', 'successful'],
         default: 'pending'
     },
-    SHIPPING_ADDRESS: {
-        type: Array
-    },
-    BILLING_ADDRESS: {
-        type: Array
+    shipping_address: [
+        {
+            company_name: {
+                type: String
+            },
+            first_name: {
+                type: String,
+                required: true
+            },
+            last_name: {
+                type: String,
+                required: true
+            },
+            address: {
+                type: Array,
+                required: true
+            },
+            city: {
+                type: String,
+                required: true
+            },
+            state: {
+                type: String,
+                required: true
+            },
+            country: {
+                type: String,
+                required: true
+            },
+            postal_code: {
+                type: String,
+                required: true
+            },
+            phone: {
+                type: Number,
+                required: true
+            },
+            e_mail: {
+                type: String,
+                required: true
+            }
+        }
+    ],
+    billing_address: [
+        {
+            compny_name: {
+                type: String,
+                required: true
+            },
+            firs_name: {
+                type: String,
+                required: true
+            },
+            last_name: {
+                type: String,
+                required: true
+            },
+            address: {
+                type: Array,
+                required: true
+            },
+            city: {
+                type: String,
+                required: true
+            },
+            state: {
+                type: String,
+                required: true
+            },
+            country: {
+                type: String,
+                required: true
+            },
+            postal_code: {
+                type: String,
+                required: true
+            },
+            phone: {
+                type: Number,
+                required: true
+            },
+            e_mail: {
+                type: String,
+                required: true
+            }
+        }
+    ],
+    delivery_fee: {
+        type: Number
     },
     delivery_date: {
         type: Date

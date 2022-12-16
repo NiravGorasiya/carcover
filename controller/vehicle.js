@@ -39,7 +39,6 @@ const getAllvehicle = async (req, res, next) => {
             return res.status(200).json(result)
         }
     } catch (error) {
-        console.log(error, "d");
         return res.status(500).json({ error: error.messge })
     }
 }
@@ -86,9 +85,19 @@ const getAllModel = async (req, res, next) => {
 const getAllBody = async (req, res, next) => {
     try {
         const model = await Model.findOne({ name: req.body.name })
-        const vehicle = await Vehicle.find({ model_id: model._id }).populate("body_id", "name")
-        return res.status(200).json(vehicle)
+        let result = [];
+        const vehicle = await Vehicle.find({ model_id: model.id }).populate("body_id", "name")
+        const unique = vehicle.filter(element => {
+            const isDuplicate = result.includes(element.model_id.name);
+            if (!isDuplicate) {
+                result.push(element.model_id.name);
+                return true;
+            }
+            return false;
+        });
+        return res.status(200).json(unique)
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ error: error.messge })
     }
 }

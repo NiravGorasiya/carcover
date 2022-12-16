@@ -2,7 +2,6 @@ require('dotenv').config()
 require("./db/connection")
 const express = require('express')
 const logger = require("morgan")
-const cors = require("cors")
 const path = require("path")
 const sessions = require("express-session")
 const cookieParser = require("cookie-parser")
@@ -11,31 +10,36 @@ const app = express()
 const port = process.env.PORT
 
 
-//first commit
-//middleware
 app.use(logger('dev'));
-app.use(cors());
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization,  X-PINGOTHER');
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS');
+    next();
+});
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public/uploads')));
 app.use(cookieParser())
 
 
-const oneDay = 1000 * 60 * 60 * 48;
+// const oneDay = 1000 * 60 * 60 * 48;
+// cookie: { maxAge: oneDay },
 app.use(sessions({
     secret: 'jay',
     saveUninitialized: true,
-    cookie: { maxAge: oneDay },
     resave: true
 }));
+
+
 //Router
 require('./seeder/admin')
 const router = require('./router/index');
-
+const { log } = require('console')
 app.use(router);
 
 var sess;
-
 app.get('/', (req, res) => {
     sess = req.session;
     if (sess.sessionId) {
@@ -57,7 +61,6 @@ app.get('/login', async (req, res) => {
         res.cookie('node_session', sess.sessionId)
     }
 });
-
 
 app.get("/setCookie", (req, res) => {
     res.cookie('Coiken umang', "cookie value")
@@ -81,5 +84,3 @@ app.get("/getCookie", (req, res, next) => {
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
-
-

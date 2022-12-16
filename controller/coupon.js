@@ -1,6 +1,7 @@
 'use strict'
 const Coupon = require("../Models/Coupon");
 const otpGenerator = require('otp-generator');
+var jwt = require('jsonwebtoken');
 const { changeDateFormatTo } = require("./helper");
 
 const coupon_add = async (req, res) => {
@@ -62,7 +63,6 @@ const coupon_update = async (req, res) => {
 
 const coupon_getone = async (req, res) => {
     try {
-        var sess;
         const coupon = await Coupon.findOne({ coupon_code: req.body.coupon_code })
         if (!coupon) {
             return res.status(400).json({ messge: "plase enter valit coupon code" })
@@ -71,10 +71,8 @@ const coupon_getone = async (req, res) => {
         if (changeDateFormatTo(x) > coupon.end_date || coupon.coupon_use >= coupon.max_use) {
             return res.status(400).json({ status: false, messge: "coupon is expir" });
         }
-        sess = req.session;
-        sess.sessionId = coupon.id;
-        var id = sess.sessionId
-        res.cookie('coupon', id)
+        const token = await jwt.sign({ id: coupon.coupon_code }, process.env.SECRETKEY)
+        res.cookie('coupon', token, { maxAge: 1000 * 60 * 60 * 48, httpOnly: true })
         return res.status(200).json({ status: true, result: "coupon verify successfully" })
     } catch (error) {
         console.log(error);
