@@ -4,7 +4,10 @@ const Product = require("../Models/Product")
 
 const addProduct = async (req, res, next) => {
     try {
-        const { title, attribute, Category_id, description, regularprice, currentPrice, qty } = req.body
+        const { title, attribute, model, Category_id, description, regularprice, currentPrice, qty } = req.body
+        if (regularprice <= currentPrice) {
+            return res.status(444).json({ messge: "enter the regularprice >  currentPrice" })
+        }
         const images = []
         req.files.map((item) => {
             images.push(item.filename)
@@ -12,6 +15,7 @@ const addProduct = async (req, res, next) => {
         const product = new Product({
             title,
             attribute,
+            model,
             images: images,
             Category_id,
             description,
@@ -39,11 +43,11 @@ const delete_product = async (req, res) => {
 
 const update_product = async (req, res) => {
     try {
-        const { title, attribute, Category_id, description, regularprice, currentPrice, qty } = req.body
-
+        const { title, attribute, Category_id, model, description, regularprice, currentPrice, qty } = req.body
         var data = await Product.findByIdAndUpdate(req.params.id, {
             title,
             attribute,
+            model,
             Category_id,
             description,
             regularprice,
@@ -111,6 +115,7 @@ const product_find = async (req, res, next) => {
             {
                 $project: {
                     "title": "$title",
+                    "model": "$model",
                     "image": { $arrayElemAt: ["$images", 0] },
                     "category": { $first: "$category.name" },
                     "attributes": "$attributes",
@@ -195,6 +200,7 @@ const product_one = async (req, res) => {
             {
                 $project: {
                     "title": "$title",
+                    "model": "$model",
                     "image": "$images",
                     "category": { $first: "$category.name" },
                     "attributes": "$attributes",

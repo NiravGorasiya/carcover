@@ -23,6 +23,7 @@ const attribute_all = async (req, res) => {
         return res.status(500).json({ status: false, error: error.message })
     }
 }
+
 const attribute_delete = async (req, res) => {
     try {
         var a = await attribute.findByIdAndDelete({ id: req.params.id });
@@ -68,7 +69,6 @@ const attribut_addonevalue = async (req, res) => {
     }
     return res.status(200).json({ status: true, result: result })
 }
-
 
 module.exports = { attribute_add, attribute_all, attribute_delete, attribut_one, attribut_update }
 

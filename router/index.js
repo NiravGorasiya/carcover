@@ -12,6 +12,7 @@ const Product = require("./Product");
 const cart = require('./cart')
 const coupon = require('./coupon');
 const helper = require('./helper')
+const order = require('./order')
 
 router.use("/api/coupon", coupon)
 router.use("/api/category", catgory);
@@ -24,4 +25,5 @@ router.use("/api/user", User);
 router.use("/api/product", Product);
 router.use("/api/cart", cart);
 router.use("/api", helper)
+router.use("/api", order)
 module.exports = router;

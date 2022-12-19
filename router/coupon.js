@@ -5,7 +5,7 @@ const router = require('express').Router()
 router.post('/add', coupon_add);
 router.delete('/delete/:id', coupon_delete)
 router.put('/update/:id', coupon_update)
-router.get('/get', coupon_getone)
+router.post('/get', coupon_getone)
 router.get('/all', coupon_all)
 
 

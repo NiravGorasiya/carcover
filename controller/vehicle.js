@@ -135,6 +135,8 @@ const vehicleDelete = async (req, res, next) => {
     }
 }
 
+
+
 // const products = async (req, res) => {
 //     try {
 //         const { model, body, make, year, category } = req.params

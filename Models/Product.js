@@ -11,6 +11,9 @@ const productSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: 'Category'
     },
+    model: {
+        type: String
+    },
     attribute: [{
         attribute_id: {
             type: mongoose.Types.ObjectId,

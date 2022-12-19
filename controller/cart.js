@@ -22,12 +22,9 @@ const add_cart = async (req, res) => {
         }
         const data = await Product.findById(req.body.product_id)
         if (!data) {
-            return res.status.json("product not found")
-        }
-        const categ = await Category.findById(data.Category_id)
-        if (!data) {
             return res.status(404).json("product not found")
         }
+        const categ = await Category.findById(data.Category_id)
         let id
         sess = req.session;
         sess.sessionId = uuidv4();
@@ -51,6 +48,7 @@ const add_cart = async (req, res) => {
         let add = await Cart({
             user_id: id,
             image: categ.image,
+            model: data.model,
             product_id: data._id,
             Produt: [
                 {
@@ -103,12 +101,17 @@ const update_cart = async (req, res) => {
 
 const delet_cart = async (req, res) => {
     try {
-        await Cart.findByIdAndDelete(req.params.id);
+        const cart = await Cart.findById(req.params.id);
+        if (!cart) {
+            return res.status(404).json({ message: "cart not found" })
+        }
+        cart.delete();
         return res.status(200).json({ message: "cart delete successfully" })
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
 }
+
 
 const all_cart = async (req, res) => {
     try {
@@ -116,7 +119,6 @@ const all_cart = async (req, res) => {
         var id = req.cookies.node_session
         let products = await Cart.find({ user_id: id })
         return res.status(200).json({ status: true, result: { products, carts_total } })
-
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
@@ -202,7 +204,7 @@ var carts_total = async (req, res, next) => {
         sub_total: [{ "text": "Sub_Total:", "value": total }],
         shipping: [{ "text": date, "value": delivery_fees }],
         coupon: [{ "text": bbbb, "value": dis }],
-        Total: [{ "text": "Total:", "value": a }]
+        Total: [{ "text": "Total:", "value": parseFloat(a.toFixed(2)) }]
     })
     req.carts_total = CART_TOTALS
     next()
@@ -323,7 +325,5 @@ const cart_checkout = async (req, res) => {
         return res.status(500).json({ error: error.message })
     }
 }
-
-
 
 module.exports = { add_cart, update_cart, delet_cart, all_cart, delivery_data, carts_total, Delivery_Date, cart_checkout }
