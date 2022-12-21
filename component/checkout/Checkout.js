@@ -6,23 +6,45 @@ let Country = require('country-state-city').Country;
 let States = require('country-state-city').State;
 let City = require('country-state-city').City;
 import { useState, useEffect } from 'react';
+import axios from 'axios';
+import StripeContainer from '../stripe/StripeContainer';
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import CheckOutFrom from '../stripe/CheckOutFrom';
+const PUBLIC_KEY = "pk_test_51IvdjGSBmFmiKlBdvjqb5Pb8TDJEkPZCy9yjdVTow4IC1RZWOQ0MnJJStkzWzZPyaU5p4h8ehxeR7njn5UdNWwet00pkZL315z";
+
+
+const stripeTestPromise = loadStripe(PUBLIC_KEY);
 
 const Checkout = () => {
     let countries = Country.getAllCountries()
     let states = States.getAllStates()
     let citys = City.getAllCities()
+
     const [country, setContry] = useState([])
     const [countrycode, setCountryCode] = useState('')
+    const [billingAddressCountrycode, setBillingAddressCountryCode] = useState("")
     const [state, setState] = useState([])
-    const [statecode, setStateCode] = useState('')
+    const [statecode, setStateCode] = useState("")
+    const [billingAddressStateCode, setBillingAddressStateCode] = useState("")
     const [city, setCity] = useState([])
     const [citycode, setCityCode] = useState([]);
+    const [billingAddressCityCode, setBillingAddressCityCode] = useState("")
     const [cname, setCname] = useState("")
+    const [billingAddressCompanyName, setBillingAddressCompanyName] = useState('')
     const [fname, setFname] = useState("")
+    const [billingAddressFirstName, setBillingAddressFirstName] = useState("")
     const [lname, setLname] = useState("")
+    const [billingAddressLastName, setBillingAddressLastName] = useState("")
     const [postCode, setPostalCode] = useState("")
+    const [billingAddressPostalCode, setBillingAddressPostalCode] = useState("")
     const [phone, setPhone] = useState("")
+    const [billingAddressPhone, setBillingAddressPhone] = useState("")
     const [email, setEmail] = useState("")
+    const [billingAddressEmail, setBillingAddressEmail] = useState("")
+    const [address, setAddress] = useState("")
+    const [billingAddress, setBillingAddress] = useState("")
+    const [paymentMethod, setPaymentMethod] = useState("")
 
     const handleContry = (code) => {
         setCountryCode(code)
@@ -30,32 +52,76 @@ const Checkout = () => {
         setState(dt);
         setCity(null)
     }
+
     const handleState = (code) => {
         setStateCode(code);
         const citydata = citys.filter((item) => item.stateCode == code)
         setCity(citydata)
     }
+
     const handleCity = (code) => {
+        console.log(code, "code");
         setCityCode(code)
     }
     useEffect(() => {
         setContry(countries)
     }, [])
 
-    const handleSubmit = () => {
-        const data = { state: statecode, country: countrycode, city: citycode }
-        axios.post('http://localhost:3200/travelplan/add', data)
-            .then((response) => {
-                console.log(response);
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+    const handleCopy = (e) => {
+        e.preventDefault();
+        setBillingAddressCompanyName(cname)
+        setBillingAddressFirstName(fname)
+        setBillingAddressLastName(lname)
+        setBillingAddressPhone(phone)
+        setBillingAddressPostalCode(postCode)
+        setBillingAddressEmail(email)
+        setBillingAddress(address)
+        setBillingAddressCountryCode(countrycode)
+        setBillingAddressStateCode(statecode)
+        setBillingAddressCityCode(citycode)
     }
 
     const orderData = (e) => {
+
         e.preventDefault()
-        console.log();
+        const data = {
+            payment_method: "card",
+            shipping_address: [{
+                company_name: cname,
+                city: city,
+                e_mail: email,
+                phone: phone,
+                last_name: lname,
+                state: statecode,
+                city: citycode,
+                postal_code: postCode,
+                first_name: fname,
+                country: billingAddressCountrycode
+            }],
+            billing_address: [{
+                company_name: billingAddressCompanyName,
+                last_name: billingAddressLastName,
+                first_name: billingAddressFirstName,
+                city: billingAddressCityCode,
+                country: billingAddressCountrycode,
+                e_mail: billingAddressEmail,
+                postal_code: billingAddressPostalCode,
+                state: billingAddressStateCode,
+                phone: billingAddressPhone
+            }]
+        }
+        axios.post("http://localhost:5500/api/order", data, {
+            withCredentials: true
+        })
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+    }
+    const handleSubmit = () => {
+        console.log("hello");
     }
     return (
         <>
@@ -91,30 +157,30 @@ const Checkout = () => {
                                                 <div className={styles['from-row']}>
                                                     <div className='col-12'>
                                                         <label>Company name</label>
-                                                        <input type="text" name="scompany" className='form-control' placeholder='company name' />
+                                                        <input type="text" name="scompany" className='form-control' placeholder='company name' onChange={(e) => setCname(e.target.value)} />
                                                     </div>
                                                 </div>
                                                 <div className={styles['from-row']}>
                                                     <div className='col-md-6'>
                                                         <label>First Name</label>
-                                                        <input type="text" name="scompany" className='form-control' placeholder='company name' />
+                                                        <input type="text" name="scompany" className='form-control' placeholder='company name' onChange={(e) => setFname(e.target.value)} />
                                                     </div>
                                                     <div className='col-md-6'>
                                                         <label>Last Name</label>
-                                                        <input type="text" name="scompany" className='form-control' placeholder='company name' />
+                                                        <input type="text" name="scompany" className='form-control' placeholder='company name' onChange={(e) => setLname(e.target.value)} />
                                                     </div>
 
                                                 </div>
                                                 <div className={styles['from-row']}>
                                                     <div className='col-12'>
                                                         <label>Address</label>
-                                                        <input type="text" name="scompany" className='form-control' placeholder='company name' />
+                                                        <input type="text" name="scompany" className='form-control' placeholder='company name' onChange={(e) => setAddress(e.target.value)} />
                                                     </div>
                                                 </div>
                                                 <div className={styles['from-row']}>
                                                     <div className='col-md-6'>
                                                         <label>City</label>
-                                                        <select type="text" name="scompany" className='form-control' placeholder='company name' >
+                                                        <select type="text" name="scompany" className='form-control' placeholder='company name' onChange={(e) => handleCity(e.target.value)}>
                                                             <option value="0">Select city</option>
                                                             {
                                                                 city &&
@@ -150,7 +216,7 @@ const Checkout = () => {
                                                 <div className={styles['from-row']}>
                                                     <div className='col-md-6'>
                                                         <label>Postal code</label>
-                                                        <input type="text" name="scompany" className='form-control' placeholder='company name' />
+                                                        <input type="text" name="scompany" className='form-control' onChange={(e) => setPostalCode(e.target.value)} placeholder='company name' />
                                                     </div>
                                                     <div className='col-md-6'>
                                                         <label>Country code</label>
@@ -173,12 +239,19 @@ const Checkout = () => {
                                                 <div className={styles['from-row']}>
                                                     <div className='col-md-6'>
                                                         <label>Phone</label>
-                                                        <input type="text" name="scompany" className='form-control' placeholder='company name' />
+                                                        <input type="text" name="scompany" className='form-control' placeholder='company name' onChange={(e) => setPhone(e.target.value)} />
                                                     </div>
                                                     <div className='col-md-6'>
                                                         <label>Email</label>
-                                                        <input type="text" name="scompany" className='form-control' placeholder='company n  ame' />
+                                                        <input type="text" name="scompany" className='form-control' placeholder='company name' onChange={(e) => setEmail(e.target.value)} />
                                                     </div>
+                                                </div>
+                                                <div className='btn-wrap d-none d-md-block'>
+                                                    <button className="btn btn-primary text-white" onClick={handleCopy}>
+                                                        <span className='fa fa-files-0'>
+                                                        </span>
+                                                        copy billing Address
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -195,56 +268,96 @@ const Checkout = () => {
                                                 <div className={styles['from-row']}>
                                                     <div className='col-12'>
                                                         <label>Company name</label>
-                                                        <input type="text" name="scompany" className='form-control' placeholder='company name' />
+                                                        <input type="text" name="scompany" value={billingAddressCompanyName} className='form-control' placeholder='company name' />
                                                     </div>
                                                 </div>
                                                 <div className={styles['from-row']}>
                                                     <div className='col-md-6'>
                                                         <label>First Name</label>
-                                                        <input type="text" name="scompany" className='form-control' placeholder='company name' />
+                                                        <input type="text" name="scompany" value={billingAddressFirstName} className='form-control' placeholder='company name' />
                                                     </div>
                                                     <div className='col-md-6'>
                                                         <label>Last Name</label>
-                                                        <input type="text" name="scompany" className='form-control' placeholder='company name' />
+                                                        <input type="text" name="scompany" value={billingAddressLastName} className='form-control' placeholder='company name' />
                                                     </div>
 
                                                 </div>
                                                 <div className={styles['from-row']}>
                                                     <div className='col-12'>
                                                         <label>Address</label>
-                                                        <input type="text" name="scompany" className='form-control' placeholder='company name' />
+                                                        <input type="text" name="scompany" value={billingAddress} className='form-control' placeholder='company name' />
                                                     </div>
                                                 </div>
                                                 <div className={styles['from-row']}>
                                                     <div className='col-md-6'>
                                                         <label>City</label>
-                                                        <input type="text" name="scompany" className='form-control' placeholder='company name' />
+                                                        <select type="text" name="scompany" value={billingAddressCityCode} className='form-control' placeholder='company name' >
+                                                            <option value="0">Select city</option>
+                                                            {
+                                                                city &&
+                                                                    city !== undefined ?
+                                                                    city.map((ctr, index) => {
+                                                                        return (
+                                                                            <>
+                                                                                <option key={index}>{ctr.name}</option>
+                                                                            </>
+                                                                        )
+                                                                    }) : "Nocountry"
+                                                            }
+                                                        </select>
                                                     </div>
                                                     <div className='col-md-6'>
                                                         <label>State</label>
-                                                        <input type="text" name="scompany" className='form-control' placeholder='company name' />
+                                                        <select name="scompany" className='form-control' value={billingAddressStateCode} onChange={(e) => handleState(e.target.value)}>
+                                                            <option value="0">Select state</option>
+                                                            {
+                                                                state &&
+                                                                    state !== undefined ?
+                                                                    state.map((ctr, index) => {
+                                                                        return (
+                                                                            <>
+                                                                                <option key={index} value={ctr.isoCode}>{ctr.name}</option>
+                                                                            </>
+                                                                        )
+                                                                    }) : "Nocountry"
+                                                            }
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div className={styles['from-row']}>
                                                     <div className='col-md-6'>
                                                         <label>Postal code</label>
-                                                        <input type="text" name="scompany" className='form-control' placeholder='company name' />
+                                                        <input type="text" name="scompany" className='form-control' value={billingAddressPostalCode} placeholder='company name' />
                                                     </div>
                                                     <div className='col-md-6'>
                                                         <label>Country code</label>
-                                                        <input type="text" name="scompany" className='form-control' placeholder='company name' />
+                                                        <select name="scompany" value={billingAddressCountrycode} className='form-control' onChange={(e) => handleContry(e.target.value)}>
+                                                            <option value="0">Select Country</option>
+                                                            {
+                                                                country &&
+                                                                    country !== undefined ?
+                                                                    country.map((ctr, index) => {
+                                                                        return (
+                                                                            <>
+                                                                                <option value={ctr.isoCode}>{ctr.name}</option>
+                                                                            </>
+                                                                        )
+                                                                    }) : "Nocountry"
+                                                            }
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div className={styles['from-row']}>
                                                     <div className='col-md-6'>
                                                         <label>Phone</label>
-                                                        <input type="text" name="scompany" className='form-control' placeholder='company name' />
+                                                        <input type="text" name="scompany" value={billingAddressPhone} className='form-control' placeholder='company name' />
                                                     </div>
                                                     <div className='col-md-6'>
                                                         <label>Email</label>
-                                                        <input type="text" name="scompany" className='form-control' placeholder='company name' />
+                                                        <input type="text" name="scompany" value={billingAddressEmail} className='form-control' placeholder='company name' />
                                                     </div>
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -257,7 +370,6 @@ const Checkout = () => {
                                                     <strong>Payment</strong>
                                                     method
                                                     <span className='price pull-right'>
-                                                        Total
                                                         <span className='order_total'>$64.96</span>
                                                     </span>
                                                 </h4>
@@ -287,11 +399,15 @@ const Checkout = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <button onClick={orderData}>Submit order</button>
+                                <button className='btn btn-primary' onClick={orderData} type="submit">Submit order</button>
                             </form>
+                            <Elements stripe={stripeTestPromise}>
+                                <CheckOutFrom />
+                            </Elements>
                         </div>
                     </div>
                 </div>
+
             </section>
             <Footer />
         </>

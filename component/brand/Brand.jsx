@@ -5,7 +5,6 @@ import axios from "axios"
 
 const Brand = () => {
     const [data, setData] = useState([])
-
     const coverList = () => {
         axios.get("http://localhost:5500/api/category/all")
             .then((response) => {
@@ -15,9 +14,11 @@ const Brand = () => {
                 console.log(err);
             })
     }
+
     useEffect(() => {
         coverList()
     }, [])
+
     return (
         <section className={styles['grid-wrapper']}>
             <div className='container'>
@@ -25,7 +26,7 @@ const Brand = () => {
                     {data.map((item) => (
                         <Fragment key={item._id}>
                             <div className='col-lg-3 col-sm-4 col-6'>
-                                <Link href="https://www.carcoversfactory.com/car-covers">
+                                <Link href={item.name}>
                                     <div className={styles['entry-single']}>
                                         <img src={`http://localhost:5500/${item.cover_image}`}></img>
                                     </div>

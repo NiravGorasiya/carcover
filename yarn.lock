@@ -106,6 +106,18 @@
   "resolved" "https://registry.npmjs.org/@rushstack/eslint-patch/-/eslint-patch-1.2.0.tgz"
   "version" "1.2.0"
 
+"@stripe/react-stripe-js@^1.16.1":
+  "integrity" "sha512-einalv46WrAZhCN8jDHz3e6ePYmwwkbwDfv//XPKw/higzdiZmSZgMJWeqEOPvalf8qryx9vOXOYaH7G6yUGug=="
+  "resolved" "https://registry.npmjs.org/@stripe/react-stripe-js/-/react-stripe-js-1.16.1.tgz"
+  "version" "1.16.1"
+  dependencies:
+    "prop-types" "^15.7.2"
+
+"@stripe/stripe-js@^1.46.0":
+  "integrity" "sha512-dkm0zCEoRLu5rTnsIgwDf/QG2DKcalOT2dk1IVgMySOHWTChLyOvQwMYhEduGgLvyYWTwNhAUV4WOLPQvjwLwA=="
+  "resolved" "https://registry.npmjs.org/@stripe/stripe-js/-/stripe-js-1.46.0.tgz"
+  "version" "1.46.0"
+
 "@swc/helpers@0.4.11":
   "integrity" "sha512-rEUrBSGIoSFuYxwBYtlUFMlE2CwGhmW+w9355/5oduSw8e5h2+Tj4UrAGNNgP9915++wj5vkQo0UuOBqOAq4nw=="
   "resolved" "https://registry.npmjs.org/@swc/helpers/-/helpers-0.4.11.tgz"
@@ -1535,7 +1547,7 @@
   "resolved" "https://registry.npmjs.org/prelude-ls/-/prelude-ls-1.2.1.tgz"
   "version" "1.2.1"
 
-"prop-types@^15.8.1":
+"prop-types@^15.7.2", "prop-types@^15.8.1":
   "integrity" "sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg=="
   "resolved" "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz"
   "version" "15.8.1"

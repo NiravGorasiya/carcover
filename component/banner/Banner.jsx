@@ -27,6 +27,7 @@ const Banner = ({ props }) => {
         }
         axios.get(`http://localhost:5500/api/category/banner/${cat}`)
             .then((response) => {
+                console.log(response);
                 setBanner(response.data);
             })
             .catch((err) => {

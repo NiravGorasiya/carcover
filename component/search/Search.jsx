@@ -18,7 +18,7 @@ const Search = ({ props }) => {
     const [body, setBody] = useState('')
 
     const yearList = () => {
-        axios.get(`${url}/vehicle/${router.query.category}`)
+        axios.get(`${url}/vehicle/${props}`)
             .then((response) => {
                 setYearData(response.data)
             })
@@ -26,7 +26,7 @@ const Search = ({ props }) => {
 
     const handleMake = (year) => {
         setYear(year)
-        const data = { year: parseInt(year), name: router.query.category }
+        const data = { year: parseInt(year), name: props }
         axios.post(`http://localhost:5500/api/vehicle/all/make`, data)
             .then((response) => {
                 setMakeData(response.data)
