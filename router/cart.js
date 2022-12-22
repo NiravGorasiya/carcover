@@ -4,7 +4,7 @@ const router = require('express').Router();
 
 
 router.post("/add/:category/:year/:Make/:Model/:Body", add_cart);
-router.delete("/delete/:id", delet_cart);
+router.get("/delete/:id", delet_cart);
 router.put('/update/:id', update_cart);
 router.get('/all', all_cart);
 router.post('/Delivery_Date', Delivery_Date)

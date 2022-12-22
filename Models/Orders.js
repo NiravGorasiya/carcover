@@ -15,8 +15,7 @@ const Orders = mongoose.Schema({
         }
     ],
     payment_method: {
-        type: String,
-        enum: ['card']
+        type: String
     },
     payment_status: {
         type: String,
@@ -62,7 +61,7 @@ const Orders = mongoose.Schema({
                 required: true
             },
             phone: {
-                type: Number,
+                type: String,
                 required: true
             },
             e_mail: {
@@ -112,7 +111,7 @@ const Orders = mongoose.Schema({
                 required: true
             },
             phone: {
-                type: Number,
+                type: String,
                 required: true
             },
             e_mail: {
@@ -131,6 +130,9 @@ const Orders = mongoose.Schema({
     total_price:
     {
         type: Number
+    },
+    discription: {
+        type: String
     },
     Date: {
         type: String
