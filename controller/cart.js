@@ -14,7 +14,6 @@ const add_cart = async (req, res) => {
     try {
         res.clearCookie("token")
         const { Model, Body, Make, year, category } = req.params
-        console.log(category);
         var c = await Category.findOne({ name: category })
         var a = await Vehicle.findOne({ $and: [{ year: parseInt(year) }, { category_id: c._id }] })
         if (!a || !c) {
@@ -28,6 +27,7 @@ const add_cart = async (req, res) => {
         let id
         sess = req.session;
         sess.sessionId = uuidv4();
+        console.log(req.cookies.node_session);
         if (req.cookies.node_session) {
             id = req.cookies.node_session
         } else {
@@ -101,6 +101,7 @@ const update_cart = async (req, res) => {
 
 const delet_cart = async (req, res) => {
     try {
+        console.log(req.params.id, "dfa");
         const cart = await Cart.findById(req.params.id);
         if (!cart) {
             return res.status(404).json({ message: "cart not found" })
@@ -108,11 +109,10 @@ const delet_cart = async (req, res) => {
         cart.delete();
         return res.status(200).json({ message: "cart delete successfully" })
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ error: error.message });
     }
 }
-
-
 const all_cart = async (req, res) => {
     try {
         var carts_total = req.carts_total
@@ -129,7 +129,7 @@ var carts_total = async (req, res, next) => {
     var CART_TOTALS = []
     let ids = req.cookies.node_session
     let carts = await Cart.find({ user_id: ids });
-    if (carts.length <= 0) {
+    if (carts?.length <= 0) {
         return res.status(404).json({ status: false, message: "carts product not foud" })
     }
     var total = 0
@@ -204,7 +204,7 @@ var carts_total = async (req, res, next) => {
         sub_total: [{ "text": "Sub_Total:", "value": total }],
         shipping: [{ "text": date, "value": delivery_fees }],
         coupon: [{ "text": bbbb, "value": dis }],
-        Total: [{ "text": "Total:", "value": parseFloat(a.toFixed(2)) }]
+        Total: [{ "text": "Total:", "value": a.toFixed(2) }]
     })
     req.carts_total = CART_TOTALS
     next()
@@ -213,7 +213,7 @@ var carts_total = async (req, res, next) => {
 var delivery_data = async (req, res, next) => {
     let ids = req.cookies.node_session
     let carts = await Cart.find({ user_id: ids });
-    if (carts.length <= 0) {
+    if (carts?.length <= 0) {
         return res.status(404).json({ status: false, message: "carts product not foud" })
     }
     let QUANTITY = []
@@ -327,3 +327,5 @@ const cart_checkout = async (req, res) => {
 }
 
 module.exports = { add_cart, update_cart, delet_cart, all_cart, delivery_data, carts_total, Delivery_Date, cart_checkout }
+
+

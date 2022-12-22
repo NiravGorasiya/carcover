@@ -89,5 +89,13 @@ const update_category = async (req, res) => {
     }
 }
 
+const getBanner = async (req, res, next) => {
+    try {
+        const result = await Category.findOne({ name: req.params.name })
+        return res.status(200).json(result)
+    } catch (error) {
+        return res.status(500).json(error)
+    }
+}
 
-module.exports = { addCategory, getAllCatgory, delet_category, update_category }
+module.exports = { addCategory, getAllCatgory, delet_category, update_category, getBanner }

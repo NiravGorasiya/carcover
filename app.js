@@ -5,11 +5,24 @@ const logger = require("morgan")
 const path = require("path")
 const sessions = require("express-session")
 const cookieParser = require("cookie-parser")
+const stripe = require("stripe")("sk_test_51IvdjGSBmFmiKlBdIxTbWlfs54H4HQ57fBiJaCInxepYHkmQqhM0AkEh5anFTLdxh8m0TbGmwy9hSmvcuPzl2p8Y00n3VsCoXx");
+
 const app = express()
+
 const port = process.env.PORT
 
-
 app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public/uploads')));
+app.use(cookieParser())
+
+app.use(sessions({
+    secret: 'jay',
+    saveUninitialized: true,
+    resave: true
+}));
+
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization,  X-PINGOTHER');
@@ -17,16 +30,6 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS');
     next();
 });
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public/uploads')));
-app.use(cookieParser())
-app.use(sessions({
-    secret: 'jay',
-    saveUninitialized: true,
-    resave: true
-}));
-
 
 //Router
 require('./seeder/admin')
@@ -48,15 +51,11 @@ app.get("/deleteCooike", (req, res, next) => {
     res.send("all clear cookie")
 })
 
-app.get("/success", (req, res) => {
-    res.json("success");
-
-})
-
 app.get("/getCookie", (req, res, next) => {
     console.log(req.cookies);
     res.send(req.cookies)
 })
+
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)

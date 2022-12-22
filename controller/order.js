@@ -28,6 +28,7 @@ const order = async (req, res) => {
                 coupon_value = i.value
             })
         })
+        console.log(date, "date");
         const dateStr = date.slice(2, 17)
         var delivery_date = changeDateFormatTo(new Date(new Date().setDate(new Date(dateStr).getDate())))
         let ids = req.cookies.node_session
@@ -46,17 +47,22 @@ const order = async (req, res) => {
             }],
             Date: formattedDate,
         })
-        if (req.body.payment_method == "card") {
+        if (req.body.payment_method) {
             const customer = await stripe.customers.create();
             console.log(customer.id);
             orders.payment_method = req.body.payment_method
             orders.customer_id = customer.id
             await stripe.paymentIntents.create({
                 amount: orders.total_price * 100,
-                currency: "usd",
                 customer: customer.id,
+                currency: "USD",
+                description: "Spatula company",
+                shipping: req.body.shipping,
                 payment_method_types: ['card'],
+                payment_method: req.body.payment_method,
+                confirm: true,
             }).then(async (result) => {
+
                 orders.payment_status = "successful"
                 await orders.save()
                 if (req.cookies.coupon) {
@@ -66,6 +72,7 @@ const order = async (req, res) => {
                 res.clearCookie("node_session")
                 res.clearCookie("coupon")
                 res.clearCookie("token")
+                console.log(result, "result");
                 return res.status(201).json({
                     status: true, messge: "successfully order", result: {
                         orders: orders,
@@ -79,7 +86,7 @@ const order = async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error);
+        console.log(error, "dadf");
         return res.status(500).json({ error: error.messge })
     }
 }
@@ -127,7 +134,6 @@ const total_sales = async (req, res) => {
     } catch (error) {
         console.log(error);
         return res.status(500).json({ error: error.messge })
-
     }
 }
 
