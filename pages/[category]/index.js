@@ -12,6 +12,8 @@ const category = () => {
     const router = useRouter();
     const pageno = router.query.category
 
+    console.log(pageno, 'dsafdsfg');
+
     return (
         <>
             <Header />

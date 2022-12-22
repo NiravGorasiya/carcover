@@ -62,8 +62,9 @@ const Banner = ({ props }) => {
                     </div>
                 </nav>
                 <section className={styles['banner-wrap']}>
+
                     <img
-                        src={`http://localhost:5500/${banner.banner}`}
+                        src={`http://localhost:5500/${banner?.banner}`}
                         className='img-fluid w-100 d-none d-md-block'
                     />
                 </section>
@@ -71,6 +72,5 @@ const Banner = ({ props }) => {
         </>
     )
 }
-
 
 export default Banner

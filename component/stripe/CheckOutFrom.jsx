@@ -3,7 +3,9 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import axios from 'axios';
 
 
-const CheckOutFrom = () => {
+const CheckOutFrom = (props) => {
+    const { cname, address, cityCode, countryCode, email, lname, phone, postCode, stateCode, fname, billingAddressCityCode, billingAddressCompanyName, billingAddressCountrycode, billingAddressEmail, billingAddressFirstName, billingAddressLastName, billingAddressPhone, billingAddressPostalCode, billingAddressStateCode, billingAddressone } = props?.props
+
     const stripe = useStripe();
     const elements = useElements();
     const [message, setMesage] = useState('')
@@ -19,27 +21,26 @@ const CheckOutFrom = () => {
         const data = {
             payment_method: id,
             shipping_address: [{
-                company_name: "dsffs",
-                city: "dsf",
-                e_mail: "dfsa",
-                phone: "dsfsda",
-                last_name: "dfsdsfga",
-                state: "sdfaf",
-                city: "sdf",
-                postal_code: "sdf",
-                first_name: "dsf",
-                country: "sdf"
+                company_name: cname,
+                e_mail: email,
+                phone: phone,
+                last_name: lname,
+                state: stateCode,
+                city: cityCode,
+                postal_code: postCode,
+                first_name: fname,
+                country: countryCode
             }],
             billing_address: [{
-                company_name: "billingAddressCompanyName",
-                last_name: "billingAddressLastName",
-                first_name: "billingAddressFirstName",
-                city: "billingAddressCityCode",
-                country: "billingAddressCountrycode",
-                e_mail: "billingAddressEmail",
-                postal_code: "billingAddressPostalCode",
-                state: "billingAddressStateCode",
-                phone: "billingAddressPhone"
+                company_name: billingAddressCompanyName,
+                last_name: billingAddressLastName,
+                first_name: billingAddressFirstName,
+                city: billingAddressCityCode,
+                country: billingAddressCountrycode,
+                e_mail: billingAddressEmail,
+                postal_code: billingAddressPostalCode,
+                state: billingAddressStateCode,
+                phone: billingAddressPhone
             }],
             shipping: {
                 name: 'Jenny Rosen',

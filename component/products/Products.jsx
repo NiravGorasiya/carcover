@@ -154,7 +154,7 @@ const Products = (products) => {
                                                                 </span>
                                                             </div>
                                                             <br></br>
-                                                            <Link href="https://www.carcoversfactory.com/car-covers/2012/citroen/c3-picasso-mpv/5-door-estate/premium-edition-car-cover" className='btn btn-primary w-100 mb-2'>
+                                                            <Link href={`/productdetails/${item._id}`} className='btn btn-primary w-100 mb-2'>
                                                                 view details
                                                             </Link>
                                                             <br></br>
