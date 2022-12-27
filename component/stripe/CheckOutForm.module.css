@@ -1,0 +1,37 @@
+.StripeElement {
+    width: 70%;
+    float: right;
+    position: relative;
+    top: 50%;
+    transform: perspective(1px) translateY(-50%);
+}
+
+.stripecontainer {
+    align-items: center;
+}
+
+.stripecontainer .stripepayBtn {
+    align-items: center;
+}
+
+.checkOutBox {
+    width: 1200px;
+}
+
+.CheckOutFrom {
+    text-align: center;
+    justify-content: center;
+}
+
+.checkOutBox .CheckOutFrom span {}
+
+.checkOutBox .CheckOutFrom label {
+    width: 700px;
+}
+
+
+
+.checkOutBox .CheckOutFrom label .cardElement {
+    border: solid 1px black;
+    height: 35px;
+}

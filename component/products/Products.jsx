@@ -11,7 +11,7 @@ const Products = (products) => {
 
     const addtoCart = (item) => {
         const data = { product_id: item }
-        axios.post(`${url}/cart/add/${products?.category}/${products?.year}/${products?.make} /${products?.model}/${products?.body}`, data, {
+        axios.post(`${url}/cart/add/${products?.category}/${products?.year}/${products?.make}/${products?.model}/${products?.body}`, data, {
             withCredentials: true
         })
             .then((res) => {
@@ -154,7 +154,7 @@ const Products = (products) => {
                                                                 </span>
                                                             </div>
                                                             <br></br>
-                                                            <Link href={`/productdetails/${item._id}`} className='btn btn-primary w-100 mb-2'>
+                                                            <Link href={`/${products?.category}/${products?.year}/${products?.make}/${products?.model}/${products?.body}/${item._id}`} className='btn btn-primary w-100 mb-2'>
                                                                 view details
                                                             </Link>
                                                             <br></br>

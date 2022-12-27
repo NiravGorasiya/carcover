@@ -6,7 +6,7 @@ let Country = require('country-state-city').Country;
 let States = require('country-state-city').State;
 let City = require('country-state-city').City;
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckOutFrom from '../stripe/CheckOutFrom';
@@ -72,7 +72,6 @@ const Checkout = () => {
         setShippingAddress({ ...shippingAddress, [name]: value })
     }
 
-    console.log(shippingAddress);
 
     useEffect(() => {
         setContry(countries)
@@ -83,9 +82,6 @@ const Checkout = () => {
 
     }
 
-    const handleSubmit = () => {
-        console.log("hello");
-    }
 
     return (
         <>
@@ -119,26 +115,30 @@ const Checkout = () => {
                                             </h4>
                                             <div className={styles['from-inside']}>
                                                 <div className={styles['from-row']}>
-                                                    <div className='col-12'>
-                                                        <label>Company name</label>
-                                                        <input type="text" name="cname" value={shippingAddress.cname} placeholder='company name' onChange={handleInputChange} className='form-control' />
+                                                    <div className={styles.inputfield}>
+                                                        <div className='col-12'>
+                                                            <label>Company name</label>
+                                                            <input type="text" name="cname" value={shippingAddress.cname} placeholder='Company name' onChange={handleInputChange} className='form-control' />
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div className={styles['from-row']}>
                                                     <div className='col-md-6'>
                                                         <label>First Name</label>
-                                                        <input type="text" name="fname" value={shippingAddress.fname} placeholder='first name' onChange={handleInputChange} className='form-control' />
+                                                        <input type="text" name="fname" value={shippingAddress.fname} placeholder='First name' onChange={handleInputChange} className='form-control' />
                                                     </div>
                                                     <div className='col-md-6'>
                                                         <label>Last Name</label>
-                                                        <input type="text" name="lname" value={shippingAddress.lname} placeholder='last name' onChange={handleInputChange} className='form-control' />
+                                                        <input type="text" name="lname" value={shippingAddress.lname} placeholder='Last name' onChange={handleInputChange} className='form-control' />
                                                     </div>
 
                                                 </div>
                                                 <div className={styles['from-row']}>
-                                                    <div className='col-12'>
-                                                        <label>Address</label>
-                                                        <input type="text" name="address" value={shippingAddress.address} onChange={handleInputChange} placeholder='Address' className='form-control' />
+                                                    <div className={styles.inputfield}>
+                                                        <div className='col-12'>
+                                                            <label>Address</label>
+                                                            <input type="text" name="address" value={shippingAddress.address} onChange={handleInputChange} placeholder='Address' className='form-control' />
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div className={styles['from-row']}>
@@ -161,7 +161,7 @@ const Checkout = () => {
                                                     </div>
                                                     <div className='col-md-6'>
                                                         <label>State</label>
-                                                        <select name="stateCode" value={shippingAddress.stateCode} className='form-control' onChange={handleState}>
+                                                        <select type="text" name="stateCode" value={shippingAddress.stateCode} className='form-control' onChange={handleState}>
                                                             <option value="0">Select state</option>
                                                             {
                                                                 state &&
@@ -184,7 +184,7 @@ const Checkout = () => {
                                                     </div>
                                                     <div className='col-md-6'>
                                                         <label>Country code</label>
-                                                        <select name="countryCode" value={shippingAddress.countryCode} className='form-control' onChange={handleContry}>
+                                                        <select type="text" name="countryCode" value={shippingAddress.countryCode} className='form-control' onChange={handleContry}>
                                                             <option value="0">Select Country</option>
                                                             {
                                                                 country &&
@@ -230,26 +230,30 @@ const Checkout = () => {
                                             </h4>
                                             <div className={styles['from-inside']}>
                                                 <div className={styles['from-row']}>
-                                                    <div className='col-12'>
-                                                        <label>Company name</label>
-                                                        <input type="text" name="billingAddressCompanyName" value={shippingAddress.billingAddressCompanyName} onChange={handleInputChange} className='form-control' placeholder='company name' />
+                                                    <div className={styles.inputfield}>
+                                                        <div className='col-12'>
+                                                            <label>Company name</label>
+                                                            <input type="text" name="billingAddressCompanyName" value={shippingAddress.billingAddressCompanyName} onChange={handleInputChange} className='form-control' placeholder='company name' />
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div className={styles['from-row']}>
                                                     <div className='col-md-6'>
                                                         <label>First Name</label>
-                                                        <input type="text" name="billingAddressFirstName" value={shippingAddress.billingAddressFirstName} onChange={handleInputChange} className='form-control' placeholder='first name' />
+                                                        <input type="text" name="billingAddressFirstName" value={shippingAddress.billingAddressFirstName} onChange={handleInputChange} className='form-control' placeholder='First name' />
                                                     </div>
                                                     <div className='col-md-6'>
                                                         <label>Last Name</label>
-                                                        <input type="text" name="billingAddressLastName" value={shippingAddress.billingAddressLastName} onChange={handleInputChange} className='form-control' placeholder='company name' />
+                                                        <input type="text" name="billingAddressLastName" value={shippingAddress.billingAddressLastName} onChange={handleInputChange} className='form-control' placeholder='Last name' />
                                                     </div>
 
                                                 </div>
                                                 <div className={styles['from-row']}>
-                                                    <div className='col-12'>
-                                                        <label>Address</label>
-                                                        <input type="text" name="billingAddressone" value={shippingAddress.billingAddressone} onChange={handleInputChange} className='form-control' placeholder='company name' />
+                                                    <div className={styles.inputfield}>
+                                                        <div className='col-12'>
+                                                            <label>Address</label>
+                                                            <input type="text" name="billingAddressone" value={shippingAddress.billingAddressone} onChange={handleInputChange} className='form-control' placeholder='Address Line' />
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div className={styles['from-row']}>
@@ -272,7 +276,7 @@ const Checkout = () => {
                                                     </div>
                                                     <div className='col-md-6'>
                                                         <label>State</label>
-                                                        <select name="billingAddressStateCode" className='form-control' value={shippingAddress.billingAddressStateCode} onChange={handleState}>
+                                                        <select type="text" name="billingAddressStateCode" className='form-control' value={shippingAddress.billingAddressStateCode} onChange={handleState}>
                                                             <option value="0">Select state</option>
                                                             {
                                                                 state &&
@@ -295,7 +299,7 @@ const Checkout = () => {
                                                     </div>
                                                     <div className='col-md-6'>
                                                         <label>Country code</label>
-                                                        <select name="billingAddressCountrycode" value={shippingAddress.billingAddressCountrycode} className='form-control' onChange={handleContry}>
+                                                        <select type="text" name="billingAddressCountrycode" value={shippingAddress.billingAddressCountrycode} className='form-control' onChange={handleContry}>
                                                             <option value="0">Select Country</option>
                                                             {
                                                                 country &&
@@ -364,13 +368,12 @@ const Checkout = () => {
                                     </div>
                                 </div>
                             </form>
-                            <Elements stripe={stripeTestPromise}>
-                                <CheckOutFrom props={shippingAddress} />
-                            </Elements>
                         </div>
+                        <Elements stripe={stripeTestPromise}>
+                            <CheckOutFrom props={shippingAddress} />
+                        </Elements>
                     </div>
                 </div>
-
             </section>
             <Footer />
         </>

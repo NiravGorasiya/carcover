@@ -1,25 +1,70 @@
-import React, { useState } from 'react'
-import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import axios from 'axios';
+import React, { useMemo, useState } from "react"
+import {
+    useStripe,
+    useElements,
+    CardNumberElement,
+    CardCvcElement,
+    CardExpiryElement
+} from "@stripe/react-stripe-js";
+import axios from "axios";
+import styles from "./CheckOutForm.module.css"
 
 
+const useOptions = () => {
+    const options = useMemo(
+        () => ({
+            style: {
+                base: {
+                    color: "#424770",
+                    letterSpacing: "0.025em"
+                },
+                invalid: {
+                    color: "#9e2146"
+                },
+
+            }
+        }),
+    );
+
+    return options;
+};
 const CheckOutFrom = (props) => {
     const { cname, address, cityCode, countryCode, email, lname, phone, postCode, stateCode, fname, billingAddressCityCode, billingAddressCompanyName, billingAddressCountrycode, billingAddressEmail, billingAddressFirstName, billingAddressLastName, billingAddressPhone, billingAddressPostalCode, billingAddressStateCode, billingAddressone } = props?.props
 
+    const [isProcessing, setProcessingTo] = useState(false);
+    const [checkoutError, setCheckoutError] = useState();
+    const [message, setMesage] = useState("")
     const stripe = useStripe();
     const elements = useElements();
-    const [message, setMesage] = useState('')
+    const options = useOptions();
+
+    const handleCardDetailsChange = event => {
+        event.error ? setCheckoutError(event.error.message) : setCheckoutError();
+    };
 
     const handleSubmit = async (event) => {
-        event.preventDefault();
-        const { error, paymentMethod } = await stripe.createPaymentMethod({
+        event.preventDefault()
+        const cardElement = elements.getElement(CardNumberElement)
+
+        const billingDetails = {
+            name: "John",
+            email: "john@example.com",
+            address: {
+                city: "New York",
+                line1: "896 Bell Street",
+                state: "New York",
+                postal_code: "	10022"
+            }
+        }
+
+        const paymentMethodReq = await stripe.createPaymentMethod({
             type: "card",
-            card: elements.getElement(CardElement),
+            card: cardElement,
+            billing_details: billingDetails
         });
-        const { id } = paymentMethod;
 
         const data = {
-            payment_method: id,
+            payment_method: paymentMethodReq.paymentMethod.id,
             shipping_address: [{
                 company_name: cname,
                 e_mail: email,
@@ -53,25 +98,57 @@ const CheckOutFrom = (props) => {
                 },
             },
         }
-        axios.post("http://localhost:5500/api/order", data, {
+
+        await axios.post("http://localhost:5500/api/order", data, {
             withCredentials: true
         })
             .then((res) => {
                 setMesage(res.data.messge)
             })
             .catch((err) => {
-                console.log(err.repo, "der");
+                console.log(err, "der");
             })
     }
-
     return (
-        <form onSubmit={handleSubmit} style={{ maxWidth: 400 }}>
-            <CardElement />
-            {message ? (<h1 style={{ color: "green" }}>{message}</h1>) : (<h2></h2>)}
-            <button className='btn btn-primary'>Pay</button>
-        </form>
+        <>
+            <form onSubmit={handleSubmit}>
+                <div className={styles.checkOutBox}>
+                    <div className={styles.CheckOutFrom}>
+                        <span>Card number</span>
+                        <div className={styles.cardElement}>
+                            <label>
+                                <CardNumberElement options={options} className={styles.cardElement} onChange={handleCardDetailsChange} />
+                            </label>
+                        </div>
+                        <span>Expiration date</span>
+                        <div className={styles.cardElement}>
+                            <label>
+                                <CardExpiryElement options={options} className={styles.cardElement} onChange={handleCardDetailsChange} />
+                            </label>
+                        </div>
+                        <span>CVC</span>
+                        <div className={styles.cardElement}>
+                            <label>
+                                <CardCvcElement options={options} className={styles.cardElement} onChange={handleCardDetailsChange} />
+                            </label>
+                        </div>
+                        <button
+                            type="submit"
+                            className="btn btn-primary"
+                            disabled={isProcessing || !stripe}
+                        >
+                            Checkout
+                        </button>
+                        <h6 style={{ color: "green" }}>{message}</h6>
+                    </div>
+                </div>
+            </form>
+
+        </>
+
     )
 }
 
 export default CheckOutFrom
+
 

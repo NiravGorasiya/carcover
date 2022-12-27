@@ -1,30 +1,74 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import Header from "../Header/Header"
 import Footer from "../Footer/Footer"
 import Styles from "./ProductDetails.module.css"
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { useEffect } from 'react'
+import url from '../../api/Apiservices';
 
 const Productdetails = () => {
+    const [prodetail, setProductDetail] = useState({})
+    const [title, setTitle] = useState("")
+    const [regularPrice, setRegularPrice] = useState("")
+    const [currentPrice, setCurrentPrice] = useState("")
     const router = useRouter()
-    const categoryid = router.query.id
+    const categoryid = router.query.slug
+    const category = router.query.category;
+    const year = router.query.year;
+    const make = router.query.make;
+    const model = router.query.model;
+    const body = router.query.body
 
 
+    const producrtdetail = async () => {
+        try {
+            await axios.get(`${url}/product/one/${categoryid}`)
+                .then((response) => {
+                    response?.data?.result?.product?.map((value) => {
+                        console.log(value, "value");
+                        setTitle(value?.title)
+                        setProductDetail(value)
+                        setRegularPrice(value?.regular_price)
+                        setCurrentPrice(value?.current_Price)
+                    })
+                })
+        } catch (error) {
+
+        }
+    }
+
+
+    const addtoCart = (item) => {
+        const data = { product_id: item }
+        axios.post(`${url}/cart/add/${category}/${year}/${make}/${model}/${body}`, data, {
+            withCredentials: true
+        })
+            .then((res) => {
+                console.log(res);
+            })
+    }
+
+    useEffect(() => {
+        producrtdetail()
+    }, [categoryid])
+    console.log(title, "title");
     return (
         <>
             <Header />
             <section className={` ${Styles['page-content']} ${Styles['single-wrapper']}`}>
                 <div className="container">
-                    <div className="inner-wrap p-info">
+                    <div className={`${Styles['inner-wrap']} ${Styles['p-info']}`}>
                         <nav aria-label="breadcrumb">
                             <ol className="breadcrumb">
                                 <li className="breadcrumb-item"><a href="https://www.carcoversfactory.com/">Home</a></li>
-                                <li className="breadcrumb-item"><a href="https://www.carcoversfactory.com/car-covers/">Car Covers</a></li>
-                                <li className="breadcrumb-item"><a href="https://www.carcoversfactory.com/car-covers/2008">2008</a></li>
-                                <li className="breadcrumb-item"><a href="https://www.carcoversfactory.com/car-covers/2008/daihatsu">Daihatsu</a></li>
-                                <li className="breadcrumb-item"><a href="https://www.carcoversfactory.com/car-covers/2008/daihatsu/charade">Charade</a></li>
-                                <li className="breadcrumb-item"><a href="https://www.carcoversfactory.com/car-covers/2008/daihatsu/charade/4-door-hatchback">4 Door Hatchback</a></li>
-                                <li className="breadcrumb-item"><a>Premium Edition Car Cover</a></li>
+                                <li className="breadcrumb-item"><a href="https://www.carcoversfactory.com/car-covers/">{category} Covers</a></li>
+                                <li className="breadcrumb-item"><a href="https://www.carcoversfactory.com/car-covers/2008">{year}</a></li>
+                                <li className="breadcrumb-item"><a href="https://www.carcoversfactory.com/car-covers/2008/daihatsu">{make}</a></li>
+                                <li className="breadcrumb-item"><a href="https://www.carcoversfactory.com/car-covers/2008/daihatsu/charade">{model}</a></li>
+                                <li className="breadcrumb-item"><a href="https://www.carcoversfactory.com/car-covers/2008/daihatsu/charade/4-door-hatchback">{body}</a></li>
+                                <li className="breadcrumb-item"><a>{title}</a></li>
                             </ol>
                         </nav>
                         <div id="notification"></div>
@@ -59,9 +103,8 @@ const Productdetails = () => {
                                 </div>
                                 <div className="col-sm entry-content">
                                     <div className="price-wrap">
-                                        <span className="price">$179.95</span>
-                                        <div className="price-row">Regular Price: <span className="red" style={{ textDecorationLine: "line-through" }}>$419.89</span> </div>
-                                        <div className="price-row">You Save <span className="red">$239.94</span></div>
+                                        <span className="price">${regularPrice}</span>
+                                        <div className="price-row">Regular Price: {regularPrice}<span className="red" style={{ textDecorationLine: "line-through" }}>${currentPrice}</span> </div>
                                     </div>
                                     <div className="clearfix"></div>
                                     <div className="price-wrap">
@@ -73,14 +116,14 @@ const Productdetails = () => {
                                     <input type="hidden" name="option[169]" value="" />
                                     <input type="hidden" name="option[170]" value="" />
                                     <input type="hidden" name="path_id" value="2:4880" />
-
                                     <ul style={{ paddingLeft: "15px" }} className="product-attr	">
-                                        <li><span>Type</span><b> : Outdoor/Indoor</b></li>
-                                        <li><span>Warranty</span><b> : Lifetime</b></li>
-                                        <li><span>Breathable</span><b> : Yes</b></li>
-                                        <li><span>Layers</span><b> : Outperforms 7 Layer Covers</b></li>
-                                        <li><span>Material</span><b> : Polypropylene</b></li>
-                                        <li><span>Soft Fleece</span><b> : Yes</b></li>
+                                        {
+                                            prodetail?.attributes?.map((item) => (
+                                                <Fragment key={prodetail._id}>
+                                                    <li><span>{item.Name}</span><b>{item.Value}</b></li>
+                                                </Fragment>
+                                            ))
+                                        }
                                     </ul>
                                     <ul className="product-star-p-page">
                                         <li>
@@ -147,9 +190,8 @@ const Productdetails = () => {
                                     <div className="clearfix"></div>
                                     <input type="hidden" id="product_id" name="product_id" size="2" value="1" />
                                     <a id="button-cart" className="cart-btn">
-                                        <img src="https://d68my205fyswa.cloudfront.net/ccf-static-5vowu7p8kuts75c2podstmjlw0s0vo5mlgnecl67uvwlv7vfquymjw.png" />
+                                        <img src="https://d68my205fyswa.cloudfront.net/ccf-static-5vowu7p8kuts75c2podstmjlw0s0vo5mlgnecl67uvwlv7vfquymjw.png" onClick={() => addtoCart(prodetail._id)} />
                                     </a>
-
                                 </div>
 
                                 <div className="col-md extra-attr">
@@ -205,13 +247,13 @@ const Productdetails = () => {
                                         <div className="tab-pane fade " id="nav-faqs" role="tabpanel" aria-labelledby="nav-faqs-tab">
                                             <div className="entry-single">
                                                 <h4 className="title mt-4">Does your cover has a place for my antenna?</h4>
-                                                Our covers don’t come with a built in hole because we think that it will damage the cover. We give a free adhesive antenna patch with your cover. So you can simply stick your antenna through your cover and apply the antenna patch over the antenna and stick it onto the cover. This way, the hole doesn’t spread. This is an industry standard for all vehicles with antennas.											</div>
+                                                Our covers don t come with a built in hole because we think that it will damage the cover. We give a free adhesive antenna patch with your cover. So you can simply stick your antenna through your cover and apply the antenna patch over the antenna and stick it onto the cover. This way, the hole doesn’t spread. This is an industry standard for all vehicles with antennas.											</div>
                                             <div className="entry-single">
                                                 <h4 className="title mt-4">Does your car covers come with mirror pockets?</h4>
                                                 No. Because, having mirror pockets on a car cover will cause it to rip over the years. Installing and removing the cover with mirror pockets, will loosen the seams around the mirror pocket areas. And we want to make sure that our customers have the highest quality and most durable cover which is why we have engineered our covers to not have mirror pockets which is also a huge customer preference.											</div>
                                             <div className="entry-single">
                                                 <h4 className="title mt-4">What size of Hail does your cover protect?</h4>
-                                                There’s no cover in the market that guarantees protection from hail. Our Premium Edition covers are the highest quality and sturdiest in the market but we do not guarantee a specific hail size, hence, we are confident our Premium Edition Cover can get the job done against smallest  pea sized hail.											</div>
+                                                There s no cover in the market that guarantees protection from hail. Our Premium Edition covers are the highest quality and sturdiest in the market but we do not guarantee a specific hail size, hence, we are confident our Premium Edition Cover can get the job done against smallest  pea sized hail.											</div>
                                             <div className="entry-single">
                                                 <h4 className="title mt-4">What is the difference between your Premium Edition Cover versus the Standard Edition?</h4>
                                                 Our Premium Edition cover is made of heavy duty Polypropylene material that can outperform 7-layer cover too which can withstand any weather conditions including normal hail. while the Standard Edition cover is made of 5-layer Polypropylene material; also doesn’t have much protection from hail. While both covers are of high quality, both can withstand any type of weather conditions and simply lasts longer due to the thick fibers.											</div>
@@ -300,3 +342,5 @@ const Productdetails = () => {
 }
 
 export default Productdetails
+
+

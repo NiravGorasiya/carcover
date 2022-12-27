@@ -8,6 +8,7 @@ import { useEffect } from 'react'
 import axios from 'axios'
 import url from "../../api/Apiservices"
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 
 const Cart = () => {
     const [date, setDate] = useState([])
@@ -21,9 +22,9 @@ const Cart = () => {
     const [qty, setQty] = useState(1)
     const [dDate, setdDate] = useState('')
     const [loding, setLoding] = useState(false)
-
+    const [errorDate, setErrorDate] = useState("")
     const [deliveryDateValue, setDeliveryDateValue] = useState('')
-
+    const router = useRouter()
 
     const dateList = async () => {
         try {
@@ -111,7 +112,11 @@ const Cart = () => {
             withCredentials: true
         })
             .then((res) => {
-                console.log(res, "response");
+                router?.push(`/checkout`)
+            })
+            .catch((err) => {
+                console.log(err, 'err');
+                setErrorDate(err?.response?.data);
             })
     }
     const deleteProduct = (id) => {
@@ -152,7 +157,6 @@ const Cart = () => {
         cartToatal()
         dateList()
     }, [qty])
-    console.log(productData.length);
     return (
         <>
             <Header />
@@ -181,64 +185,66 @@ const Cart = () => {
                                                         <tbody>
                                                             {
                                                                 productData?.map((item) => (
-                                                                    <tr>
-                                                                        <td>
-                                                                            <Link href="df">
-                                                                                <img src={`http://localhost:5500/${item.image}`}></img>
-                                                                            </Link>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div>
-                                                                                <Link href="sadf">
-                                                                                    {
-                                                                                        item?.Produt?.map((item1) => (
-                                                                                            <>
-                                                                                                <h6 style={{ color: "green", listStyle: "none ", fontSize: "23px", textTransform: "capitalize" }}>{item1.product_name}</h6>
-                                                                                                <ul>
-                                                                                                    <li>year {item1.year}</li>
-                                                                                                    <li> Make {item1.make}</li>
-                                                                                                    <li> Model {item1.model}</li>
-                                                                                                    <li> Body {item1.body}</li>
-                                                                                                </ul>
-                                                                                            </>
-                                                                                        ))
-                                                                                    }
+                                                                    <Fragment key={item._id}>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <Link href="df">
+                                                                                    <img src={`http://localhost:5500/${item.image}`}></img>
                                                                                 </Link>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div>CARCF-25</div>
-                                                                        </td>
-                                                                        <td className={`${styles.quantity} ${styles["entry-quantity"]}`} style={{ minWidth: "140px" }}>
-                                                                            <div className={`input-group' ${styles.quantityp}`} style={{ minWidth: "140px" }}>
-                                                                                <span className={styles['input-group-btn']} style={{ border: "solid 1px", borderRadius: "0" }}>
-                                                                                    <button className={`btn ${styles['btn-default minus']}`} id="" type="button" onClick={() => updateproduct(item._id, item.quantity - 1)}>
-                                                                                        <span className='fa fa-minus'>
-                                                                                        </span>
-                                                                                    </button>
-                                                                                </span>
-                                                                                <input type="text"
-                                                                                    value={item.quantity}
-                                                                                    className='form-control txtQuanity text-center p-0'
-                                                                                />
-                                                                                <span className='input-group-btn' style={{ border: "solid 1px", borderRadius: "0" }}>
-                                                                                    <button className='btn btn-default minus' id="" type="button" onClick={() => updateproduct(item._id, item.quantity + 1)}>
-                                                                                        <span className='fa fa-plus'>
-                                                                                        </span>
-                                                                                    </button>
-                                                                                </span>
-                                                                            </div>
-                                                                            <span>
-                                                                                <button type="button" style={{ border: "none" }} onClick={() => deleteProduct(item._id)}>
-                                                                                    <i className='fa fa-times-circle text-danger fa-lg' style={{ marginLeft: "58px" }}>
+                                                                            </td>
+                                                                            <td>
+                                                                                <div>
+                                                                                    <Link href="sadf">
+                                                                                        {
+                                                                                            item?.Produt?.map((item1) => (
+                                                                                                <>
+                                                                                                    <h6 style={{ color: "green", listStyle: "none ", fontSize: "23px", textTransform: "capitalize" }}>{item1.product_name}</h6>
+                                                                                                    <ul>
+                                                                                                        <li>year {item1.year}</li>
+                                                                                                        <li> Make {item1.make}</li>
+                                                                                                        <li> Model {item1.model}</li>
+                                                                                                        <li> Body {item1.body}</li>
+                                                                                                    </ul>
+                                                                                                </>
+                                                                                            ))
+                                                                                        }
+                                                                                    </Link>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td>
+                                                                                <div>CARCF-25</div>
+                                                                            </td>
+                                                                            <td className={`${styles.quantity} ${styles["entry-quantity"]}`} style={{ minWidth: "140px" }}>
+                                                                                <div className={`input-group' ${styles.quantityp}`} style={{ minWidth: "140px" }}>
+                                                                                    <span className={styles['input-group-btn']} style={{ border: "solid 1px", borderRadius: "0" }}>
+                                                                                        <button className={`btn ${styles['btn-default minus']}`} id="" type="button" onClick={() => updateproduct(item._id, item.quantity - 1)}>
+                                                                                            <span className='fa fa-minus'>
+                                                                                            </span>
+                                                                                        </button>
+                                                                                    </span>
+                                                                                    <input type="text"
+                                                                                        value={item.quantity}
+                                                                                        className='form-control txtQuanity text-center p-0'
+                                                                                    />
+                                                                                    <span className='input-group-btn' style={{ border: "solid 1px", borderRadius: "0" }}>
+                                                                                        <button className='btn btn-default minus' id="" type="button" onClick={() => updateproduct(item._id, item.quantity + 1)}>
+                                                                                            <span className='fa fa-plus'>
+                                                                                            </span>
+                                                                                        </button>
+                                                                                    </span>
+                                                                                </div>
+                                                                                <span>
+                                                                                    <button type="button" style={{ border: "none" }} onClick={() => deleteProduct(item._id)}>
+                                                                                        <i className='fa fa-times-circle text-danger fa-lg' style={{ marginLeft: "58px" }}>
 
-                                                                                    </i>
-                                                                                </button>
-                                                                            </span>
-                                                                        </td>
-                                                                        <td>${item.price}</td>
-                                                                        <td>${item.total}</td>
-                                                                    </tr>
+                                                                                        </i>
+                                                                                    </button>
+                                                                                </span>
+                                                                            </td>
+                                                                            <td>${item.price}</td>
+                                                                            <td>${item.total}</td>
+                                                                        </tr>
+                                                                    </Fragment>
                                                                 ))
                                                             }
                                                         </tbody>
@@ -318,7 +324,7 @@ const Cart = () => {
                                                         </div>
                                                         <div id="ship-wraning"></div>
                                                         <div className='clearfix'>
-
+                                                            <h5 style={{ color: "red" }}>{errorDate}</h5>
                                                         </div>
                                                         <div className='add_charge_message mb-3'>
                                                             Note: An extra Shipping Fee of $30 will be required to the states of Hawaii, Alaska, & Puerto Rico.
@@ -365,19 +371,23 @@ const Cart = () => {
                                                                     }
                                                                     {
                                                                         cartToral?.map((item) => (
-                                                                            item?.coupon.map((item1, k) => (
-                                                                                <tr >
-                                                                                    <td>
-                                                                                        <h6 style={{ fontWeight: "bold" }}>
-                                                                                            {item1.text}
-                                                                                            <br></br>
-                                                                                        </h6>
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        ${item1.value}
-                                                                                    </td>
-                                                                                </tr>
-                                                                            ))
+                                                                            item?.coupon.map((item1, k) => {
+                                                                                if (item1.value) {
+                                                                                    return (
+                                                                                        <tr >
+                                                                                            <td>
+                                                                                                <h6 style={{ fontWeight: "bold" }}>
+                                                                                                    {item1.text}
+                                                                                                    <br></br>
+                                                                                                </h6>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                ${item1.value}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    )
+                                                                                }
+                                                                            })
                                                                         ))
                                                                     }
                                                                     {
@@ -399,10 +409,9 @@ const Cart = () => {
                                                             </table>
                                                             <div className={styles['entry-footer']}>
                                                                 <Link href="/" className={styles['btn-grey']}>Continue Shopping</Link>
-                                                                <Link href="/checkout" className={styles['btn-blue']} >
+                                                                <button className={styles['btn-blue']} onClick={handleCheckout}>
                                                                     Checkout &nbsp;
-                                                                    <span className='fa fa-share-square-o' onClick={handleCheckout}></span>
-                                                                </Link>
+                                                                </button>
                                                             </div>
                                                         </div>
                                                     </div>

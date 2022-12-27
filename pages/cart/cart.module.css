@@ -226,6 +226,7 @@
     display: inline-block;
     text-transform: uppercase;
     font-size: small;
+    border: none;
 }
 
 .single-wrapper-glob .information-wrap .content .holder .cart-footer .guaranteeBox {
