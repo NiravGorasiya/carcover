@@ -8,6 +8,7 @@ import {
 } from "@stripe/react-stripe-js";
 import axios from "axios";
 import styles from "./CheckOutForm.module.css"
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 
 const useOptions = () => {
@@ -140,6 +141,9 @@ const CheckOutFrom = (props) => {
                             Checkout
                         </button>
                         <h6 style={{ color: "green" }}>{message}</h6>
+                        <PayPalScriptProvider options={{ "client-id": "test" }}>
+                            <PayPalButtons style={{ layout: "horizontal" }} />
+                        </PayPalScriptProvider>
                     </div>
                 </div>
             </form>

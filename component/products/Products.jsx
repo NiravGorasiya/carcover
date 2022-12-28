@@ -4,11 +4,10 @@ import axios from "axios"
 import Styles from "./Product.module.css"
 import url from '../../api/Apiservices'
 import Cart from '../../pages/cart'
-
+import { useRouter } from 'next/router'
 
 const Products = (products) => {
-
-
+    const router = useRouter()
     const addtoCart = (item) => {
         const data = { product_id: item }
         axios.post(`${url}/cart/add/${products?.category}/${products?.year}/${products?.make}/${products?.model}/${products?.body}`, data, {
@@ -16,6 +15,7 @@ const Products = (products) => {
         })
             .then((res) => {
                 console.log(res);
+                router?.push("/cart")
             })
     }
 
