@@ -3,49 +3,26 @@ require("./db/connection")
 const express = require('express')
 const logger = require("morgan")
 const path = require("path")
-const sessions = require("express-session")
 const cookieParser = require("cookie-parser")
-const stripe = require("stripe")("sk_test_51IvdjGSBmFmiKlBdIxTbWlfs54H4HQ57fBiJaCInxepYHkmQqhM0AkEh5anFTLdxh8m0TbGmwy9hSmvcuPzl2p8Y00n3VsCoXx");
 
-const app = express()
-
+var app = express()
 const port = process.env.PORT
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public/uploads')));
 app.use(cookieParser())
 
-app.use(sessions({
-    secret: 'jay',
-    saveUninitialized: true,
-    resave: true
-}));
 
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header('Access-Control-Allow-Origin', 'http://localhost:5500`');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization,  X-PINGOTHER');
     res.header('Access-Control-Allow-Credentials', true);
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS ');
     next();
 });
 
-//Router
-require('./seeder/admin')
-const router = require('./router/index');
-app.use(router);
-
-var sess;
-app.get('/', (req, res) => {
-    sess = req.session;
-    if (sess.sessionId) {
-        console.log(req.cookies.node_session);
-    }
-    res.send(req.cookies)
-});
-
-
+app.get('/', (req, res) => res.sendFile(__dirname + "/index.html"));
 app.get("/deleteCooike", (req, res, next) => {
     res.clearCookie("")
     res.send("all clear cookie")
@@ -56,6 +33,9 @@ app.get("/getCookie", (req, res, next) => {
     res.send(req.cookies)
 })
 
+require('./seeder/admin')
+const router = require('./router/index');
+app.use(router);
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)

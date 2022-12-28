@@ -2,8 +2,7 @@
 const Coupon = require("../Models/Coupon");
 const otpGenerator = require('otp-generator');
 var jwt = require('jsonwebtoken');
-const { changeDateFormatTo } = require("./helper");
-
+const { changeDateFormatTo, compareDates } = require("./helper");
 const coupon_add = async (req, res) => {
     try {
         const { discount, type, max_price, max_use, end_date, start_date } = req.body
@@ -68,7 +67,7 @@ const coupon_getone = async (req, res) => {
             return res.status(400).json({ messge: "plase enter valit coupon code" })
         }
         var x = new Date(new Date().setDate(new Date().getDate()))
-        if (changeDateFormatTo(x) > coupon.end_date || coupon.coupon_use >= coupon.max_use) {
+        if (compareDates(changeDateFormatTo(x), coupon.end_date) || coupon.coupon_use >= coupon.max_use) {
             return res.status(400).json({ status: false, messge: "coupon is expir" });
         }
         const token = await jwt.sign({ id: coupon.coupon_code }, process.env.SECRETKEY)

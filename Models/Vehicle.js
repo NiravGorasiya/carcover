@@ -22,7 +22,7 @@ const vehicleSchema = new mongoose.Schema({
         type: Array
     }
 }, {
-    timeseries: true
+    timestamps: true
 })
 
 // vehicleSchema.methods.toJSON = function () {

@@ -33,7 +33,7 @@ const Coupon = new mongoose.Schema({
         default: false
     }
 }, {
-    timeseries: true
+    timestamps: true
 })
 
 module.exports = mongoose.model("Coupon", Coupon)

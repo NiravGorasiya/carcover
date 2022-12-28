@@ -12,7 +12,7 @@ const modelSchema = new mongoose.Schema({
         required: false
     }
 }, {
-    timeseries: true
+    timestamps: true
 })
 
 module.exports = mongoose.model("Model", modelSchema)

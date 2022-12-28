@@ -7,13 +7,6 @@ const Orders = mongoose.Schema({
     products: {
         type: Array
     },
-    coupon: [
-        {
-            coupon_code: String,
-            coupon_value: Number,
-            _id: false
-        }
-    ],
     payment_method: {
         type: String
     },
@@ -121,15 +114,18 @@ const Orders = mongoose.Schema({
             _id: false
         }
     ],
-    delivery_fee: {
-        type: Number
+    total: {
+        type: Array
     },
-    delivery_date: {
-        type: String
+    shipping: {
+        type: Array
     },
     total_price:
     {
         type: Number
+    },
+    delivery_date: {
+        type: String
     },
     discription: {
         type: String
@@ -137,10 +133,13 @@ const Orders = mongoose.Schema({
     Date: {
         type: String
     },
+    user_shipping: {
+        type: Array
+    },
     status: {
         type: String,
-        enum: ['pending', 'ready', 'failed', 'cancelled', 'delivered'],
-        default: 'pending'
+        enum: ['pending', 'ready', 'missing', 'failed', 'cancelled', 'delivered'],
+        default: 'missing',
     },
 }, {
     timestamps: true

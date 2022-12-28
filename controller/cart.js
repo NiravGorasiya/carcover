@@ -1,3 +1,4 @@
+'use strict'
 const Cart = require("../Models/cart");
 const Product = require("../Models/Product");
 const { v4: uuidv4 } = require('uuid');
@@ -6,9 +7,6 @@ const Vehicle = require("../Models/Vehicle");
 const Coupon = require("../Models/Coupon");
 var jwt = require('jsonwebtoken');
 const { getMonthName, days } = require("./helper");
-
-//session variable
-var sess
 
 const add_cart = async (req, res) => {
     try {
@@ -25,13 +23,10 @@ const add_cart = async (req, res) => {
         }
         const categ = await Category.findById(data.Category_id)
         let id
-        sess = req.session;
-        sess.sessionId = uuidv4();
-        console.log(req.cookies.node_session);
         if (req.cookies.node_session) {
             id = req.cookies.node_session
         } else {
-            id = sess.sessionId
+            id = uuidv4();
             res.cookie('node_session', id)
         }
         const cartdata = await Cart.findOne({ user_id: id, product_id: data._id })
@@ -74,7 +69,7 @@ const add_cart = async (req, res) => {
 const update_cart = async (req, res) => {
     try {
         res.clearCookie("token")
-        var carts_total = req.carts_total
+        // var carts_total = req.carts_total
         var id = req.cookies.node_session
         const cart = await Cart.findById(req.params.id)
         if (!cart) {
@@ -93,7 +88,7 @@ const update_cart = async (req, res) => {
             return res.status(400).json({ status: false, message: "cart not upate" })
         }
         let products = await Cart.find({ user_id: id })
-        return res.status(200).json({ status: true, result: { products, carts_total } })
+        return res.status(200).json({ status: true, result: products })
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
@@ -129,7 +124,7 @@ var carts_total = async (req, res, next) => {
     var CART_TOTALS = []
     let ids = req.cookies.node_session
     let carts = await Cart.find({ user_id: ids });
-    if (carts?.length <= 0) {
+    if (carts.length <= 0) {
         return res.status(404).json({ status: false, message: "carts product not foud" })
     }
     var total = 0
@@ -201,10 +196,10 @@ var carts_total = async (req, res, next) => {
     }
     var a = parseInt(total) + parseFloat(delivery_fee) - parseFloat(dd);
     await CART_TOTALS.push({
-        sub_total: [{ "text": "Sub_Total:", "value": total }],
-        shipping: [{ "text": date, "value": delivery_fees }],
-        coupon: [{ "text": bbbb, "value": dis }],
-        Total: [{ "text": "Total:", "value": a.toFixed(2) }]
+        sub_total: { "text": "Sub_Total:", "value": total },
+        shipping: { "text": date, "value": delivery_fees },
+        coupon: { "text": bbbb, "value": dis },
+        Total: { "text": "Total:", "value": parseFloat(a.toFixed(2)) }
     })
     req.carts_total = CART_TOTALS
     next()
@@ -213,7 +208,7 @@ var carts_total = async (req, res, next) => {
 var delivery_data = async (req, res, next) => {
     let ids = req.cookies.node_session
     let carts = await Cart.find({ user_id: ids });
-    if (carts?.length <= 0) {
+    if (carts.length <= 0) {
         return res.status(404).json({ status: false, message: "carts product not foud" })
     }
     let QUANTITY = []
@@ -311,11 +306,7 @@ const cart_checkout = async (req, res) => {
             }
             var total
             var carts_total = req.carts_total
-            carts_total.map(i => {
-                i.Total.map(i => {
-                    total = i.value
-                })
-            })
+            total = parseFloat(carts_total[0].Total.value)
             return res.status(200).json({ status: true, result: { total } });
         }
     } catch (error) {

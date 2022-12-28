@@ -13,9 +13,16 @@ var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'S
 var changeDateFormatTo = date => {
     var date = date.toISOString().slice(0, 10)
     var [yy, mm, dd] = date.split(/-/g);
-    return `${dd}-${mm}-${yy}`;
+    return `${dd}/${mm}/${yy}`;
 };
 
+function compareDates(d1, d2) {
+    var parts = d1.split('/');
+    var d1 = Number(parts[2] + parts[1] + parts[0]);
+    parts = d2.split('/');
+    var d2 = Number(parts[2] + parts[1] + parts[0]);
+    return d1 >= d2;
+}
 
 const country_all = (req, res) => {
     let country = []
@@ -50,4 +57,4 @@ const city_all = (req, res) => {
 }
 
 
-module.exports = { getMonthName, days, changeDateFormatTo, country_all, state_all, city_all } 
+module.exports = { getMonthName, days, changeDateFormatTo, country_all, state_all, city_all, compareDates } 

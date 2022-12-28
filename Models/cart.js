@@ -33,7 +33,7 @@ const cartSchema = new mongoose.Schema({
         taype: String
     }
 }, {
-    timeseries: true,
+    timestamps: true,
 })
 
 
