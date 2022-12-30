@@ -9,7 +9,7 @@ import {
 import axios from "axios";
 import styles from "./CheckOutForm.module.css"
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-
+import { useRouter } from 'next/router'
 
 const useOptions = () => {
     const options = useMemo(
@@ -29,6 +29,7 @@ const useOptions = () => {
 
     return options;
 };
+
 const CheckOutFrom = (props) => {
     const { cname, address, cityCode, countryCode, email, lname, phone, postCode, stateCode, fname, billingAddressCityCode, billingAddressCompanyName, billingAddressCountrycode, billingAddressEmail, billingAddressFirstName, billingAddressLastName, billingAddressPhone, billingAddressPostalCode, billingAddressStateCode, billingAddressone } = props?.props
 
@@ -38,6 +39,7 @@ const CheckOutFrom = (props) => {
     const stripe = useStripe();
     const elements = useElements();
     const options = useOptions();
+    const router = useRouter()
 
     const handleCardDetailsChange = event => {
         event.error ? setCheckoutError(event.error.message) : setCheckoutError();
@@ -65,7 +67,10 @@ const CheckOutFrom = (props) => {
         });
 
         const data = {
-            payment_method: paymentMethodReq.paymentMethod.id,
+            // payment_method: paymentMethodReq.paymentMethod.id,
+            // payment_method_type: "card",
+            payment_method_type: "paypal",
+            //payment_method: "paypal",
             shipping_address: [{
                 company_name: cname,
                 e_mail: email,
@@ -104,7 +109,8 @@ const CheckOutFrom = (props) => {
             withCredentials: true
         })
             .then((res) => {
-                setMesage(res.data.messge)
+                router.push(res.data)
+                setMesage(res.data)
             })
             .catch((err) => {
                 console.log(err, "der");
@@ -141,13 +147,9 @@ const CheckOutFrom = (props) => {
                             Checkout
                         </button>
                         <h6 style={{ color: "green" }}>{message}</h6>
-                        <PayPalScriptProvider options={{ "client-id": "test" }}>
-                            <PayPalButtons style={{ layout: "horizontal" }} />
-                        </PayPalScriptProvider>
                     </div>
                 </div>
             </form>
-
         </>
 
     )

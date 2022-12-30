@@ -20,6 +20,7 @@ const Checkout = () => {
     const [country, setContry] = useState([])
     const [city, setCity] = useState([])
     const [state, setState] = useState([])
+    const [billingState, setBillingState] = useState([])
 
     const initialValues = {
         cname: "",
@@ -54,6 +55,15 @@ const Checkout = () => {
         setCity(null)
     }
 
+    const handleBillingContry = (e) => {
+        const { name, value } = e.target;
+        setShippingAddress({ ...shippingAddress, [name]: value })
+        const dt = states.filter((item) => item.countryCode == value)
+        setBillingState(dt);
+        setCity(null)
+    }
+
+
     const handleState = (e) => {
         const { name, value } = e.target;
         setShippingAddress({ ...shippingAddress, [name]: value })
@@ -72,14 +82,20 @@ const Checkout = () => {
         setShippingAddress({ ...shippingAddress, [name]: value })
     }
 
-
     useEffect(() => {
         setContry(countries)
     }, [])
 
     const handleCopy = (e) => {
         e.preventDefault();
-
+        setShippingAddress({
+            ...shippingAddress, billingAddressCompanyName: shippingAddress.cname, billingAddressEmail: shippingAddress.email,
+            billingAddressFirstName: shippingAddress.fname, billingAddressLastName: shippingAddress.lname,
+            billingAddressPostalCode: shippingAddress.postCode, billingAddressLastName: shippingAddress.lname,
+            billingAddressPhone: shippingAddress.phone, billingAddressone: shippingAddress.address,
+            billingAddressCountrycode: shippingAddress.countryCode,
+            billingAddressCityCode: shippingAddress.cityCode, billingAddressStateCode: shippingAddress.stateCode,
+        })
     }
 
 
@@ -144,20 +160,7 @@ const Checkout = () => {
                                                 <div className={styles['from-row']}>
                                                     <div className='col-md-6'>
                                                         <label>City</label>
-                                                        <select type="text" name="cityCode" value={shippingAddress.cityCode} placeholder='company name' onChange={handleCity} className='form-control'>
-                                                            <option value="0">Select city</option>
-                                                            {
-                                                                city &&
-                                                                    city !== undefined ?
-                                                                    city.map((ctr, index) => {
-                                                                        return (
-                                                                            <>
-                                                                                <option key={index}>{ctr.name}</option>
-                                                                            </>
-                                                                        )
-                                                                    }) : "Nocountry"
-                                                            }
-                                                        </select>
+                                                        <input type="text" name="cityCode" value={shippingAddress.cityCode} onChange={handleInputChange} placeholder='City name' className='form-control' />
                                                     </div>
                                                     <div className='col-md-6'>
                                                         <label>State</label>
@@ -180,7 +183,7 @@ const Checkout = () => {
                                                 <div className={styles['from-row']}>
                                                     <div className='col-md-6'>
                                                         <label>Postal code</label>
-                                                        <input type="text" name="postCode" value={shippingAddress.postCode} className='form-control' onChange={handleInputChange} placeholder='postal code' />
+                                                        <input type="text" name="postCode" value={shippingAddress.postCode} className='form-control' onChange={handleInputChange} placeholder='Postal code' />
                                                     </div>
                                                     <div className='col-md-6'>
                                                         <label>Country code</label>
@@ -233,7 +236,7 @@ const Checkout = () => {
                                                     <div className={styles.inputfield}>
                                                         <div className='col-12'>
                                                             <label>Company name</label>
-                                                            <input type="text" name="billingAddressCompanyName" value={shippingAddress.billingAddressCompanyName} onChange={handleInputChange} className='form-control' placeholder='company name' />
+                                                            <input type="text" name="billingAddressCompanyName" value={shippingAddress.billingAddressCompanyName} onChange={handleInputChange} className='form-control' placeholder='Company name' />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -259,29 +262,16 @@ const Checkout = () => {
                                                 <div className={styles['from-row']}>
                                                     <div className='col-md-6'>
                                                         <label>City</label>
-                                                        <select type="text" name="billingAddressCityCode" value={shippingAddress.billingAddressCityCode} className='form-control' onChange={handleCity} placeholder='company name' >
-                                                            <option value="0">Select city</option>
-                                                            {
-                                                                city &&
-                                                                    city !== undefined ?
-                                                                    city.map((ctr, index) => {
-                                                                        return (
-                                                                            <>
-                                                                                <option key={index}>{ctr.name}</option>
-                                                                            </>
-                                                                        )
-                                                                    }) : "Nocountry"
-                                                            }
-                                                        </select>
+                                                        <input type="text" name="billingAddressCityCode" value={shippingAddress.billingAddressCityCode} onChange={handleInputChange} className='form-control' placeholder='City name' />
                                                     </div>
                                                     <div className='col-md-6'>
                                                         <label>State</label>
                                                         <select type="text" name="billingAddressStateCode" className='form-control' value={shippingAddress.billingAddressStateCode} onChange={handleState}>
                                                             <option value="0">Select state</option>
                                                             {
-                                                                state &&
-                                                                    state !== undefined ?
-                                                                    state.map((ctr, index) => {
+                                                                billingState &&
+                                                                    billingState !== undefined ?
+                                                                    billingState.map((ctr, index) => {
                                                                         return (
                                                                             <>
                                                                                 <option key={index} value={ctr.isoCode}>{ctr.name}</option>
@@ -295,11 +285,11 @@ const Checkout = () => {
                                                 <div className={styles['from-row']}>
                                                     <div className='col-md-6'>
                                                         <label>Postal code</label>
-                                                        <input type="text" name="billingAddressPostalCode" className='form-control' value={shippingAddress.billingAddressPostalCode} onChange={handleInputChange} placeholder='postal code' />
+                                                        <input type="text" name="billingAddressPostalCode" className='form-control' value={shippingAddress.billingAddressPostalCode} onChange={handleInputChange} placeholder='Postal code' />
                                                     </div>
                                                     <div className='col-md-6'>
                                                         <label>Country code</label>
-                                                        <select type="text" name="billingAddressCountrycode" value={shippingAddress.billingAddressCountrycode} className='form-control' onChange={handleContry}>
+                                                        <select type="text" name="billingAddressCountrycode" value={shippingAddress.billingAddressCountrycode} className='form-control' onChange={handleBillingContry}>
                                                             <option value="0">Select Country</option>
                                                             {
                                                                 country &&
@@ -318,11 +308,11 @@ const Checkout = () => {
                                                 <div className={styles['from-row']}>
                                                     <div className='col-md-6'>
                                                         <label>Phone</label>
-                                                        <input type="text" name="billingAddressPhone" value={shippingAddress.billingAddressPhone} onChange={handleInputChange} className='form-control' placeholder='company name' />
+                                                        <input type="text" name="billingAddressPhone" value={shippingAddress.billingAddressPhone} onChange={handleInputChange} className='form-control' placeholder='Company name' />
                                                     </div>
                                                     <div className='col-md-6'>
                                                         <label>Email</label>
-                                                        <input type="text" name="billingAddressEmail" value={shippingAddress.billingAddressEmail} onChange={handleInputChange} className='form-control' placeholder='email name' />
+                                                        <input type="text" name="billingAddressEmail" value={shippingAddress.billingAddressEmail} onChange={handleInputChange} className='form-control' placeholder='Enter Email ' />
                                                     </div>
                                                 </div>
 

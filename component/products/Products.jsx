@@ -17,6 +17,9 @@ const Products = (products) => {
                 console.log(res);
                 router?.push("/cart")
             })
+            .catch((err) => {
+                console.log(err, "err");
+            })
     }
 
     useEffect(() => {

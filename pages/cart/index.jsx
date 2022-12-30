@@ -16,27 +16,15 @@ const Cart = () => {
     const [respose, setResponse] = useState("")
     const [error, setError] = useState("")
     const [productData, setProductData] = useState([])
-    const [cartToral, setCarTotal] = useState([])
+    const [cartToral, setCarTotal] = useState({})
     const [id, setId] = useState('')
     const [deliverydate, setDeliveryDate] = useState({})
     const [qty, setQty] = useState(1)
     const [dDate, setdDate] = useState('')
     const [loding, setLoding] = useState(false)
     const [errorDate, setErrorDate] = useState("")
-    const [deliveryDateValue, setDeliveryDateValue] = useState('')
     const router = useRouter()
-
-    const dateList = async () => {
-        try {
-            const response = await axios.get(`${url}/cart/delivery_data`, {
-                withCredentials: true
-            })
-            setDate(response.data.result)
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
+    const [productLength, setProductLength] = useState(0)
 
     const productDataList = async () => {
         try {
@@ -46,9 +34,25 @@ const Cart = () => {
                 .then((response) => {
                     setId('')
                     setProductData(response.data.result.products)
+                    setProductLength(response.data.result.products.length)
                 })
+
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    const dateList = async () => {
+        try {
+
+            const response = await axios.get(`${url}/cart/delivery_data`, {
+                withCredentials: true
+            })
+            setDate(response.data.result)
+
+        } catch (error) {
+
+            console.log(error.response.data);
         }
     }
 
@@ -64,31 +68,25 @@ const Cart = () => {
             })
     }
 
-
     const cartToatal = async () => {
-        axios.get(`${url}/cart/carts_total`, {
-            withCredentials: true
-        })
-            .then((response) => {
-                setCarTotal(response.data.result.carts_total)
-                if (response?.data?.result?.carts_total?.length != 0) {
-                    response?.data?.result?.carts_total?.map((item) => {
-                        item?.shipping?.map((item) => {
-                            const dateStr = item?.text?.slice(2, 17)
-                            setdDate(new Date(dateStr).getDate())
-                        })
-                    })
-                } else {
-                    console.log("no");
-                }
-                if (response?.data?.result?.cartToatal?.length != 0) {
-                    response?.data?.result?.carts_total?.map((item) => {
-                        item?.coupon?.map((item) => {
-                            setCoupon(item?.text);
-                        })
-                    })
-                }
+        try {
+            await axios.get(`${url}/cart/carts_total`, {
+                withCredentials: true
             })
+                .then((response) => {
+                    setCarTotal(response.data.result.carts_total)
+                    console.log(response.data.result.carts_total, "dsfg");
+                    if (response?.data?.result?.carts_total?.length != 0) {
+                        const dateStr = response?.data?.result?.carts_total?.shipping?.text?.slice(2, 16)
+                        setdDate(new Date(dateStr).getDate())
+                    }
+                    if (response?.data?.result?.cartToatal?.length != 0) {
+                        setCoupon(response?.data?.result?.carts_total?.coupon?.text);
+                    }
+                })
+        } catch (error) {
+
+        }
     }
 
     const updateproduct = (id, qty) => {
@@ -108,7 +106,7 @@ const Cart = () => {
 
     const handleCheckout = (e) => {
         e.preventDefault();
-        axios.get("http://localhost:5500/api/cart/checkout", {
+        axios.get(`${url}/cart/checkout`, {
             withCredentials: true
         })
             .then((res) => {
@@ -119,6 +117,7 @@ const Cart = () => {
                 setErrorDate(err?.response?.data);
             })
     }
+
     const deleteProduct = (id) => {
         console.log(id);
         axios.get(`${url}/cart/delete/${id}`)
@@ -154,8 +153,10 @@ const Cart = () => {
 
     useEffect(() => {
         productDataList()
+
         cartToatal()
         dateList()
+
     }, [qty])
     return (
         <>
@@ -269,6 +270,7 @@ const Cart = () => {
                                                                 <ul className={styles.dselects}>
                                                                     {
                                                                         date.map((item, index) => {
+                                                                            console.log(item, "itemmd");
                                                                             if (item.day == dDate) {
                                                                                 return (<Fragment key={item.day}>
                                                                                     <li className='delivery-day-box-dev' style={{ border: "4px solid #94b361" }} onClick={() => deliveryDate(item)}>
@@ -339,71 +341,66 @@ const Cart = () => {
                                                             <table id="total" style={{ widh: "100%", cellpadding: "0", cellpadding: "0" }}>
                                                                 <tbody>
                                                                     {
-                                                                        cartToral?.map((item) => (
-                                                                            item?.sub_total.map((item1) => (
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        <h6 style={{ fontWeight: "bold" }}>
-                                                                                            Sub-total
-                                                                                        </h6>
-                                                                                    </td>
-                                                                                    <td>${item1.value}</td>
-                                                                                </tr>
-                                                                            ))
-                                                                        ))
-                                                                    }
 
-                                                                    {cartToral?.map((item) => (
-                                                                        item?.shipping.map((item1, k) => (
+                                                                        <>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <h6 style={{ fontWeight: "bold" }}>
+                                                                                        Sub-total
+                                                                                    </h6>
+                                                                                </td>
+                                                                                <td>${cartToral?.sub_total?.value}</td>
+                                                                            </tr>
+                                                                        </>
+
+
+                                                                    }
+                                                                    {
+
+                                                                        <>
                                                                             <tr >
                                                                                 <td>
                                                                                     <h6 style={{ fontWeight: "bold" }}>
-                                                                                        {item1.text}
+                                                                                        {cartToral?.shipping?.text}
                                                                                         <br></br>
                                                                                     </h6>
                                                                                 </td>
                                                                                 <td>
-                                                                                    {(typeof item1?.value == "string") ? (<h5>{item1.value}</h5>) : (<h5>{item1.value}</h5>)}
+                                                                                    {(typeof cartToral?.shipping?.value == "string") ? (<h5>{cartToral?.shipping?.value}</h5>) : (<h5>{cartToral?.shipping?.value}</h5>)}
+
                                                                                 </td>
                                                                             </tr>
-                                                                        ))
-                                                                    ))
+                                                                        </>
+
                                                                     }
                                                                     {
-                                                                        cartToral?.map((item) => (
-                                                                            item?.coupon.map((item1, k) => {
-                                                                                if (item1.value) {
-                                                                                    return (
-                                                                                        <tr >
-                                                                                            <td>
-                                                                                                <h6 style={{ fontWeight: "bold" }}>
-                                                                                                    {item1.text}
-                                                                                                    <br></br>
-                                                                                                </h6>
-                                                                                            </td>
-                                                                                            <td>
-                                                                                                ${item1.value}
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    )
-                                                                                }
-                                                                            })
-                                                                        ))
+
+
+
+                                                                        <tr >
+                                                                            <td>
+                                                                                <h6 style={{ fontWeight: "bold" }}>
+                                                                                    Coupon({cartToral?.coupon?.text})
+                                                                                    <br></br>
+                                                                                </h6>
+                                                                            </td>
+                                                                            <td>
+                                                                                ${cartToral?.coupon?.value}
+                                                                            </td>
+                                                                        </tr>
+
                                                                     }
                                                                     {
-                                                                        cartToral?.map((item) => (
-                                                                            item?.Total?.map((item1) => (
 
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        <b>Total</b>
-                                                                                    </td>
+                                                                        <>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <b>Total</b>
+                                                                                </td>
+                                                                                ${cartToral?.Total?.value}
+                                                                            </tr>
+                                                                        </>
 
-                                                                                    {item1.value}
-
-                                                                                </tr>
-                                                                            ))
-                                                                        ))
                                                                     }
                                                                 </tbody>
                                                             </table>
