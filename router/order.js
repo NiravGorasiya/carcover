@@ -8,5 +8,5 @@ router.get("/totalsales", total_sales);
 router.get("/all", all_orders)
 router.get("/one/:id", one_orders)
 router.get("/success", delivery_data, carts_total, success)
-router.get("/success", cancel)
+router.get("/cancel", cancel)
 module.exports = router

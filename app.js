@@ -4,7 +4,7 @@ const express = require('express')
 const logger = require("morgan")
 const path = require("path")
 const cookieParser = require("cookie-parser")
-
+const paypal = require('paypal-rest-sdk');
 var app = express()
 const port = process.env.PORT
 app.use(logger('dev'));
@@ -13,15 +13,19 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public/uploads')));
 app.use(cookieParser())
 
-
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:5500`');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization,  X-PINGOTHER');
-    res.header('Access-Control-Allow-Credentials', true);
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS ');
-    next();
+paypal.configure({
+    'mode': 'sandbox', //sandbox or live1
+    'client_id': 'AZ4dpb10mDNHior641h-VUBQk1_S6-n92y2HcO4VYBDpgBZ6KpGq9DRN0J5qg0oq8V9bomPBTT182nfS',
+    'client_secret': 'EEbCZhXhzR1sVqkfv5hwO6uqOpOmr4kVfx65_aa08uQelOe4KfwK7WKoSpGsTyywRjpPgGpdXFoQq8pG'
 });
 
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    next();
+});
 app.get('/', (req, res) => res.sendFile(__dirname + "/index.html"));
 app.get("/deleteCooike", (req, res, next) => {
     res.clearCookie("")

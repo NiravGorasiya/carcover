@@ -320,3 +320,9 @@ const cart_checkout = async (req, res) => {
 module.exports = { add_cart, update_cart, delet_cart, all_cart, delivery_data, carts_total, Delivery_Date, cart_checkout }
 
 
+
+
+
+
+
+

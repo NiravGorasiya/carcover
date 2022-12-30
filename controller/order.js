@@ -7,15 +7,16 @@ var stripe = require("stripe")(process.env.STRIPE_SECRET);
 var formattedDate = changeDateFormatTo(new Date());
 var jwt = require('jsonwebtoken');
 const paypal = require("paypal-rest-sdk")
-paypal.configure({
-    'mode': 'sandbox',
-    'client_id': process.env.CLIENT_ID,
-    'client_secret': process.env.CLIENT_SECRET
-});
-
+// paypal.configure({
+//     'mode': 'sandbox',
+//     'client_id': process.env.CLIENT_ID,
+//     'client_secret': process.env.CLIENT_SECRET
+// });
+var paypal_id
 const order = async (req, res) => {
     try {
-        if (!req.body.payment_method) {
+
+        if (!req.body.payment_method_type) {
             return res.status(444).json({ messge: "payment method is required" })
         }
         if (!req.body.shipping_address || !req.body.billing_address) {
@@ -40,10 +41,11 @@ const order = async (req, res) => {
             total_price: total,
             Date: formattedDate,
         })
-        var idx = orders.id
-        res.cookie('order_id', idx)
+        var paypal_id = orders.id
+        res.cookie('order_id', paypal_id)
         //paypal
-        if (req.body.payment_method === "paypal") {
+        if (req.body.payment_method_type === "paypal") {
+            console.log("yes");
             const create_payment_json = {
                 "intent": "sale",
                 "payer": {
@@ -51,7 +53,7 @@ const order = async (req, res) => {
                 },
                 "redirect_urls": {
                     "return_url": "http://localhost:3000/success",
-                    "cancel_url": "http://localhost:3000/cancel "
+                    "cancel_url": "http://localhost:3000/cancel"
                 },
                 "transactions": [{
                     "item_list": {
@@ -72,18 +74,19 @@ const order = async (req, res) => {
             };
             paypal.payment.create(create_payment_json, function (error, payment) {
                 if (error) {
-                    throw error;
+                    console.log(error.response.details);
+                    return res.status(400).json(error);
                 } else {
                     for (let i = 0; i < payment.links.length; i++) {
                         if (payment.links[i].rel === 'approval_url') {
-                            return res.redirect(payment.links[i].href);
+                            return res.json(payment.links[i].href);
                         }
                     }
                 }
             });
         }
         // stripe
-        if (req.body.payment_method === "card") {
+        if (req.body.payment_method_type == "card") {
             const customer = await stripe.customers.create();
             await stripe.paymentIntents.create({
                 amount: orders.total_price * 100,
@@ -100,7 +103,7 @@ const order = async (req, res) => {
                     await Coupon.findOneAndUpdate({ coupon_code: coupon.id }, { $inc: { coupon_use: 1 } }, { new: true })
                 }
                 await Orders.findByIdAndUpdate(req.cookies.order_id, {
-                    payment_method: req.body.payment_method,
+                    payment_method: req.body.payment_method_type,
                     payment_status: "successful",
                     customer_id: customer.id,
                     shipping: req.body.shipping,
@@ -122,7 +125,7 @@ const order = async (req, res) => {
             });
         }
     } catch (error) {
-        (error);
+        console.log(error);
         return res.status(500).json({ error: error.messge })
     }
 }
@@ -130,8 +133,14 @@ const order = async (req, res) => {
 
 const success = async (req, res) => {
     try {
+        const payerId = req.query.PayerID;
+        const paymentId = req.query.paymentId;
+        console.log(payerId, paymentId);
+        if (!payerId && !paymentId) {
+            return res.send("paynentid and payerid is requir")
+        }
         var carts_total = req.carts_total
-        var total = carts_total[0].Total[0].value
+        var total = carts_total[0].Total.value
         if (!req.cookies.order_id) {
             return res.redirect("http://localhost:3000/cancel");
         }
@@ -140,8 +149,6 @@ const success = async (req, res) => {
             await Orders.findByIdAndDelete(order.id)
             return res.redirect("http://localhost:3000/cancel");
         }
-        const payerId = req.query.PayerID;
-        const paymentId = req.query.paymentId;
         const execute_payment_json = {
             "payer_id": payerId,
             "transactions": [{
@@ -151,6 +158,7 @@ const success = async (req, res) => {
                 }
             }]
         };
+
         let a
         paypal.payment.execute(paymentId, execute_payment_json, async (error, payment) => {
             if (error) {
@@ -180,10 +188,9 @@ const success = async (req, res) => {
                 return res.status(200).send({ messge: 'Success', result: { data } });
             }
         });
-
     } catch (error) {
+        console.log(error, "error");
         return res.status(500).json({ error: error.messge })
-
     }
 }
 
