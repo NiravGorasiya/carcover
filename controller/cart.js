@@ -121,7 +121,7 @@ const all_cart = async (req, res) => {
 
 var carts_total = async (req, res, next) => {
     let data = req.Delivery_data
-    var CART_TOTALS = []
+    var CART_TOTALS
     let ids = req.cookies.node_session
     let carts = await Cart.find({ user_id: ids });
     if (carts.length <= 0) {
@@ -195,12 +195,12 @@ var carts_total = async (req, res, next) => {
         )
     }
     var a = parseInt(total) + parseFloat(delivery_fee) - parseFloat(dd);
-    await CART_TOTALS.push({
+    CART_TOTALS = {
         sub_total: { "text": "Sub_Total:", "value": total },
         shipping: { "text": date, "value": delivery_fees },
         coupon: { "text": bbbb, "value": dis },
         Total: { "text": "Total:", "value": parseFloat(a.toFixed(2)) }
-    })
+    }
     req.carts_total = CART_TOTALS
     next()
 }
@@ -306,7 +306,7 @@ const cart_checkout = async (req, res) => {
             }
             var total
             var carts_total = req.carts_total
-            total = parseFloat(carts_total[0].Total.value)
+            total = parseFloat(carts_total.Total.value)
             return res.status(200).json({ status: true, result: { total } });
         }
     } catch (error) {

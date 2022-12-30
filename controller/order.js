@@ -22,8 +22,8 @@ const order = async (req, res) => {
             return res.status(444).json({ messge: "shipping_address and billing_address is required" })
         }
         var carts_total = req.carts_total
-        var date = carts_total[0].shipping.text
-        var total = carts_total[0].Total.value
+        var date = carts_total.shipping.text
+        var total = carts_total.Total.value
         if (!date) {
             return res.sendFile(__dirname + "/index.html")
         }
@@ -50,8 +50,8 @@ const order = async (req, res) => {
                     "payment_method": "paypal"
                 },
                 "redirect_urls": {
-                    "return_url": "http://localhost:3000/success",
-                    "cancel_url": "http://localhost:3000/cancel "
+                    "return_url": "http://localhost:3000/api/success",
+                    "cancel_url": "http://localhost:3000/api/cancel"
                 },
                 "transactions": [{
                     "item_list": {
@@ -76,7 +76,7 @@ const order = async (req, res) => {
                 } else {
                     for (let i = 0; i < payment.links.length; i++) {
                         if (payment.links[i].rel === 'approval_url') {
-                            return res.redirect(payment.links[i].href);
+                            return res.json(payment.links[i].href);
                         }
                     }
                 }
@@ -131,7 +131,7 @@ const order = async (req, res) => {
 const success = async (req, res) => {
     try {
         var carts_total = req.carts_total
-        var total = carts_total[0].Total[0].value
+        var total = carts_total.Total.value
         if (!req.cookies.order_id) {
             return res.redirect("http://localhost:3000/cancel");
         }
