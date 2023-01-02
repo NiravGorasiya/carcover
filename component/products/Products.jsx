@@ -7,14 +7,14 @@ import Cart from '../../pages/cart'
 import { useRouter } from 'next/router'
 
 const Products = (products) => {
+    const { body, category, make, model, year } = products
     const router = useRouter()
     const addtoCart = (item) => {
         const data = { product_id: item }
-        axios.post(`${url}/cart/add/${products?.category}/${products?.year}/${products?.make}/${products?.model}/${products?.body}`, data, {
+        axios.post(`${url}/cart/add/${category}/${year}/${make}/${model}/${body}`, data, {
             withCredentials: true
         })
             .then((res) => {
-                console.log(res);
                 router?.push("/cart")
             })
             .catch((err) => {
@@ -34,18 +34,18 @@ const Products = (products) => {
                         <nav aria-label='breadcrumb'>
                             <ol className="breadcrumb">
                                 <li className='breadcrumb-item'>
-                                    <Link href="https://www.carcoversfactory.com/car-covers">{products?.category} Covers</Link>
+                                    <Link href="https://www.carcoversfactory.com/car-covers">{category} Covers</Link>
                                 </li>
                                 <li className='breadcrumb-item'>
-                                    <Link href="https://www.carcoversfactory.com/car-covers/2022">{products?.year}</Link>
+                                    <Link href="https://www.carcoversfactory.com/car-covers/2022">{year}</Link>
                                 </li>
-                                <li className='breadcrumb-item'>{products?.make} </li>
-                                <li className='breadcrumb-item'>{products?.model}</li>
-                                <li className='breadcrumb-item'>{products?.body}</li>
+                                <li className='breadcrumb-item'>{make} </li>
+                                <li className='breadcrumb-item'>{model}</li>
+                                <li className='breadcrumb-item'>{body}</li>
                             </ol>
                         </nav>
                         <div className={`${Styles['pricing-page-wrap']}`}>
-                            <h3 style={{ textAlign: "center" }}>{products?.category} cover for {products?.year} {products?.make} {products?.model}-{products?.body}</h3>
+                            <h3 style={{ textAlign: "center" }}>{category} cover for {year} {make} {model}-{body}</h3>
                             <div className={`${Styles['pricing-page-inner-wrap']} table-responsive`}>
                                 <table style={{ textAlign: "center" }} className={`table table-striped table-responsive ${Styles['table-product-variation']} table-row-item5`}>
                                     <tbody>
@@ -109,7 +109,7 @@ const Products = (products) => {
                                             } */}
                                         </tr>
                                         <tr>
-                                            <td>Type</td>
+                                            {/* <td>Type</td>
                                             {
                                                 products?.props?.map((product_single, index) => (
                                                     product_single.attributes.map((item) => {
@@ -122,7 +122,7 @@ const Products = (products) => {
                                                         }
                                                     })
                                                 ))
-                                            }
+                                            } */}
                                         </tr>
 
                                         <tr>
@@ -145,7 +145,7 @@ const Products = (products) => {
                                             <td>Price</td>
                                             {
                                                 products.props.map((item) => (
-                                                    <Fragment key={item.id}>
+                                                    <Fragment key={item._id}>
                                                         <td>
                                                             <div className='price1'>
                                                                 Regular price
@@ -157,7 +157,7 @@ const Products = (products) => {
                                                                 </span>
                                                             </div>
                                                             <br></br>
-                                                            <Link href={`/${products?.category}/${products?.year}/${products?.make}/${products?.model}/${products?.body}/${item._id}`} className='btn btn-primary w-100 mb-2'>
+                                                            <Link href={`/${category}/${year}/${make}/${model}/${body}/${item._id}`} className='btn btn-primary w-100 mb-2'>
                                                                 view details
                                                             </Link>
                                                             <br></br>
@@ -203,9 +203,9 @@ const Products = (products) => {
                                                     product_single.attributes.map((item) => {
                                                         if (item.Name == "Material") {
                                                             return (
-                                                                <>
-                                                                    <td>{item.Value}</td>
-                                                                </>
+                                                                <Fragment key={index}>
+                                                                    <td key={index}>{item.Value}</td>
+                                                                </Fragment>
                                                             )
                                                         }
                                                     })

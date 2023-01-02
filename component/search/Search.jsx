@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import styles from './Search.module.css'
 import url from '../../api/Apiservices'
 import axios from "axios"
-import Products from '../products/Products'
 import { useRouter } from 'next/router'
 
 const Search = ({ props }) => {
@@ -104,7 +103,7 @@ const Search = ({ props }) => {
                                 {
                                     modelData.map((item) => {
                                         return (
-                                            <option value={item.model_id.name} key={item.model_id.nmae}>{item.model_id.name}</option>
+                                            <option value={item.model_id.name} key={item._id}>{item.model_id.name}</option>
                                         )
                                     })
                                 }
@@ -115,12 +114,13 @@ const Search = ({ props }) => {
                             <select className={`form-control  required-border ${styles['select-create']}`} name="drop1" value={body} onChange={(e) => setBody(e.target.value)}>
                                 <option>Select Body</option>
                                 {
-                                    bodyData.map((item) => (
-                                        <React.Fragment key={item.name}>
-                                            <option value={item.body_id.name} key={item.body_id.name}>{item.body_id.name}</option>
-                                        </React.Fragment>
-                                    )
-                                    )
+                                    bodyData.map((item) => {
+                                        return (
+                                            <React.Fragment key={item._id}>
+                                                <option value={item.body_id.name}>{item.body_id.name}</option>
+                                            </React.Fragment>
+                                        )
+                                    })
                                 }
                             </select>
                         </div>

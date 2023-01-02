@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import Header from "../Header/Header"
 import Footer from "../Footer/Footer"
 import styles from "./Checkout.module.css"
@@ -170,6 +170,7 @@ const Checkout = () => {
                                                                 state &&
                                                                     state !== undefined ?
                                                                     state.map((ctr, index) => {
+
                                                                         return (
                                                                             <>
                                                                                 <option key={index} value={ctr.isoCode}>{ctr.name}</option>
@@ -194,9 +195,9 @@ const Checkout = () => {
                                                                     country !== undefined ?
                                                                     country.map((ctr, index) => {
                                                                         return (
-                                                                            <>
-                                                                                <option value={ctr.isoCode}>{ctr.name}</option>
-                                                                            </>
+                                                                            <Fragment key={index}>
+                                                                                <option key={index} value={ctr.isoCode}>{ctr.name}</option>
+                                                                            </Fragment>
                                                                         )
                                                                     }) : "Nocountry"
                                                             }
@@ -296,9 +297,9 @@ const Checkout = () => {
                                                                     country !== undefined ?
                                                                     country.map((ctr, index) => {
                                                                         return (
-                                                                            <>
-                                                                                <option value={ctr.isoCode}>{ctr.name}</option>
-                                                                            </>
+                                                                            <Fragment key={index}>
+                                                                                <option key={index} value={ctr.isoCode}>{ctr.name}</option>
+                                                                            </Fragment>
                                                                         )
                                                                     }) : "Nocountry"
                                                             }

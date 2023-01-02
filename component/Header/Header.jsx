@@ -28,7 +28,7 @@ const Header = () => {
                                 <div className={styles['content-area']}>
                                     <ul className={styles['entry-list']}>
                                         <li className={styles['review-wrap']}>
-                                            <Link href={"https://www.shopperapproved.com/reviews/carcoversfactory.com"} target="_blank">
+                                            <Link href="/">
                                                 <img src='https://d68my205fyswa.cloudfront.net/ccf-static-t28cj8b22momaqtquvmbkyct6czmpsprr06nja05hmknmr3kjgfimg.png' style={{ maxHeight: "70px", margin: "6px 1px" }} />
                                             </Link>
                                         </li>
@@ -47,7 +47,7 @@ const Header = () => {
                                         </li>
                                         <li className={styles['review-wrap']}>
                                             <div className={styles['chat-wrap chat-top c-pointer mt-3']}>
-                                                <img src='https://d68my205fyswa.cloudfront.net/ccf-static-2zoj4rjoefbk310rnqpmq137m9m40jtmc1hpdcnjj5h445a9ack8ea.png' alt="chatcover" style={{ height: "58  px" }} />
+                                                <img src='https://d68my205fyswa.cloudfront.net/ccf-static-2zoj4rjoefbk310rnqpmq137m9m40jtmc1hpdcnjj5h445a9ack8ea.png' alt="chatcover" style={{ height: "58px" }} />
                                             </div>
                                         </li>
                                         <li>
@@ -57,11 +57,11 @@ const Header = () => {
                                                     call us to order 24/7
                                                 </div>
                                                 <div className={styles['entry-phone']}>
-                                                    <Link href={"dsf"}>(877) 300-9885</Link>
+                                                    <Link href="/">(877) 300-9885</Link>
                                                 </div>
                                                 <div className={styles['entry-small']}>
                                                     customer sevice
-                                                    <Link href='hsadfhadsj'>5063566110</Link>
+                                                    <Link href='/'>5063566110</Link>
                                                 </div>
                                             </div>
                                         </li>

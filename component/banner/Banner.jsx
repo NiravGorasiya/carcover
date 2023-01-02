@@ -25,9 +25,8 @@ const Banner = ({ props }) => {
         } else {
             cat = "Car"
         }
-        axios.get(`http://localhost:5500/api/category/banner/${cat}`)
+        axios.get(`${url}/category/banner/${cat}`)
             .then((response) => {
-                console.log(response, "response");
                 setBanner(response.data);
             })
             .catch((err) => {
@@ -46,18 +45,20 @@ const Banner = ({ props }) => {
                 <nav className={`navbar navbar-expand-lg navbar-light bg-light ${styles['navbar-style']}`}>
                     <div className={`collapse navbar-collapse ${styles['navbar-collapse-style']}`}>
                         <ul className="navbar-nav mr-auto" style={{ width: "100%" }}>
-                            {categoryData.map((item) => (
-                                <Fragment key={item._id}>
-                                    <li className='nav-item active' style={{ width: "7.6923076923077%" }}>
-                                        <Link href={`http://localhost:3000/${item.name}`}>
-                                            <div>
-                                                <img src={`http://localhost:5500/${item.image}`} style={{ maxWidth: "100%", height: "40px" }} alt='car cover' />
-                                            </div>
-                                            <div>{item.name}</div>
-                                        </Link>
-                                    </li>
-                                </Fragment>
-                            ))}
+                            {categoryData.map((item) => {
+                                return (
+                                    <Fragment key={item._id}>
+                                        <li className='nav-item active' style={{ width: "7.6923076923077%" }}>
+                                            <Link href={`http://localhost:3000/${item.name}`}>
+                                                <div>
+                                                    <img src={`http://localhost:5500/${item.image}`} style={{ maxWidth: "100%", height: "40px" }} alt='car cover' />
+                                                </div>
+                                                <div>{item.name}</div>
+                                            </Link>
+                                        </li>
+                                    </Fragment>
+                                )
+                            })}
                         </ul>
                     </div>
                 </nav>

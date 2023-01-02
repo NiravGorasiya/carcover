@@ -23,17 +23,21 @@ const Brand = () => {
         <section className={styles['grid-wrapper']}>
             <div className='container'>
                 <div className='row'>
-                    {data.map((item) => (
-                        <Fragment key={item._id}>
-                            <div className='col-lg-3 col-sm-4 col-6'>
-                                <Link href={item.name}>
-                                    <div className={styles['entry-single']}>
-                                        <img src={`http://localhost:5500/${item.cover_image}`}></img>
+                    {data.map((item) => {
+                        if (item.cover_image) {
+                            return (
+                                <Fragment key={item._id}>
+                                    <div className='col-lg-3 col-sm-4 col-6'>
+                                        <Link href={item.name}>
+                                            <div className={styles['entry-single']}>
+                                                <img src={`http://localhost:5500/${item.cover_image}`}></img>
+                                            </div>
+                                        </Link>
                                     </div>
-                                </Link>
-                            </div>
-                        </Fragment>
-                    ))
+                                </Fragment>
+                            )
+                        }
+                    })
                     }
                 </div>
             </div>
