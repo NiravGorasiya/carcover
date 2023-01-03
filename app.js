@@ -12,15 +12,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public/uploads')));
 app.use(cookieParser())
-
 paypal.configure({
     'mode': 'sandbox', //sandbox or live1
     'client_id': 'AZ4dpb10mDNHior641h-VUBQk1_S6-n92y2HcO4VYBDpgBZ6KpGq9DRN0J5qg0oq8V9bomPBTT182nfS',
     'client_secret': 'EEbCZhXhzR1sVqkfv5hwO6uqOpOmr4kVfx65_aa08uQelOe4KfwK7WKoSpGsTyywRjpPgGpdXFoQq8pG'
 });
-
 app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://192.168.1.7:3000"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.header("Access-Control-Allow-Credentials", "true");
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -34,16 +32,11 @@ app.get("/deleteCooike", (req, res, next) => {
     res.clearCookie("")
     res.send("all clear cookie")
 })
-
 app.get("/getCookie", (req, res, next) => {
     console.log(req.cookies);
     res.send(req.cookies)
 })
-
-// app.listen(port, () => {
-//     console.log(`Example app listening on port ${port}`)
-// })
-const PORT = process.env.PORT;
+const PORT = process.env.port;
 app.listen(PORT, process.env.HOSTNAME, () => {
     console.log(`Server running at http://${process.env.HOSTNAME}:${PORT}`)
 });

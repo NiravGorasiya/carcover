@@ -1,7 +1,6 @@
 'use strict'
 const attribute = require('../Models/Attribute');
 
-
 const attribute_add = async (req, res) => {
     try {
         const { Name, value } = req.body
