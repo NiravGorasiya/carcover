@@ -20,13 +20,16 @@ paypal.configure({
 });
 
 app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Origin", "http://192.168.1.7:3000"); // update to match the domain you will make the request from
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.header("Access-Control-Allow-Credentials", "true");
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     next();
 });
 app.get('/', (req, res) => res.sendFile(__dirname + "/index.html"));
+require('./seeder/admin')
+const router = require('./router/index');
+app.use(router);
 app.get("/deleteCooike", (req, res, next) => {
     res.clearCookie("")
     res.send("all clear cookie")
@@ -37,11 +40,10 @@ app.get("/getCookie", (req, res, next) => {
     res.send(req.cookies)
 })
 
-require('./seeder/admin')
-const router = require('./router/index');
-app.use(router);
-
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
-
+// app.listen(port, () => {
+//     console.log(`Example app listening on port ${port}`)
+// })
+const PORT = process.env.PORT;
+app.listen(PORT, process.env.HOSTNAME, () => {
+    console.log(`Server running at http://${process.env.HOSTNAME}:${PORT}`)
+});

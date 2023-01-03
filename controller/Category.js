@@ -5,17 +5,23 @@ const path = require('path')
 const addCategory = async (req, res, next) => {
     try {
         let bannerimage;
-        req.files.banner.map((item) => {
-            bannerimage = item.filename
-        })
+        if (req.files.banner) {
+            req.files.banner.map((item) => {
+                bannerimage = item.filename
+            })
+        }
         let categoryimage;
-        req.files.image.map((item) => {
-            categoryimage = item.filename
-        })
+        if (req.files.image) {
+            req.files.image.map((item) => {
+                categoryimage = item.filename
+            })
+        }
         let imageCover
-        req.files.cover_image.map((item) => {
-            imageCover = item.filename
-        })
+        if (req.files.cover_image) {
+            req.files.cover_image.map((item) => {
+                imageCover = item.filename
+            })
+        }
         const category = new Category({
             name: req.body.name,
             image: categoryimage,

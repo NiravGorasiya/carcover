@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon app.js"
+    "server": "nodemon app.js",
+    "client": "npm run dev --prefix ../my-app",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "keywords": [],
   "author": "",
@@ -29,5 +31,8 @@
     "sharp": "^0.31.2",
     "stripe": "^11.4.0",
     "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0"
   }
 }

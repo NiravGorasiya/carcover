@@ -23,8 +23,8 @@ const order = async (req, res) => {
             return res.status(444).json({ messge: "shipping_address and billing_address is required" })
         }
         var carts_total = req.carts_total
-        var date = carts_total[0].shipping.text
-        var total = carts_total[0].Total.value
+        var date = carts_total.shipping.text
+        var total = carts_total.Total.value
         if (!date) {
             return res.sendFile(__dirname + "/index.html")
         }
@@ -52,8 +52,8 @@ const order = async (req, res) => {
                     "payment_method": "paypal"
                 },
                 "redirect_urls": {
-                    "return_url": "http://localhost:3000/success",
-                    "cancel_url": "http://localhost:3000/cancel"
+                    "return_url": "http://192.168.1.7:3000/success",
+                    "cancel_url": "http://192.168.1.7:3000/cancel"
                 },
                 "transactions": [{
                     "item_list": {
@@ -85,6 +85,22 @@ const order = async (req, res) => {
                 }
             });
         }
+        //check
+        if (req.body.payment_method_types === "check") {
+            const data = await Orders.findByIdAndUpdate(req.cookies.order_id, {
+                payment_method: "check",
+                customer_id: req.cookies.order_id,
+            }, { new: true })
+            if (req.cookies.coupon) {
+                var coupon = await jwt.verify(req.cookies.coupon, process.env.SECRETKEY)
+                await Coupon.findOneAndUpdate({ coupon_code: coupon.id }, { $inc: { coupon_use: 1 } }, { new: true })
+            }
+            res.clearCookie("node_session")
+            res.clearCookie("coupon")
+            res.clearCookie("token")
+            res.clearCookie("order_id")
+            return res.status(200).send({ messge: 'Success', result: { data } });
+        }
         // stripe
         if (req.body.payment_method_type == "card") {
             const customer = await stripe.customers.create();
@@ -102,17 +118,18 @@ const order = async (req, res) => {
                     var coupon = await jwt.verify(req.cookies.coupon, process.env.SECRETKEY)
                     await Coupon.findOneAndUpdate({ coupon_code: coupon.id }, { $inc: { coupon_use: 1 } }, { new: true })
                 }
-                await Orders.findByIdAndUpdate(req.cookies.order_id, {
+                const data = await Orders.findByIdAndUpdate(req.cookies.order_id, {
                     payment_method: req.body.payment_method_type,
                     payment_status: "successful",
                     customer_id: customer.id,
                     shipping: req.body.shipping,
                     status: "pending"
-                })
+                }, { new: true })
                 res.clearCookie("node_session")
                 res.clearCookie("coupon")
                 res.clearCookie("token")
                 res.clearCookie("order_id")
+                return res.status(200).send({ messge: 'Success', result: { data } });
                 return res.status(201).json({
                     status: true, messge: "successfully order", result: {
                         orders: orders,
@@ -120,6 +137,7 @@ const order = async (req, res) => {
                         customer: customer.id,
                     }
                 })
+
             }).catch((err) => {
                 return res.status(400).json(err)
             });
@@ -140,14 +158,14 @@ const success = async (req, res) => {
             return res.send("paynentid and payerid is requir")
         }
         var carts_total = req.carts_total
-        var total = carts_total[0].Total.value
+        var total = carts_total.Total.value
         if (!req.cookies.order_id) {
-            return res.redirect("http://localhost:3000/cancel");
+            return res.redirect("http://192.168.1.7:3000/cancel");
         }
         var order = await Orders.findById(req.cookies.order_id);
         if (order.total_price != total) {
             await Orders.findByIdAndDelete(order.id)
-            return res.redirect("http://localhost:3000/cancel");
+            return res.redirect("http://192.168.1.7:3000/cancel");
         }
         const execute_payment_json = {
             "payer_id": payerId,
@@ -185,6 +203,7 @@ const success = async (req, res) => {
                 res.clearCookie("coupon")
                 res.clearCookie("token")
                 res.clearCookie("order_id")
+                console.log(JSON.stringify(data))
                 return res.status(200).send({ messge: 'Success', result: { data } });
             }
         });
