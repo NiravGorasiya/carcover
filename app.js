@@ -40,9 +40,7 @@ app.get("/getCookie", (req, res, next) => {
     res.send(req.cookies)
 })
 
-// app.listen(port, () => {
-//     console.log(`Example app listening on port ${port}`)
-// })
+
 const PORT = process.env.PORT;
 app.listen(PORT, process.env.HOSTNAME, () => {
     console.log(`Server running at http://${process.env.HOSTNAME}:${PORT}`)
