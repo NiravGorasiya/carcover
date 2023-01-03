@@ -17,14 +17,12 @@ const Cart = () => {
     const [error, setError] = useState("")
     const [productData, setProductData] = useState([])
     const [cartToral, setCarTotal] = useState({})
-    const [id, setId] = useState('')
     const [deliverydate, setDeliveryDate] = useState({})
     const [qty, setQty] = useState(1)
-    const [dDate, setdDate] = useState('')
-    const [loding, setLoding] = useState(false)
+    const [dDate, setdDate] = useState("")
     const [errorDate, setErrorDate] = useState("")
     const router = useRouter()
-    const [productLength, setProductLength] = useState(0)
+
 
     const productDataList = async () => {
         try {
@@ -32,9 +30,7 @@ const Cart = () => {
                 withCredentials: true
             })
                 .then((response) => {
-                    setId('')
                     setProductData(response.data.result.products)
-                    setProductLength(response.data.result.products.length)
                 })
 
         } catch (error) {
@@ -52,14 +48,15 @@ const Cart = () => {
     }
 
     const deliveryDate = (item) => {
+        setDeliveryDate(item)
+        console.log(item);
         const data = { id: item?.id }
-        setId(item.id)
         axios.post(`${url}/cart/Delivery_Date`, data, {
             withCredentials: true
         })
             .then((response) => {
                 cartToatal()
-                setLoding(true)
+                dateList()
             })
     }
 
@@ -83,15 +80,20 @@ const Cart = () => {
         }
     }
 
-    const updateproduct = (id, qty) => {
+    const updateproduct = async (id, qty) => {
+        console.log("updte");
         setQty(qty)
-        axios.put(`${url}/cart/update/${id}`, {
+        setDeliveryDate('')
+        setdDate("")
+        cartToatal()
+        deliveryDate()
+        await axios.put(`${url}/cart/update/${id}`, {
             quantity: qty
         }, {
             withCredentials: true
         }).then((response) => {
             productDataList()
-            setLoding(false)
+
         })
             .catch((err) => {
 
@@ -144,11 +146,10 @@ const Cart = () => {
 
     useEffect(() => {
         productDataList()
-
-        cartToatal()
         dateList()
-
+        cartToatal()
     }, [qty])
+
     return (
         <>
             <Header />
@@ -180,7 +181,7 @@ const Cart = () => {
                                                                     <tr>
                                                                         <td>
                                                                             <Link href="df">
-                                                                                <img src={`http://localhost:5500/${item.image}`}></img>
+                                                                                <img src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${item.image}`}></img>
                                                                             </Link>
                                                                         </td>
                                                                         <td>
@@ -215,7 +216,7 @@ const Cart = () => {
                                                                                 </span>
                                                                                 <input type="text"
                                                                                     value={item.quantity}
-                                                                                    className='form-control txtQuanity text-center p-0'
+                                                                                    className='form-control txtQuanity text-center '
                                                                                     disabled
                                                                                 />
                                                                                 <span className='input-group-btn' style={{ border: "solid 1px", borderRadius: "0" }}>
@@ -226,11 +227,11 @@ const Cart = () => {
                                                                                 </span>
                                                                             </div>
                                                                             <span>
-                                                                                <button type="button" style={{ border: "none" }} onClick={() => deleteProduct(item._id)}>
-                                                                                    <i className='fa fa-times-circle text-danger fa-lg' style={{ marginLeft: "58px" }}>
 
-                                                                                    </i>
-                                                                                </button>
+                                                                                <i className='fa fa-times-circle text-danger fa-lg' style={{ marginLeft: "58px", cursor: "pointer" }} onClick={() => deleteProduct(item._id)}>
+
+                                                                                </i>
+
                                                                             </span>
                                                                         </td>
                                                                         <td>${item.price}</td>
@@ -305,13 +306,12 @@ const Cart = () => {
                                                                 }
                                                             </ul>
                                                         </div>
-                                                        {Object.keys(deliverydate)?.length !== 0 && (
-                                                            <div className={styles.guaranteeBox}>
-                                                                <i className='fa fa-check-cirle'></i>
-                                                                We Guarantee Products to be Delivered On:
-                                                                <strong id="guaranteed-delivery-date-span">{deliverydate.dayName} {deliverydate.monthName} {deliverydate.day} {deliverydate.year}</strong>
-                                                            </div>
-                                                        )}
+
+                                                        <div className={styles.guaranteeBox}>
+                                                            <i className='fa fa-check-cirle'></i>
+                                                            We Guarantee Products to be Delivered On:
+                                                            <strong id="guaranteed-delivery-date-span">{deliverydate?.dayName} {deliverydate?.monthName} {deliverydate?.day} {deliverydate?.year}</strong>
+                                                        </div>
                                                     </div>
                                                     <div id="ship-wraning"></div>
                                                     <div className='clearfix'>
@@ -337,29 +337,37 @@ const Cart = () => {
                                                                     </td>
                                                                     <td>${cartToral?.sub_total?.value}</td>
                                                                 </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <h6 style={{ fontWeight: "bold" }}>
-                                                                            {cartToral?.shipping?.text}
-                                                                            <br></br>
-                                                                        </h6>
-                                                                    </td>
-                                                                    <td>
-                                                                        {(typeof cartToral?.shipping?.value == "string") ? (<h5>{cartToral?.shipping?.value}</h5>) : (<h5>{cartToral?.shipping?.value}</h5>)}
+                                                                {
+                                                                    cartToral?.shipping?.value ? (
+                                                                        <tr>
+                                                                            <td>
+                                                                                <h6 style={{ fontWeight: "bold" }}>
+                                                                                    {cartToral?.shipping?.text}
+                                                                                    <br></br>
+                                                                                </h6>
+                                                                            </td>
+                                                                            <td>
+                                                                                {(typeof cartToral?.shipping?.value == "string") ? (<h5>{cartToral?.shipping?.value}</h5>) : (<h5>{cartToral?.shipping?.value}</h5>)}
 
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <h6 style={{ fontWeight: "bold" }}>
-                                                                            Coupon({cartToral?.coupon?.text})
-                                                                            <br></br>
-                                                                        </h6>
-                                                                    </td>
-                                                                    <td>
-                                                                        ${cartToral?.coupon?.value}
-                                                                    </td>
-                                                                </tr>
+                                                                            </td>
+                                                                        </tr>
+                                                                    ) : (<></>)
+                                                                }
+
+                                                                {cartToral?.coupon?.text ? (
+                                                                    <tr>
+                                                                        <td>
+                                                                            <h6 style={{ fontWeight: "bold" }}>
+                                                                                Coupon({cartToral?.coupon?.text})
+                                                                                <br></br>
+                                                                            </h6>
+                                                                        </td>
+                                                                        <td>
+                                                                            ${cartToral?.coupon?.value}
+                                                                        </td>
+                                                                    </tr>
+                                                                ) : (<></>)
+                                                                }
                                                                 <tr>
                                                                     <td>
                                                                         <b>Total</b>
@@ -405,7 +413,8 @@ const Cart = () => {
                             </div>
                         </div>
                     </section>
-                )}
+                )
+            }
             <Footer />
         </>
     )

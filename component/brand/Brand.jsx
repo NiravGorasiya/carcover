@@ -2,11 +2,12 @@ import React, { Fragment, useEffect, useState } from 'react'
 import styles from "./Brand.module.css"
 import Link from 'next/link'
 import axios from "axios"
+import url from '../../api/Apiservices'
 
 const Brand = () => {
     const [data, setData] = useState([])
     const coverList = () => {
-        axios.get("http://localhost:5500/api/category/all")
+        axios.get(`${url}/category/all`)
             .then((response) => {
                 setData(response.data)
             })
@@ -30,7 +31,7 @@ const Brand = () => {
                                     <div className='col-lg-3 col-sm-4 col-6'>
                                         <Link href={item.name}>
                                             <div className={styles['entry-single']}>
-                                                <img src={`http://localhost:5500/${item.cover_image}`}></img>
+                                                <img src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${item.cover_image}`}></img>
                                             </div>
                                         </Link>
                                     </div>

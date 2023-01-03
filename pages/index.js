@@ -9,6 +9,8 @@ import Search from "../component/search/Search";
 import ReviewWrapper from "../component/ReviewWrapper/ReviewWrapper";
 
 const Home = () => {
+
+
     return (
         <>
             <Header />

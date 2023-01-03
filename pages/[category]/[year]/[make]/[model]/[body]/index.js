@@ -8,7 +8,7 @@ import Search from '../../../../../../component/search/Search'
 import { useRouter } from 'next/router'
 import Products from '../../../../../../component/products/Products'
 import axios from "axios"
-
+import url from '../../../../../../api/Apiservices'
 
 const index = () => {
     const [productData, setProductData] = useState([])
@@ -20,7 +20,7 @@ const index = () => {
     const body = router.query.body
     console.log(cat, "das");
     const productList = () => {
-        axios.get(`http://localhost:5500/api/product/${cat}`)
+        axios.get(`${url}/product/${cat}`)
             .then((response) => {
                 setProductData(response.data)
             })

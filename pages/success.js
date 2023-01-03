@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from "axios"
 import { useRouter } from 'next/router';
 import Link from 'next/link'
-
+import url from '../api/Apiservices';
 const success = () => {
     const router = useRouter()
     const [dataOrder, setOrderData] = useState({})
@@ -10,10 +10,10 @@ const success = () => {
         // if (!router.isReady) return;
         if (router.query.PayerID && router.query.paymentId) {
             try {
-                const response = await axios.get(`http://localhost:5500/api/success?PayerID=${router.query.PayerID}&paymentId=${router.query.paymentId}`, {
+                const response = await axios.get(`${url}/success?PayerID=${router.query.PayerID}&paymentId=${router.query.paymentId}`, {
                     withCredentials: true
                 })
-                console.log(response?.data?.result?.data);
+                console.log(response, "dsf");
                 setOrderData(response?.data?.result?.data)
             } catch (error) {
                 console.log(error);

@@ -6,7 +6,6 @@ let Country = require('country-state-city').Country;
 let States = require('country-state-city').State;
 let City = require('country-state-city').City;
 import { useState, useEffect } from 'react';
-
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckOutFrom from '../stripe/CheckOutFrom';
@@ -45,7 +44,6 @@ const Checkout = () => {
         billingAddressCityCode: ""
     }
     const [shippingAddress, setShippingAddress] = useState(initialValues)
-
 
     const handleContry = (e) => {
         const { name, value } = e.target;
@@ -89,12 +87,18 @@ const Checkout = () => {
     const handleCopy = (e) => {
         e.preventDefault();
         setShippingAddress({
-            ...shippingAddress, billingAddressCompanyName: shippingAddress.cname, billingAddressEmail: shippingAddress.email,
-            billingAddressFirstName: shippingAddress.fname, billingAddressLastName: shippingAddress.lname,
-            billingAddressPostalCode: shippingAddress.postCode, billingAddressLastName: shippingAddress.lname,
-            billingAddressPhone: shippingAddress.phone, billingAddressone: shippingAddress.address,
+            ...shippingAddress,
+            billingAddressCompanyName: shippingAddress.cname,
+            billingAddressEmail: shippingAddress.email,
+            billingAddressFirstName: shippingAddress.fname,
+            billingAddressLastName: shippingAddress.lname,
+            billingAddressPostalCode: shippingAddress.postCode,
+            billingAddressLastName: shippingAddress.lname,
+            billingAddressPhone: shippingAddress.phone,
+            billingAddressone: shippingAddress.address,
             billingAddressCountrycode: shippingAddress.countryCode,
-            billingAddressCityCode: shippingAddress.cityCode, billingAddressStateCode: shippingAddress.stateCode,
+            billingAddressCityCode: shippingAddress.cityCode,
+            billingAddressStateCode: shippingAddress.stateCode,
         })
     }
 
@@ -119,7 +123,7 @@ const Checkout = () => {
                     <div className={styles['information-wrap']}>
                         <div className={`${styles['inner-wrapper']} checkout-form`}>
                             <div className='notification'></div>
-                            <form>
+                            <form >
                                 <div className={`row ${styles['checkout-content']}`}>
                                     <div className={`col-md-6 ${styles.shipaddr}`}>
                                         <div className={styles['form-wrap']}>
@@ -321,35 +325,35 @@ const Checkout = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='row justify-content-md-center mt-50'>
+                                <div className={`row justify-content-md-center ${styles['mt-50']}`}>
                                     <div className='col-md-8'>
-                                        <div className='checkout-content'>
+                                        <div className={styles['checkout-content']}>
                                             <div className='form-wrap'>
-                                                <h4 className='title'>
+                                                <h4 className={styles.title}>
                                                     <strong>Payment</strong>
                                                     method
-                                                    <span className='price pull-right'>
-                                                        <span className='order_total'>$64.96</span>
+                                                    <span className={`price ${styles['pull-right']}`}>
+                                                        <span className='order_total'>Total $64.96</span>
                                                     </span>
                                                 </h4>
-                                                <div className='form-inside'>
-                                                    <div className='inner-wrap'>
-                                                        <div className='form-row justify-center payment-options'>
-                                                            <div className='form-check form-check-inline active'>
-                                                                <input type="radio" name="payment_method" className='form-check-input' />
+                                                <div className={styles['form-inside']}>
+                                                    <div className={styles['inner-wrap']}>
+                                                        <div className={`form-row justify-center ${styles['payment-options']}`}>
+                                                            <div className={`${styles['form-check']} form-check-inline`}>
+                                                                <input type="radio" name="payment_method_type" value="card" className='form-check-input' onChange={handleInputChange} />
                                                                 <label className='form-check-label'>Credit card</label>
                                                             </div>
-                                                            <div className='form-check form-check-inline active'>
-                                                                <input type="radio" name="payment_method" className='form-check-input' />
+                                                            <div className={`${styles['form-check']} form-check-inline`}>
+                                                                <input type="radio" name="payment_method_type" value="paypal" className='form-check-input' onChange={handleInputChange} />
                                                                 <label className='form-check-label'>Paypal</label>
                                                             </div>
-                                                            <div className='form-check form-check-inline active'>
-                                                                <input type="radio" name="payment_method" className='form-check-input' />
+                                                            <div className={`${styles['form-check']} form-check-inline`}>
+                                                                <input type="radio" name="payment_method_type" value="Affirm" className='form-check-input' onChange={handleInputChange} />
                                                                 <label className='form-check-label'>Affirm</label>
                                                             </div>
-                                                            <div className='form-check form-check-inline active'>
-                                                                <input type="radio" name="payment_method" className='form-check-input' />
-                                                                <label className='form-check-label'>Checko ko   </label>
+                                                            <div className={`${styles['form-check']} form-check-inline`}>
+                                                                <input type="radio" name="payment_method_type" value="check" className='form-check-input' onChange={handleInputChange} />
+                                                                <label className='form-check-label'>Check/Po</label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -372,4 +376,5 @@ const Checkout = () => {
 }
 
 export default Checkout
+
 

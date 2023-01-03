@@ -25,13 +25,20 @@
 
 .checkOutBox .CheckOutFrom span {}
 
-.checkOutBox .CheckOutFrom label {
-    width: 700px;
-}
 
 
 
 .checkOutBox .CheckOutFrom label .cardElement {
     border: solid 1px black;
     height: 35px;
+    width: 500px;
+
+}
+
+.checkOutBox .CheckOutFrom label .cardElement::placeholder {
+    color: brown;
+}
+
+.btn-wrap {
+    text-align: center;
 }

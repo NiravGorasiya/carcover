@@ -49,9 +49,9 @@ const Banner = ({ props }) => {
                                 return (
                                     <Fragment key={item._id}>
                                         <li className='nav-item active' style={{ width: "7.6923076923077%" }}>
-                                            <Link href={`http://localhost:3000/${item.name}`}>
+                                            <Link href={`/${item.name}`}>
                                                 <div>
-                                                    <img src={`http://localhost:5500/${item.image}`} style={{ maxWidth: "100%", height: "40px" }} alt='car cover' />
+                                                    <img src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${item.image}`} style={{ maxWidth: "100%", height: "40px" }} alt='car cover' />
                                                 </div>
                                                 <div>{item.name}</div>
                                             </Link>
@@ -65,7 +65,7 @@ const Banner = ({ props }) => {
                 <section className={styles['banner-wrap']}>
 
                     <img
-                        src={`http://localhost:5500/${banner?.banner}`}
+                        src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${banner?.banner}`}
                         className='img-fluid w-100 d-none d-md-block'
                     />
                 </section>

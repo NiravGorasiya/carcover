@@ -88,7 +88,7 @@ const Productdetails = () => {
                                             {
                                                 image.map((item) => (
                                                     <div>
-                                                        <img src={`http://localhost:5500/${item}`} />
+                                                        <img src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${item}`} />
                                                     </div>
                                                 ))
                                             }
