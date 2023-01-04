@@ -20,7 +20,8 @@ export default function App({ Component, pageProps }: AppProps) {
           integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
           crossOrigin="anonymous"
           referrerPolicy="no-referrer"
-        ></link>
+        >
+        </link>
       </Head>
       <Script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"

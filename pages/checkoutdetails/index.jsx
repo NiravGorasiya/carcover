@@ -114,9 +114,7 @@ const index = () => {
                                         </table>
                                     </div>
                                 </div>
-
                                 <p>Your order has been successfully processed!</p><p>Thanks for shopping with us online!</p>
-
                                 <div className="buttons">
                                     <div className="right"><a href="https://www.carcoversfactory.com/" className="btn btn-warning text-white">Continue Shopping</a></div>
                                 </div>

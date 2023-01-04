@@ -86,9 +86,12 @@ const Products = (products) => {
                                             </td>
                                         </tr>
                                         <tr className='bg-white'>
-                                            <td style={{ width: "140px", border: "none" }}></td>
-                                            <td style={{ border: "none", paddingBottom: "3px", paddingLeft: 0, paddingRight: 0 }}> <div className='bestseller-tab-header'>Bestseller</div></td>
-                                            <td style={{ border: "none", paddingBottom: "3px", paddingLeft: 0, paddingRight: 0 }}> </td>
+                                            <td style={{ width: "140px" }}></td>
+                                            <td style={{ paddingBottom: "3px", paddingLeft: 0, paddingRight: 0 }}>
+                                                <div className='bestseller-tab-header'>Bestseller</div>
+                                            </td>
+                                            <td style={{ border: "none", paddingBottom: "3px", paddingLeft: 0, paddingRight: 0 }}>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td style={{ width: "140px", borderTop: "none", borderBottom: "none", borderLeft: "none" }}></td>
@@ -97,32 +100,6 @@ const Products = (products) => {
                                                     <a></a>
                                                 </h4>
                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            {/* {
-                                                productData.map((item) => (
-                                                    <Fragment key={item._id}>
-                                                        <td style={{ background: "green", color: "white" }}>{item.title}</td>
-                                                    </Fragment>
-                                                ))
-                                            } */}
-                                        </tr>
-                                        <tr>
-                                            {/* <td>Type</td>
-                                            {
-                                                products?.props?.map((product_single, index) => (
-                                                    product_single.attributes.map((item) => {
-                                                        if (item.Name == "Type") {
-                                                            return (
-                                                                <>
-                                                                    <td>{item.Value}</td>
-                                                                </>
-                                                            )
-                                                        }
-                                                    })
-                                                ))
-                                            } */}
                                         </tr>
 
                                         <tr>
@@ -136,10 +113,17 @@ const Products = (products) => {
                                                                     <td>{item.Value}</td>
                                                                 </>
                                                             )
+                                                        } else {
+                                                            return (
+                                                                <td>
+
+                                                                </td>
+                                                            )
                                                         }
                                                     })
                                                 ))
                                             }
+
                                         </tr>
                                         <tr>
                                             <td>Price</td>
@@ -206,6 +190,10 @@ const Products = (products) => {
                                                                 <Fragment key={index}>
                                                                     <td key={index}>{item.Value}</td>
                                                                 </Fragment>
+                                                            )
+                                                        } else {
+                                                            return (
+                                                                <td></td>
                                                             )
                                                         }
                                                     })
