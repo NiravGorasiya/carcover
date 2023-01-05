@@ -328,7 +328,7 @@ const success = async (req, res) => {
                     res.clearCookie("token")
                     res.clearCookie("order_id")
                     console.log(JSON.stringify(data))
-                    return res.status(200).send({ messge: 'Success', result: { data } });
+                    return res.status(200).send({  messge: 'Success', result: { data } });
                 }
             });
         } else {
