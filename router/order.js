@@ -1,5 +1,5 @@
 const router = require("express").Router()
-const { order, total_sales, all_orders, one_orders, success, cancel } = require("../controller/order")
+const { order, total_sales, all_orders, one_orders, success, cancel} = require("../controller/order")
 const { carts_total, delivery_data } = require("../controller/cart")
 
 

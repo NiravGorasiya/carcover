@@ -7,11 +7,13 @@ const cookieParser = require("cookie-parser")
 const paypal = require('paypal-rest-sdk');
 var app = express()
 const port = process.env.PORT
+const cors = require("cors")
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public/uploads')));
 app.use(cookieParser())
+
 paypal.configure({
     'mode': 'sandbox', //sandbox or live1
     'client_id': 'AZ4dpb10mDNHior641h-VUBQk1_S6-n92y2HcO4VYBDpgBZ6KpGq9DRN0J5qg0oq8V9bomPBTT182nfS',
@@ -36,7 +38,9 @@ app.get("/getCookie", (req, res, next) => {
     console.log(req.cookies);
     res.send(req.cookies)
 })
-const PORT = process.env.port;
+
+
+const PORT = process.env.PORT;
 app.listen(PORT, process.env.HOSTNAME, () => {
     console.log(`Server running at http://${process.env.HOSTNAME}:${PORT}`)
 });

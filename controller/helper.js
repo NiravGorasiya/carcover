@@ -1,7 +1,7 @@
 var Country = require('country-state-city').Country;
 var State = require('country-state-city').State;
 var City = require('country-state-city').City
-
+const nodemailer = require("nodemailer");
 
 const getMonthName = (monthIndex) => {
     let monthsArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -44,6 +44,34 @@ const state_all = (req, res) => {
 
 }
 
+
+const email_send = async (email, emaildata) => {
+    try {
+        const transporter = await nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.ADMIN_EMAIL,
+                pass: process.env.ADMIN_PASSWORD,
+            }
+        });
+        const mailOptions = {
+            from: process.env.ADMIN_EMAIL,
+            to: email,
+            subject: 'carcover order successfully',
+            html: `${emaildata}`,
+        };
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) throw error;
+            console.log(info);
+            return { status: true, data: info, message: 'Email Send SuccessFully' };
+        });
+
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ status: false, message: err });
+    }
+};
+
 const city_all = (req, res) => {
     var city = []
     var a = State.getAllStates()
@@ -57,4 +85,4 @@ const city_all = (req, res) => {
 }
 
 
-module.exports = { getMonthName, days, changeDateFormatTo, country_all, state_all, city_all, compareDates } 
+module.exports = { getMonthName, days, changeDateFormatTo, country_all, state_all, city_all, compareDates, email_send } 
