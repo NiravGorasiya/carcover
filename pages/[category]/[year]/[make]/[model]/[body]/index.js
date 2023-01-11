@@ -18,7 +18,7 @@ const index = () => {
     const make = router.query.make
     const model = router.query.model
     const body = router.query.body
-    console.log(cat, "das");
+
     const productList = () => {
         axios.get(`${url}/product/${cat}`)
             .then((response) => {

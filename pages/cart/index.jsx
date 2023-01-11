@@ -49,7 +49,6 @@ const Cart = () => {
 
     const deliveryDate = (item) => {
         setDeliveryDate(item)
-        console.log(item);
         const data = { id: item?.id }
         axios.post(`${url}/cart/Delivery_Date`, data, {
             withCredentials: true
@@ -81,7 +80,6 @@ const Cart = () => {
     }
 
     const updateproduct = async (id, qty) => {
-        console.log("updte");
         setQty(qty)
         setDeliveryDate('')
         setdDate("")
@@ -143,7 +141,6 @@ const Cart = () => {
         }
     }
 
-
     useEffect(() => {
         productDataList()
         dateList()
@@ -184,7 +181,8 @@ const Cart = () => {
                                                                                 <img src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${item.image}`}></img>
                                                                             </Link>
                                                                         </td>
-                                                                        <td>
+                                                                        <td className={`${styles['product-name']}`}>
+
                                                                             <div>
                                                                                 <Link href="sadf">
                                                                                     {

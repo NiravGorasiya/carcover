@@ -6,7 +6,7 @@ import styles from "./Header.module.css"
 const Header = () => {
     return (
         <>
-            <div className={styles["header-wrapper"]}>
+            <header className={styles["header-wrapper"]}>
                 <div className={styles["head-top"]}>
                     TODAY ONLY:FREE 3 DAY DELIVERY &
                     <span className='d-inline-block'>&nbsp; GET AN ADDITIONAL 10%  OFF ON YOUR ORDER.</span>
@@ -32,7 +32,7 @@ const Header = () => {
                                                 <img src='https://d68my205fyswa.cloudfront.net/ccf-static-t28cj8b22momaqtquvmbkyct6czmpsprr06nja05hmknmr3kjgfimg.png' style={{ maxHeight: "70px", margin: "6px 1px" }} />
                                             </Link>
                                         </li>
-                                        <li className={styles['review-wrap']}>
+                                        <li>
                                             <div className={styles['card-warp']}>
                                                 <Link href="/cart" >
                                                     <img src='https://d68my205fyswa.cloudfront.net/ccf-static-12wteslcufpclziv6jsdnos8d9r4zhrvoy736jwr0dl8ewcrqv2fiv.png' alt='carcoverfactory' style={{ display: "block", maxHeight: "40px" }} />
@@ -45,8 +45,8 @@ const Header = () => {
                                                 <i className='fa fa-phone fa-3x' aria-hidden={true}></i>
                                             </Link>
                                         </li>
-                                        <li className={styles['review-wrap']}>
-                                            <div className={styles['chat-wrap chat-top c-pointer mt-3']}>
+                                        <li>
+                                            <div className={`chat-top c-pointer mt-3 ${styles['chat-wrap']}`}>
                                                 <img src='https://d68my205fyswa.cloudfront.net/ccf-static-2zoj4rjoefbk310rnqpmq137m9m40jtmc1hpdcnjj5h445a9ack8ea.png' alt="chatcover" style={{ height: "58px" }} />
                                             </div>
                                         </li>
@@ -71,7 +71,7 @@ const Header = () => {
                         </div>
                     </div>
                 </div>
-            </div >
+            </header>
         </>
     )
 }

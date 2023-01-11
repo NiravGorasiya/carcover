@@ -12,7 +12,7 @@ const Brand = () => {
                 setData(response.data)
             })
             .catch((err) => {
-                console.log(err);
+
             })
     }
 
@@ -24,21 +24,22 @@ const Brand = () => {
         <section className={styles['grid-wrapper']}>
             <div className='container'>
                 <div className='row'>
-                    {data.map((item) => {
-                        if (item.cover_image) {
-                            return (
-                                <Fragment key={item._id}>
-                                    <div className='col-lg-3 col-sm-4 col-6'>
-                                        <Link href={item.name}>
-                                            <div className={styles['entry-single']}>
-                                                <img src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${item.cover_image}`}></img>
-                                            </div>
-                                        </Link>
-                                    </div>
-                                </Fragment>
-                            )
-                        }
-                    })
+                    {
+                        data.map((item) => {
+                            if (item.cover_image) {
+                                return (
+                                    <Fragment key={item._id}>
+                                        <div className='col-lg-3 col-sm-4 col-6'>
+                                            <Link href={item.name}>
+                                                <div className={styles['entry-single']}>
+                                                    <img src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${item.cover_image}`}></img>
+                                                </div>
+                                            </Link>
+                                        </div>
+                                    </Fragment>
+                                )
+                            }
+                        })
                     }
                 </div>
             </div>

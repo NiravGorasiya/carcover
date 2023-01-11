@@ -32,7 +32,6 @@ const Productdetails = () => {
             await axios.get(`${url}/product/one/${categoryid}`)
                 .then((response) => {
                     response?.data?.result?.product?.map((value) => {
-                        console.log(value.image, "value");
                         setTitle(value?.title)
                         setImage(value?.image)
                         setProductDetail(value)
@@ -60,7 +59,7 @@ const Productdetails = () => {
     useEffect(() => {
         producrtdetail()
     }, [categoryid])
-    console.log(title, "title");
+
     return (
         <>
             <Header />

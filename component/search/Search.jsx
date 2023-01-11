@@ -68,14 +68,14 @@ const Search = ({ props }) => {
         <>
             <section className={styles['form-wrapper']}>
                 <div className='container'>
-                    <div className={`form-inline ${styles['cover-search']}`} id="moveTop">
+                    <div className={`${styles['form-inline']} ${styles['cover-search']}`} id="moveTop">
                         <h3 className={styles['search-title']}>
                             {props}
                             <br></br>
                             search
                         </h3>
-                        <div className='form-group text-center'>
-                            <label>{props} year</label>
+                        <div className={`${styles['form-group']} text-center`}>
+                            <label className="select-label">{props} year</label>
                             <select value={year} className={`form-control  required-border ${styles['select-create']}`} name="drop1" onChange={(e) => handleMake(e.target.value)}>
                                 <option value="">Select Year</option>
                                 {
@@ -85,7 +85,7 @@ const Search = ({ props }) => {
                                 }
                             </select>
                         </div>
-                        <div className='form-group text-center'>
+                        <div className={`${styles['form-group']} text-center`}>
                             <label className='select-label'>{props} Make</label>
                             <select className={`form-control  required-border ${styles['select-create']}`} value={make} name="drop1" onChange={(e) => handleModel(e.target.value)}>
                                 <option value="">Select Make</option>
@@ -96,7 +96,7 @@ const Search = ({ props }) => {
                                 }
                             </select>
                         </div>
-                        <div className='form-group text-center'>
+                        <div className={`${styles['form-group']} text-center`} >
                             <label className='select-label'>{props} model</label>
                             <select className={`form-control  required-border ${styles['select-create']}`} value={model} name="drop1" onChange={(e) => handleBody(e.target.value)}>
                                 <option value="">Select Model</option>
@@ -109,7 +109,7 @@ const Search = ({ props }) => {
                                 }
                             </select>
                         </div>
-                        <div className='form-group text-center' style={{ position: "relative" }}>
+                        <div className={`${styles['form-group']} text-center`} style={{ position: "relative" }}>
                             <label className='select-label'>{props} body</label>
                             <select className={`form-control  required-border ${styles['select-create']}`} name="drop1" value={body} onChange={(e) => setBody(e.target.value)}>
                                 <option>Select Body</option>
@@ -124,19 +124,19 @@ const Search = ({ props }) => {
                                 }
                             </select>
                         </div>
-                        <input type="hidden" value="2" />
-                        <input type="hidden" value="2" />
-                        <input type="hidden" value="2" />
                         <button className={`btn btn-primary ${styles['btn-style']}`} onClick={searchProduct}>Search</button>
                     </div>
                 </div>
             </section>
-
         </>
     )
 }
 
 
 export default Search
+
+
+
+
 
 

@@ -11,18 +11,18 @@ import { Elements } from "@stripe/react-stripe-js";
 import CheckOutFrom from '../stripe/CheckOutFrom';
 const PUBLIC_KEY = "pk_test_51IvdjGSBmFmiKlBdvjqb5Pb8TDJEkPZCy9yjdVTow4IC1RZWOQ0MnJJStkzWzZPyaU5p4h8ehxeR7njn5UdNWwet00pkZL315z";
 const stripeTestPromise = loadStripe(PUBLIC_KEY);
-import * as Yup from "yup"
+import axios from "axios"
+import url from '../../api/Apiservices';
 
 const Checkout = () => {
     let countries = Country.getAllCountries()
     let states = States.getAllStates()
-    let citys = City.getAllCities()
     const [country, setContry] = useState([])
-    const [city, setCity] = useState([])
     const [state, setState] = useState([])
     const [billingState, setBillingState] = useState([])
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
+    const [total, setTotal] = useState(0)
 
     const initialValues = {
         cname: "",
@@ -32,8 +32,8 @@ const Checkout = () => {
         phone: "",
         email: "",
         address: "",
-        countryCode: "",
-        stateCode: "",
+        countryCode: "US",
+        stateCode: "AK",
         cityCode: "",
         billingAddressCompanyName: "",
         billingAddressEmail: "",
@@ -42,8 +42,8 @@ const Checkout = () => {
         billingAddressLastName: "",
         billingAddressFirstName: "",
         billingAddressone: "",
-        billingAddressCountrycode: "",
-        billingAddressStateCode: "",
+        billingAddressCountrycode: "US",
+        billingAddressStateCode: "AK",
         billingAddressCityCode: ""
     }
     const [shippingAddress, setShippingAddress] = useState(initialValues)
@@ -52,8 +52,8 @@ const Checkout = () => {
         const { name, value } = e.target;
         setShippingAddress({ ...shippingAddress, [name]: value })
         const dt = states.filter((item) => item.countryCode == value)
+        setBillingState(dt)
         setState(dt);
-        setCity(null)
     }
 
     const handleBillingContry = (e) => {
@@ -61,15 +61,12 @@ const Checkout = () => {
         setShippingAddress({ ...shippingAddress, [name]: value })
         const dt = states.filter((item) => item.countryCode == value)
         setBillingState(dt);
-        setCity(null)
     }
 
-
     const handleState = (e) => {
+        e.preventDefault();
         const { name, value } = e.target;
         setShippingAddress({ ...shippingAddress, [name]: value })
-        const citydata = citys.filter((item) => item.stateCode == value)
-        setCity(citydata)
     }
 
     const handleInputChange = (e) => {
@@ -78,13 +75,20 @@ const Checkout = () => {
         setShippingAddress({ ...shippingAddress, [name]: value })
     }
 
+    const productTotal = async () => {
+        const res = await axios.get(`${url}/cart/checkout`, { withCredentials: true })
+        setTotal(res?.data?.result?.total)
+    }
+
     useEffect(() => {
         setContry(countries)
         setIsSubmit(true);
         if (Object.keys(formErrors).length === 0 && isSubmit) {
             console.log(shippingAddress);
         }
+        productTotal()
     }, [formErrors])
+
 
     const validate = (values) => {
         const errors = {};
@@ -105,16 +109,16 @@ const Checkout = () => {
             errors.cityCode = "City is required!";
         }
         if (!values.stateCode) {
-            errors.stateCode = "state is required!";
+            errors.stateCode = "State is required!";
         }
         if (!values.postCode) {
-            errors.postCode = "postalcode is required!";
+            errors.postCode = "Postalcode is required!";
         }
         if (!values.countryCode) {
-            errors.countryCode = "country is required!";
+            errors.countryCode = "Country is required!";
         }
         if (!values.phone) {
-            errors.phone = "phone is required!";
+            errors.phone = "Phone is required!";
         }
         if (!values.email) {
             errors.email = "Email is required!";
@@ -141,13 +145,13 @@ const Checkout = () => {
             errors.billingAddressStateCode = "statecode is required!";
         }
         if (!values.billingAddressPostalCode) {
-            errors.billingAddressPostalCode = "postalcode is required!";
+            errors.billingAddressPostalCode = "Postalcode is required!";
         }
         if (!values.billingAddressCountrycode) {
-            errors.billingAddressCountrycode = "country is required!";
+            errors.billingAddressCountrycode = "Country is required!";
         }
         if (!values.billingAddressPhone) {
-            errors.billingAddressPhone = "phone is required!";
+            errors.billingAddressPhone = "Phone is required!";
         }
         if (!values.billingAddressEmail) {
             errors.billingAddressEmail = "Email is required!";
@@ -199,7 +203,7 @@ const Checkout = () => {
                     <div className={styles['information-wrap']}>
                         <div className={`${styles['inner-wrapper']} checkout-form`}>
                             <div className='notification'></div>
-                            <form onClick={handleCopy}>
+                            <form >
                                 <div className={`row ${styles['checkout-content']}`}>
                                     <div className={`col-md-6 ${styles.shipaddr}`}>
                                         <div className={styles['form-wrap']}>
@@ -227,7 +231,12 @@ const Checkout = () => {
                                                     </div>
                                                     <div className='col-md-6'>
                                                         <label>Last Name</label>
-                                                        <input type="text" name="lname" value={shippingAddress.lname} placeholder='Last name' onChange={handleInputChange} className='form-control' />
+                                                        <input type="text"
+                                                            name="lname"
+                                                            value={shippingAddress.lname}
+                                                            placeholder='Last name'
+                                                            onChange={handleInputChange}
+                                                            className='form-control' />
                                                         <p style={{ color: "red" }}> {formErrors.fname}</p>
                                                     </div>
                                                 </div>
@@ -254,7 +263,6 @@ const Checkout = () => {
                                                                 state &&
                                                                     state !== undefined ?
                                                                     state.map((ctr, index) => {
-
                                                                         return (
                                                                             <>
                                                                                 <option key={index} value={ctr.isoCode}>{ctr.name}</option>
@@ -270,7 +278,7 @@ const Checkout = () => {
                                                     <div className='col-md-6'>
                                                         <label>Postal code</label>
                                                         <input type="text" name="postCode" value={shippingAddress.postCode} className='form-control' onChange={handleInputChange} placeholder='Postal code' />
-                                                        <p style={{ color: "red" }}> {formErrors.stateCode}</p>
+                                                        <p style={{ color: "red" }}> {formErrors.postCode}</p>
                                                     </div>
                                                     <div className='col-md-6'>
                                                         <label>Country code</label>
@@ -304,7 +312,7 @@ const Checkout = () => {
                                                     </div>
                                                 </div>
                                                 <div className='btn-wrap d-none d-md-block'>
-                                                    <button className="btn btn-primary text-white" >
+                                                    <button type="submit" onClick={handleCopy} className="btn btn-primary text-white" >
                                                         <span className='fa fa-files-0'>
                                                         </span>
                                                         copy billing Address
@@ -427,7 +435,7 @@ const Checkout = () => {
                                                     <strong>Payment</strong>
                                                     method
                                                     <span className={`price ${styles['pull-right']}`}>
-                                                        <span className='order_total'>Total $64.96</span>
+                                                        <span className='order_total'>Total ${total}</span>
                                                     </span>
                                                 </h4>
                                                 <div className={styles['form-inside']}>

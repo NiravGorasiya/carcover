@@ -1,22 +1,45 @@
 .footer-wrapper {
     background: #a1b56a;
+}
 
+@media only screen and (max-width:768px) {
+    .footer-wrapper {
+        padding: 0 15px !important;
+    }
+}
+
+@media only screen and (max-width:768px) {
+    .footer-wrapper {
+        text-align: center;
+    }
 }
 
 .footer-wrapper .footer-top {
     padding: 25px 0;
     display: flex;
-    flex-direction: row;
 }
 
 .footer-wrapper .footer-top .payment-card img {
     margin-left: -5px;
 }
 
-/* img {
-    vertical-align: middle;
-    border-style: none;
-} */
+@media only screen and (max-width:768px) {
+    .footer-wrapper .footer-top .payment-card {
+        margin-bottom: 20px;
+    }
+}
+
+@media only screen and (max-width:668px) {
+    .footer-wrapper .footer-top .payment-card h4 {
+        font-size: 18px;
+    }
+}
+
+@media only screen and (max-width:668px) {
+    .footer-wrapper .footer-top .payment-card .subscribe-wrap h4 {
+        font-size: 18px;
+    }
+}
 
 .footer-wrapper .footer-top .subscribe-wrap form .form-control {
     border-radius: 10px;
@@ -25,7 +48,6 @@
 .footer-wrapper .footer-top h4 {
     color: #fff;
     text-transform: uppercase;
-    font-family: webfontbold;
 }
 
 .form-control {
@@ -64,11 +86,23 @@
 }
 
 .footer-wrapper .widget-wrapper {
-    border: 1px solid #7b933b;
+    border-top: 1px solid #7b933b;
+}
+
+.footer-wrapper .widget-wrapper .entry-widget .widget-title {
+    text-transform: uppercase;
+    color: #fff;
+    font-weight: bold;
 }
 
 .footer-wrapper .widget-wrapper .entry-widget .widget-title .contact-number {
     margin-left: -50px;
+}
+
+@media only screen and (max-width:992px) {
+    .footer-wrapper .widget-wrapper .entry-widget .widget-title {
+        font-size: 18px;
+    }
 }
 
 .footer-wrapper .widget-wrapper .entry-widget .widget-title {
@@ -78,22 +112,23 @@
     margin-left: 100px;
 }
 
+.footer-wrapper .widget-wrapper .entry-widget .widget-title {
+    font-weight: bold;
+}
+
 .footer-wrapper .widget-wrapper .entry-widget .widget-title .linkStyle {
     color: #fff;
 }
 
-.footer-wrapper .widget-wrapper .border-1r .entry-widget .entry-lists {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    margin-left: 60px;
-
+/* //.entry-widget */
+.footer-wrapper .widget-wrapper .border-1r {
+    border-left: 1px solid #7b933b;
+    border-right: 1px solid #7b933b;
 }
 
-.footer-wrapper .widget-wrapper .border-1r .entry-widget .entry-lists .entry-list .linkStyle {
-    color: #fff;
-    padding: 30px 0;
-    text-decoration: none;
+.footer-wrapper .widget-wrapper .border-1r .entry-widget {
+    max-width: 300px;
+    margin: 0 auto;
 }
 
 .footer-wrapper .widget-wrapper .entry-widget {
@@ -102,26 +137,50 @@
     color: #fff;
 }
 
+.footer-wrapper .widget-wrapper .border-1r .entry-widget .entry-lists {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-left: 60px;
+}
+
+@media only screen and (max-width:768px) {
+    .footer-wrapper .widget-wrapper .border-1r .entry-widget {
+        max-width: 100%;
+    }
+}
+
+.footer-wrapper .widget-wrapper .border-1r .entry-widget .entry-lists .entry-list .linkStyle {
+    color: #fff;
+    padding: 30px 0;
+    text-decoration: none;
+}
+
+
+
+@media only screen and (max-width:992px) {
+    .footer-wrapper .widget-wrapper .entry-widget {
+        padding: 15px 0;
+        font-size: 18px;
+    }
+}
+
 .footer-wrapper .widget-wrapper .border-1r .entry-widget .entry-list {
     padding-left: 0;
 }
 
-.footer-wrapper .widget-wrapper .border-1r {
-    border-left: 1px solid #7b933b;
-    border-right: 1px solid #7b933b;
+@media only screen and (max-width:768px) {
+    .footer-wrapper .widget-wrapper .entry-widget .widget-title .contact-number {
+        max-width: 18px;
+    }
 }
 
-/* 
-.footer-wrapper .widget-wrapper .entry-widget {
-    border-right: 1px solid #7b933b;
-} */
 
-/* ul {
-    display: block;
-    list-style-type: disc;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    margin-inline-end: 0px;
-    margin-inline-start: 0px;
-    padding-inline-start: 40px;
-} */
+
+@media only screen and (max-width:668px) {
+    .footer-wrapper .footer-top .subscribe-wrap form input[type=submit] {
+        font-size: 16px;
+        line-height: 24px;
+        padding: 0 30px;
+    }
+}

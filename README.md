@@ -91,9 +91,3 @@
     "payment_method":"paypal"
 }
 
-
-What is your motivating factor in life?
-CV vs portfolio, criticism, 
-Decision-making process.
-Bad boss issues. 
-Why do you want to join a full-stack developer?

@@ -1,13 +1,41 @@
-btnCoupon.single-wrapper-glob {
+/* .single-wrapper-glob */
+.single-wrapper-glob {
     margin-bottom: 20px;
     margin-top: 10px;
     display: flex;
 }
 
+@media only screen and(max-width:768px) {
+    .single-wrapper-glob {
+        background-color: red;
+        color: yellow;
+    }
+}
+
 .single-wrapper-glob .information-wrap {
     color: #666;
     background: #fff;
+}
+
+/* .single-wrapper-glob .information-wrap {
     padding: 50px 70px;
+} */
+
+@media only screen and (max-width:768px) {
+    .single-wrapper-glob .information-wrap {
+        padding: 0;
+    }
+}
+
+.single-wrapper-glob .information-wrap {
+    padding: 50px 70px;
+}
+
+@media only screen and (max-width:768px) {
+    .single-wrapper-glob {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
 }
 
 .single-wrapper-glob .information-wrap .inner-wrapper {
@@ -15,9 +43,42 @@ btnCoupon.single-wrapper-glob {
     margin: 0 auto;
 }
 
+@media only screen and(max-width:768px) {
+    .single-wrapper-glob .information-wrap {
+        background-color: red;
+    }
+}
+
+@media only screen and(max-width:768px) {
+    .single-wrapper-glob .information-wrap .inner-wrapper .product-listing tbody tr th:first-child {
+        width: 40%;
+    }
+}
+
+@media only screen and(max-width:992px) {
+    .single-wrapper-glob .information-wrap {
+        padding: 50px -20px;
+    }
+}
+
+
 .single-wrapper-glob .information-wrap .inner-wrapper .product-listing {
     width: 100%;
     background-color: #fefefe;
+}
+
+@media only screen and (max-width:768px) {
+    .single-wrapper .information-wrap .inner-wrapper .product-listing tr td {
+        padding-left: 30px;
+        position: relative;
+    }
+}
+
+@media only screen and (max-width:768px) {
+    .single-wrapper .information-wrap .inner-wrapper .product-listing {
+        background-color: rebeccapurple;
+        color: red;
+    }
 }
 
 .single-wrapper-glob .information-wrap .inner-wrapper .product-listing thead {
@@ -28,11 +89,6 @@ btnCoupon.single-wrapper-glob {
     letter-spacing: 1px;
     text-transform: uppercase;
     font-size: 14px;
-    padding: 15px 20px;
-}
-
-.single-wrapper-glob .information-wrap .inner-wrapper .product-listing tbody tr td {
-    padding: 30px 20px;
 }
 
 .single-wrapper-glob .information-wrap .inner-wrapper .product-listing tbody tr td .quantity .input-group .input-group-btn .input-group-btn {
@@ -49,7 +105,6 @@ btnCoupon.single-wrapper-glob {
 
 .single-wrapper-glob .coupon-wrap form {
     background-color: #fff;
-    padding: 5px;
     max-width: 380px;
 }
 
@@ -78,6 +133,8 @@ btnCoupon.single-wrapper-glob {
     text-transform: uppercase;
     width: 35%;
 }
+
+/* cart footer */
 
 .single-wrapper-glob .information-wrap .cart-footer {
     margin-top: 30px;
@@ -171,6 +228,7 @@ btnCoupon.single-wrapper-glob {
 
 }
 
+/* cart-total */
 .single-wrapper-glob .information-wrap .cart-footer .cart-total {
     border: 2px solid #e7e7e7;
     border-radius: 4px;
@@ -178,6 +236,20 @@ btnCoupon.single-wrapper-glob {
     max-width: 320px;
     float: right;
     font-size: small;
+}
+
+@media only screen and (max-width:767px) {
+    .single-wrapper-glob .information-wrap .cart-footer .cart-total {
+        float: none;
+        max-width: 100%;
+    }
+}
+
+@media only screen and (max-width:979px) {
+    .single-wrapper-glob .information-wrap .cart-footer .cart-total {
+        float: none;
+        max-width: 100%;
+    }
 }
 
 .single-wrapper-glob .information-wrap .cart-footer .cart-total .entry-title {
@@ -208,9 +280,22 @@ btnCoupon.single-wrapper-glob {
     line-height: 1.1;
 }
 
+
 .single-wrapper-glob .information-wrap .cart-footer .entry-footer {
     background: #f1f1f1;
     padding: 5px;
+}
+
+@media only screen and (max-width:767px) {
+    .single-wrapper-glob .information-wrap .cart-footer .entry-footer {
+        text-align: right;
+    }
+}
+
+@media only screen and (max-width:979px) {
+    .single-wrapper-glob .information-wrap .cart-footer .entry-footer {
+        text-align: right;
+    }
 }
 
 .single-wrapper-glob .information-wrap .cart-footer .entry-footer .btn-grey {

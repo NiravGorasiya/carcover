@@ -113,12 +113,6 @@ const Products = (products) => {
                                                                     <td>{item.Value}</td>
                                                                 </>
                                                             )
-                                                        } else {
-                                                            return (
-                                                                <td>
-
-                                                                </td>
-                                                            )
                                                         }
                                                     })
                                                 ))
@@ -190,10 +184,6 @@ const Products = (products) => {
                                                                 <Fragment key={index}>
                                                                     <td key={index}>{item.Value}</td>
                                                                 </Fragment>
-                                                            )
-                                                        } else {
-                                                            return (
-                                                                <td></td>
                                                             )
                                                         }
                                                     })

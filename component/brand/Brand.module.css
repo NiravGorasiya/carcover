@@ -1,6 +1,5 @@
 .grid-wrapper {
     margin-top: 30px;
-    display: block;
 }
 
 .grid-wrapper .entry-single {
@@ -12,4 +11,16 @@
 .grid-wrapper .entry-single img {
     display: block;
     margin: 0 auto;
+}
+
+@media only screen and (max-width:768px) {
+    .grid-wrapper {
+        margin-top: 10px;
+    }
+}
+
+@media only screen and (max-width:768px) {
+    .grid-wrapper .col-6 {
+        padding: 0 5px;
+    }
 }

@@ -11,7 +11,7 @@ import styles from "./CheckOutForm.module.css"
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useRouter } from 'next/router'
 import url from "../../api/Apiservices";
-import { useEffect } from "react";
+
 
 const useOptions = () => {
     const options = useMemo(
@@ -51,7 +51,6 @@ const CheckOutFrom = (props) => {
         event.preventDefault()
         try {
             if (payment_method_type == "paypal") {
-                console.log("hello");
                 const data = {
                     payment_method_type: "paypal",
                     payment_method: "paypal",
@@ -97,11 +96,11 @@ const CheckOutFrom = (props) => {
                         setMesage(res.data)
                     })
                     .catch((err) => {
-                        console.log(err, "der");
+
                     })
 
             } else if (payment_method_type == "card") {
-                console.log("hello wet");
+
                 const cardElement = elements.getElement(CardNumberElement)
                 const billingDetails = {
                     name: "John",
@@ -160,14 +159,15 @@ const CheckOutFrom = (props) => {
                     withCredentials: true
                 })
                     .then((res) => {
-                        router?.push("/success")
+
+                        router?.push(res.data)
                     })
                     .catch((err) => {
-                        console.log(err, "der");
+
                     })
             }
         } catch (error) {
-            console.log(error, "error");
+
         }
 
     }

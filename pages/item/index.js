@@ -1,46 +1,25 @@
-import React from 'react'
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as yup from 'yup';
 
-const initialValues = {
-    name: "",
-    email: "",
-    chanel: ""
-}
-const onSubmit = values => {
-    console.log("form data", values);
-}
-const validationSchema = yup.object({
-    name: yup.string().required("Required!"),
-    email: yup.string().email("Invalid format email").required("Required"),
-    chanel: yup.string().required("Required")
-})
 
 const index = () => {
     return (
-        <Formik initialValues={initialValues}
-            onSubmit={onSubmit}
-            validationSchema={validationSchema}>
-            <Form>
-                <label>Name</label>
-                <Field type="text" name="name"></Field>
-                <ErrorMessage name="name">
-                    {msg => <div style={{ color: 'red' }}>{msg}</div>}
-                </ErrorMessage>
-                <ErrorMessage name='name' style={{ color: "red" }} />
-
-                <br />
-                <label htmlFor="email">email</label>
-                <Field type="text" name="email"></Field>
-                <ErrorMessage name='email' />
-                <br />
-                <label>Chanel</label>
-                <Field type="text" name="chanel"></Field>
-                <ErrorMessage name="chanel" />
-                <br />
-                <button type="submit">Submit</button>
-            </Form>
-        </Formik>
+        <nav class="navbar navbar-expand-lg  bg-primary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Navbar</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Link</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
     );
 }
 

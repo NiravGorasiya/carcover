@@ -14,7 +14,7 @@ const Banner = ({ props }) => {
                 setCategoryData(response.data)
             })
             .catch((error) => {
-                console.log(error);
+
             })
     }
 
@@ -30,7 +30,7 @@ const Banner = ({ props }) => {
                 setBanner(response.data);
             })
             .catch((err) => {
-                console.log(err, "err");
+
             })
 
     }

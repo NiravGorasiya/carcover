@@ -2,7 +2,6 @@
     background: url("https://www.carcoversfactory.com/catalog/view/image/blue-bg.png");
     background-size: cover;
     padding: 25px 0;
-    display: block;
 }
 
 .review-wrapper .section-title {
@@ -35,7 +34,6 @@
     border-radius: 50%;
 }
 
-
 .review-wrapper .inner-wrap .entry-single .entry-content {
     float: left;
     width: 70%;
@@ -45,8 +43,6 @@
     float: left;
     width: 70%;
 }
-
-
 
 .review-wrapper .inner-wrap .entry-single .entry-content .content {
     background: #fff;
@@ -55,4 +51,29 @@
     font-size: 18px;
     margin-bottom: 5px;
     box-shadow: 0 1px 4px #313131;
+}
+
+@media only screen and (max-width:768px) {
+    .review-wrapper {
+        padding: 0 15px !important;
+    }
+}
+
+@media only screen and (max-width:668px) {
+    .review-wrapper .section-title {
+        font-size: 21px;
+    }
+}
+
+@media only screen and (max-width:768px) {
+    .review-wrapper .inner-wrap {
+        padding: 0 15px;
+    }
+}
+
+@media only screen and (max-width:768px) {
+    .review-wrapper .inner-wrap .entry-single {
+        width: 100%;
+        margin-bottom: 15px;
+    }
 }
