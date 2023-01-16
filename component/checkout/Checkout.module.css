@@ -5,6 +5,7 @@
 .single-wrapper-glob .information-wrap {
     color: #666;
     background: #fff;
+    padding: 50px 60px;
 }
 
 .single-wrapper-glob .information-wrap .inner-wrapper {
@@ -34,12 +35,6 @@
     margin-bottom: 0;
 }
 
-@media only screen and (max-width:992px) {
-    .checkout-banner .page-banner .entry-content .page-title {
-        font-size: 32px;
-    }
-}
-
 .checkout-banner .page-banner .entry-content .description {
     text-transform: uppercase;
     font-size: 1.3rem;
@@ -51,17 +46,6 @@
     margin-top: 10px;
 }
 
-@media only screen and(max-width:668px) {
-    .single-wrapper-glob .information-wrap .inner-wrapper form .checkout-content .shipaddr .title {
-        font-size: 16px;
-    }
-}
-
-@media only screen and(max-width:992px) {
-    .single-wrapper-glob .information-wrap .inner-wrapper form .checkout-content .shipaddr .title {
-        font-size: 21px;
-    }
-}
 
 .single-wrapper-glob .information-wrap .inner-wrapper form .checkout-content .shipaddr .title {
     background-color: #3f3f41;
@@ -85,15 +69,10 @@
     padding-bottom: 30px;
 }
 
-@media only screen and(max-width:992px) {
-    .single-wrapper-glob .information-wrap .inner-wrapper form .checkout-content .shipaddr .form-wrap .from-inside .from-row {
-        width: 100%;
-    }
-}
 
-.single-wrapper-glob .information-wrap .inner-wrapper form .checkout-content .shipaddr .form-wrap .from-inside .from-row .inputfield input[type="text"] {
+/* .single-wrapper-glob .information-wrap .inner-wrapper form .checkout-content .shipaddr .form-wrap .from-inside .from-row .inputfield input[type="text"] {
     width: 470px;
-}
+} */
 
 .single-wrapper-glob .information-wrap .inner-wrapper form .checkout-content .shipaddr .form-wrap .from-inside .from-row input[type="text"] {
     width: 230px;
@@ -138,16 +117,6 @@
 .single-wrapper-glob .information-wrap .inner-wrapper .checkout-content .billaddr .form-wrap .from-inside .from-row {
     margin-bottom: 10px;
     display: flex;
-}
-
-.single-wrapper-glob .information-wrap .inner-wrapper .checkout-content .billaddr .form-wrap .from-inside .from-row .inputfield input[type="text"] {
-    width: 470px;
-}
-
-@media only screen and (max-width:992px) {
-    .single-wrapper-glob .information-wrap .inner-wrapper .checkout-content .billaddr .form-wrap .from-inside .from-row input[type="text"] {
-        width: 100%;
-    }
 }
 
 .single-wrapper-glob .information-wrap .inner-wrapper .checkout-content .billaddr .form-wrap .from-inside .from-row input[type="text"] {
@@ -198,7 +167,6 @@
     max-width: 500px;
     margin: 0 auto;
     text-align: center;
-
 }
 
 .single-wrapper-glob .information-wrap .inner-wrapper form .mt-50 .checkout-content .form-inside .inner-wrap .payment-options .form-check:active {
@@ -211,4 +179,46 @@
     display: inline-block;
     cursor: pointer;
     padding: 5px 8px;
+}
+
+@media only screen and (max-width:992px) {
+    .checkout-banner .page-banner .entry-content .page-title {
+        font-size: 32px;
+    }
+}
+
+@media only screen and (max-width:992px) {
+    .single-wrapper-glob .information-wrap .inner-wrapper .checkout-content .billaddr .form-wrap .from-inside .from-row input[type="text"] {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width:992px) {
+    .single-wrapper-glob .information-wrap .inner-wrapper form .checkout-content .shipaddr .form-wrap .from-inside .from-row {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width:992px) {
+    .single-wrapper-glob .information-wrap .inner-wrapper form .checkout-content .shipaddr .form-wrap .title {
+        font-size: 21px;
+    }
+}
+
+@media only screen and (max-width:992px) {
+    .single-wrapper-glob .information-wrap .inner-wrapper .checkout-content .billaddr .form-wrap .title {
+        font-size: 21px;
+    }
+}
+
+@media only screen and (max-width:668px) {
+    .single-wrapper-glob .information-wrap .inner-wrapper form .checkout-content .shipaddr .title {
+        font-size: 16px;
+    }
+}
+
+@media only screen and (max-width:992px) {
+    .single-wrapper-glob .information-wrap .inner-wrapper form .checkout-content .shipaddr .title {
+        font-size: 21px;
+    }
 }

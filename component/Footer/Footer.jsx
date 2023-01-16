@@ -7,14 +7,14 @@ const Footer = () => {
             <footer className={styles["footer-wrapper"]}>
                 <div className='container'>
                     <div className={styles['footer-top']}>
-                        <div className='offset-md-2 col-md-4'>
+                        <div className='offset-md-2'>
                             <div className={styles["payment-card"]}>
                                 <h4>Payment Options</h4>
                                 <img src="https://d68my205fyswa.cloudfront.net/fit-in/380x39/ccf-2022082416614023805g0.png" className="img-fluid custom-lazy loaded" />
                             </div>
                         </div>
                         <div className="col-md-4">
-                            <div className={`${styles['subscribe-wrap']} text-center`}>
+                            <div className={`${styles['subscribe-wrap']}`}>
                                 <h4>Exclusive offers</h4>
                                 <form>
                                     <input type="email" placeholder="Email" className="form-control" id="exampleInputEmail" required />
@@ -61,7 +61,7 @@ const Footer = () => {
                                 </div>
                             </div>
                             <div className='col-md-4'>
-                                <div className={`${styles['entry-widget']} mb-3 mb-md-0`}>
+                                <div className={`${styles['entry-widget']} mb-3 mb-md-4`}>
                                     <h5 className={styles['widget-title']}>
                                         <li className={styles['contact-number']}>
                                             <p>(877) 300-9885</p>
@@ -72,12 +72,15 @@ const Footer = () => {
                             </div>
                         </div>
                     </div>
-                </div >
-            </footer >
+                </div>
+            </footer>
         </>
     )
 }
 
+
+
 export default Footer
+
 
 

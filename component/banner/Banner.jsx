@@ -44,26 +44,27 @@ const Banner = ({ props }) => {
             <div className='container'>
                 <nav className={`navbar navbar-expand-lg navbar-light bg-light ${styles['navbar-style']}`}>
                     <div className={`collapse navbar-collapse ${styles['navbar-collapse-style']}`}>
-                        <ul className="navbar-nav mr-auto" style={{ width: "100%" }}>
-                            {categoryData.map((item) => {
-                                return (
-                                    <Fragment key={item._id}>
-                                        <li className='nav-item active' style={{ width: "7.6923076923077%" }}>
-                                            <Link href={`/${item.name}`}>
-                                                <div>
-                                                    <img src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${item.image}`} style={{ maxWidth: "100%", height: "40px" }} alt='car cover' />
-                                                </div>
-                                                <div>{item.name}</div>
-                                            </Link>
-                                        </li>
-                                    </Fragment>
-                                )
-                            })}
+                        <ul className={`navbar-nav mr-auto`} style={{ width: "100%" }}>
+                            {
+                                categoryData.map((item) => {
+                                    return (
+                                        <Fragment key={item._id}>
+                                            <li className='nav-item active' style={{ width: "7.6923076923077%" }}>
+                                                <Link href={`/${item.name}`}>
+                                                    <div>
+                                                        <img src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${item.image}`} style={{ maxWidth: "100%", height: "40px", maxWidth: "135px" }} alt='car cover' />
+                                                    </div>
+                                                    <div style={{ color: "#6e6e6e!important", textAlign: "center", fontSize: "18px" }}>{item.name}</div>
+                                                </Link>
+                                            </li>
+                                        </Fragment>
+                                    )
+                                })
+                            }
                         </ul>
                     </div>
                 </nav>
                 <section className={styles['banner-wrap']}>
-
                     <img
                         src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${banner?.banner}`}
                         className='img-fluid w-100 d-none d-md-block'

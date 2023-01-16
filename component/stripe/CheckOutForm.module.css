@@ -14,16 +14,13 @@
     align-items: center;
 }
 
-.checkOutBox {
-    width: 1200px;
-}
+
 
 @media only screen and (max-width:768px) {
     .checkOutBox {
         width: 100%;
     }
 }
-
 
 .CheckOutFrom {
     text-align: center;
